@@ -1,0 +1,27 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: GrapeEMS
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3310/grapeems?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: grapeems
+    druid:
+      initial-size: 10
+      min-idle: 5
+      max-active: 200
+      max-wait: 60000
+  main:
+    banner-mode: off
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+

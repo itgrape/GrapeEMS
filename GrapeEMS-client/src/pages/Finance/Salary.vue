@@ -87,7 +87,7 @@ const salaryinfo = [
 <style scoped>
 .query-form {
     height: 105px;
-    width: 1270px;
+    width: 1000px;
 }
 
 .salary-table {

@@ -32,5 +32,7 @@ import Menu from '../components/Menu.vue'
     background-color: #ffffff;
     margin: 15px 15px 0 15px;
     box-shadow: 0 0 2px 0 #c8c9cc;
+    height: calc(100vh - 95px);
+    overflow: auto;
 }
 </style>

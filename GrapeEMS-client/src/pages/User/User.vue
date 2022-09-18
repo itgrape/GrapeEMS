@@ -340,14 +340,9 @@ const userinfo = [
 </script>
 
 <style scoped>
-.query-form {
-    height: 105px;
-    width: 1270px;
-}
-
 .user-table {
     width: 100%;
-    height: calc(100vh - 257px);
+    height: calc(100vh - 285px);
 }
 
 .name-input {

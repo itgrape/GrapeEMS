@@ -15,12 +15,14 @@ spring:
       min-idle: 5
       max-active: 200
       max-wait: 60000
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
   main:
     banner-mode: off
 
 mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 

@@ -4,9 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    
-    <!--<typeAliases>-->
-    <!--    <typeAlias type="" alias="" />-->
-    <!--</typeAliases>-->
+    <!--设置日志-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.pushihao.bean"/>
+        <package name="com.pushihao.pojo"/>
+    </typeAliases>
 
 </configuration>

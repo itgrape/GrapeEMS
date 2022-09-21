@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.UserDao">
+
+    <!--返回“用户中心”页面所有用户信息-->
+    <select id="getAllUserCenterUsers" resultType="com.pushihao.pojo.UserCenterUsers">
+        select
+               u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
+        from
+             grapeems_user u, grapeems_dept d, grapeems_role r
+        where
+              u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1
+    </select>
+
+
+    <!--查询用户登录信息-->
+    <select id="getOneUserByEmail" resultType="com.pushihao.bean.User">
+        select
+            *
+        from
+             grapeems_user
+        where
+              userEmail = #{userEmail} and isDeleted = 1
+    </select>
+</mapper>

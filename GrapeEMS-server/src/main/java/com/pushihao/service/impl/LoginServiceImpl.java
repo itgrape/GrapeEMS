@@ -47,6 +47,7 @@ public class LoginServiceImpl implements LoginService {
 
         Map<String, String> result = new HashMap<>();
         result.put("token", jwt);
+        result.put("role", loginUser.getUser().getUserRole().toString());
 
         //把完整的用户信息存入redis，uid作为key
         redisCache.setCacheObject("login:" + uid, loginUser);

@@ -97,11 +97,10 @@ router.onError = function () {
 }
 
 
-//做测试
-const isAuthenticated = true
+
 //导航守卫(全局前置守卫) -> 登录验证
 router.beforeEach(async (to, from) => {
-    if (!isAuthenticated && to.name !== 'login') {
+    if (!localStorage.getItem("isAdmin") && to.name !== 'login') {
         return {name: 'login'}
     }
 })

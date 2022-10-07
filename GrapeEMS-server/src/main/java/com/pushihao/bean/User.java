@@ -36,8 +36,24 @@ public class User {
 
     private Integer isDeleted;
 
-    private Integer deptId;
+    private Long deptId;
 
-    private Integer roleId;
+    private Long roleId;
 
+    public User(String userName, String userSex, Integer userAge, String userEmail, String userPassword, String userProvince, String userCity, String userCommunity, Timestamp userInterTime, String userState, Integer userRole, Integer isDeleted, Long deptId, Long roleId) {
+        this.userName = userName;
+        this.userSex = userSex;
+        this.userAge = userAge;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userProvince = userProvince;
+        this.userCity = userCity;
+        this.userCommunity = userCommunity;
+        this.userInterTime = userInterTime;
+        this.userState = userState;
+        this.userRole = userRole;
+        this.isDeleted = isDeleted;
+        this.deptId = deptId;
+        this.roleId = roleId;
+    }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.RoleDao">
+
+    <select id="getAllRoleName" resultType="java.lang.String">
+        select roleName from grapeems_role where isDeleted = 1
+    </select>
+
+    <select id="getRoleIdByName" resultType="java.lang.Long">
+        select roleId from grapeems_role where isDeleted = 1 and roleName = #{roleName}
+    </select>
+</mapper>

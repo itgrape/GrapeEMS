@@ -9,7 +9,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     config => {
         //在发送请求之前触发
-        config.headers.permission = localStorage.getItem("token")
+        config.headers.token = localStorage.getItem("token")
         return config
     }, error => {
         //处理错误请求

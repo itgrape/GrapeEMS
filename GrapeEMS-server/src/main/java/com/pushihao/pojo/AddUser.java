@@ -7,22 +7,24 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserCenterUsers {
-    private Long userId;
-
+@AllArgsConstructor
+public class AddUser {
     private String userName;
 
     private String userSex;
 
     private Integer userAge;
 
+    private String userEmail;
+
+    private String userPassword;
+
     private String deptName;
 
     private String roleName;
 
-    private String userEmail;
+    private String userState;
 
     private String userProvince;
 
@@ -31,6 +33,4 @@ public class UserCenterUsers {
     private String userCommunity;
 
     private Timestamp userInterTime;
-
-    private String userState;
 }

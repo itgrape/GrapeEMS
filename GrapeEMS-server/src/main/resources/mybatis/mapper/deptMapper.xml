@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.DeptDao">
+
+    <select id="getAllDeptName" resultType="java.lang.String">
+        select deptName from grapeems_dept where isDeleted = 1
+    </select>
+
+    <select id="getDeptNameById" resultType="java.lang.String">
+        select deptName from grapeems_dept where isDeleted = 1 and deptId = #{deptId}
+    </select>
+
+    <select id="getDeptIdByName" resultType="java.lang.Long">
+        select deptId from grapeems_dept where isDeleted = 1 and deptName = #{deptName}
+    </select>
+</mapper>

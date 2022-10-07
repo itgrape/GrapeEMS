@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/shared", "npm:3.2.39"],\
             ["axios", "npm:0.27.2"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
+            ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
             ["vite", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:3.1.0"],\
             ["vue", "npm:3.2.39"],\
@@ -1143,6 +1144,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/shared", "npm:3.2.39"],\
             ["axios", "npm:0.27.2"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
+            ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
             ["vite", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:3.1.0"],\
             ["vue", "npm:3.2.39"],\
@@ -1311,6 +1313,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/isexe-npm-2.0.0-b58870bd2e-26bf6c5480.zip/node_modules/isexe/",\
           "packageDependencies": [\
             ["isexe", "npm:2.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["layui", [\
+        ["npm:2.8.0-beta.2", {\
+          "packageLocation": "./.yarn/cache/layui-npm-2.8.0-beta.2-76086f3f09-78b00fb168.zip/node_modules/layui/",\
+          "packageDependencies": [\
+            ["layui", "npm:2.8.0-beta.2"]\
           ],\
           "linkType": "HARD"\
         }]\

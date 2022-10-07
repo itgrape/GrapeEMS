@@ -5,11 +5,36 @@
 
 
 <mapper namespace="com.pushihao.dao.UserDao">
+    <insert id="addNewUser">
+        INSERT INTO grapeems_user
+            (userName, userSex, userAge, userEmail, userPassword, userProvince, userCity, userCommunity, userInterTime, userState, userRole, deptId, roleId)
+        VALUES
+            (#{userName}, #{userSex}, #{userAge}, #{userEmail}, #{userPassword}, #{userProvince}, #{userCity}, #{userCommunity}, #{userInterTime}, #{userState}, #{userRole}, #{deptId}, #{roleId})
+    </insert>
+
+    <!--编辑一个员工(通过 userId 进行定位)-->
+    <update id="editOneUser">
+        update
+            grapeems_user
+        set
+            userName = #{userName}, userSex = #{userSex}, userAge = #{userAge}, userEmail = #{userEmail}, userProvince = #{userProvince}, userCity = #{userCity}, userCommunity = #{userCommunity}, userInterTime = #{userInterTime}, userState = #{userState}, userRole = #{userRole}, isDeleted = #{isDeleted}, deptId = #{deptId}, roleId = #{roleId}
+        where
+            userId = #{userId}
+    </update>
+
+    <delete id="deleteOneUserById">
+        update
+            grapeems_user
+        set
+            isDeleted = 0
+        where
+            userId = #{userId}
+    </delete>
 
     <!--返回“用户中心”页面所有用户信息-->
     <select id="getAllUserCenterUsers" resultType="com.pushihao.pojo.UserCenterUsers">
         select
-               u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
+               u.userId, u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
         from
              grapeems_user u, grapeems_dept d, grapeems_role r
         where
@@ -25,5 +50,55 @@
              grapeems_user
         where
               userEmail = #{userEmail} and isDeleted = 1
+    </select>
+
+
+    <!--查询满足条件的用户-->
+    <select id="queryUserCenterUsers" resultType="com.pushihao.pojo.UserCenterUsers">
+        select
+            u.userId, u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
+        from
+            grapeems_user u, grapeems_dept d, grapeems_role r
+        where
+            u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1
+            <if test="userName != null and userName != ''">
+                and u.userName like "%" #{userName} "%"
+            </if>
+            <if test="userSex != null and userSex != ''">
+                and u.userSex = #{userSex}
+            </if>
+            <if test="userAgeStart != null and userAgeStart != '' and userAgeEnd != null and userAgeEnd != ''">
+                and u.userAge between #{userAgeStart} and #{userAgeEnd}
+            </if>
+            <if test="deptName != null and deptName != ''">
+                and d.deptName = #{deptName}
+            </if>
+            <if test="roleName != null and roleName != ''">
+                and r.roleName = #{roleName}
+            </if>
+            <if test="userState != null and userState != ''">
+                and u.userState = #{userState}
+            </if>
+            <if test="userProvince != null and userProvince != ''">
+                and u.userProvince like "%" #{userProvince} "%"
+            </if>
+            <if test="userCity != null and userCity != ''">
+                and u.userCity like "%" #{userCity} "%"
+            </if>
+            <if test="userCommunity != null and userCommunity != ''">
+                and u.userCommunity like "%" #{userCommunity} "%"
+            </if>
+            <if test="userInterTimeStart != null and userInterTimeStart != '' and userInterTimeEnd != null and userInterTimeEnd != '' and userInterTimeEnd > userInterTimeStart">
+                and u.userInterTime between #{userInterTimeStart} and #{userInterTimeEnd}
+            </if>
+    </select>
+
+    <select id="getOneUserById" resultType="com.pushihao.pojo.UserCenterUsers">
+        select
+            u.userId, u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
+        from
+            grapeems_user u, grapeems_dept d, grapeems_role r
+        where
+            u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1 and u.userId = #{userId}
     </select>
 </mapper>

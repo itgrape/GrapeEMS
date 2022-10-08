@@ -102,11 +102,11 @@
                 </template>
             </el-dialog>
 
-            <el-button type="danger" style="margin-left: 12px;">删除选中员工</el-button>
+            <el-button type="danger" style="margin-left: 12px;" @click="deleteSelectUser()">删除选中员工</el-button>
         </el-form-item>
     </el-form>
 
-    <el-table :data="userinfo" border class="user-table">
+    <el-table :data="userinfo" border class="user-table" @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55"/>
 
         <el-table-column prop="userName" label="姓名"/>
@@ -410,6 +410,30 @@ function deleteUser(row) {
             message: '取消删除，真有你的',
         })
     })
+}
+
+let deleteUserIdList = ref([])
+const handleSelectChange = (users) => {
+    deleteUserIdList.value = []
+    for (let user of users) {
+        deleteUserIdList.value.push(user.userId)
+    }
+}
+function deleteSelectUser() {
+    for (let id of deleteUserIdList.value) {
+        instance.get("/userCenter/deleteOneUserById/" + id).then(
+            respone => {
+                ElMessage({
+                    type: 'success',
+                    message: '员工已删除',
+                })
+                userinfo.splice(0,userinfo.length)
+                getAllUserCenterUsers()
+            }, error => {
+                ElMessage.error("系统繁忙，请稍后再试")
+            }
+        )
+    }
 }
 </script>
 

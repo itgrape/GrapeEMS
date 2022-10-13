@@ -5,6 +5,30 @@
 
 
 <mapper namespace="com.pushihao.dao.DeptDao">
+    <insert id="addNewDept">
+        insert into
+            grapeems_dept(deptName, deptBuildTime, deptPersonNumber, isDeleted)
+        values
+            (#{deptName}, #{deptBuildTime}, #{deptPersonNumber}, 1)
+    </insert>
+
+    <update id="deleteOneDeptById">
+        update
+            grapeems_dept
+        set
+            isDeleted = 0
+        where
+            deptId = #{id}
+    </update>
+
+    <update id="editDept">
+        update
+            grapeems_dept
+        set
+            deptName = #{deptName}
+        where
+            deptId = #{deptId}
+    </update>
 
     <select id="getAllDeptName" resultType="java.lang.String">
         select deptName from grapeems_dept where isDeleted = 1
@@ -16,5 +40,9 @@
 
     <select id="getDeptIdByName" resultType="java.lang.Long">
         select deptId from grapeems_dept where isDeleted = 1 and deptName = #{deptName}
+    </select>
+
+    <select id="getAllDept" resultType="com.pushihao.bean.Dept">
+        select * from grapeems_dept where isDeleted = 1
     </select>
 </mapper>

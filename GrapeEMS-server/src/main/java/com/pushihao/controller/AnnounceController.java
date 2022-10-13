@@ -6,7 +6,6 @@ import com.pushihao.bean.Announce;
 import com.pushihao.pojo.AddAnnounce;
 import com.pushihao.pojo.EditAnnounce;
 import com.pushihao.pojo.QueryAnnounce;
-import com.pushihao.pojo.QueryUser;
 import com.pushihao.service.AnnounceService;
 import com.pushihao.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;

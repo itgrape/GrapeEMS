@@ -1,8 +1,10 @@
 package com.pushihao;
 
 import com.pushihao.bean.Announce;
+import com.pushihao.bean.Dept;
 import com.pushihao.bean.User;
 import com.pushihao.dao.AnnounceDao;
+import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class GrapeEmsApplicationTests {
@@ -19,6 +22,9 @@ class GrapeEmsApplicationTests {
 
     @Autowired
     private AnnounceDao announceDao;
+
+    @Autowired
+    private DeptDao deptDao;
 
     @Test
     void testUserMapper() {
@@ -54,6 +60,12 @@ class GrapeEmsApplicationTests {
         Integer result = announceDao.addOneAnnounce(announce);
         System.out.println("================================");
         System.out.println(result);
+    }
+
+    @Test
+    void testGetAllDept() {
+        List<Dept> deptList = deptDao.getAllDept();
+        System.out.println(deptList.toString());
     }
 
 }

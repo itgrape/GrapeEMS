@@ -16,4 +16,9 @@ public class DeptServiceImpl implements DeptService {
     public List<String> getAllDeptName() {
         return deptDao.getAllDeptName();
     }
+
+    @Override
+    public Long getDeptIdByName(String deptName) {
+        return deptDao.getDeptIdByName(deptName);
+    }
 }

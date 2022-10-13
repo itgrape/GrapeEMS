@@ -1,18 +1,24 @@
 package com.pushihao;
 
+import com.pushihao.bean.Announce;
 import com.pushihao.bean.User;
+import com.pushihao.dao.AnnounceDao;
 import com.pushihao.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @SpringBootTest
 class GrapeEmsApplicationTests {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private AnnounceDao announceDao;
 
     @Test
     void testUserMapper() {
@@ -35,4 +41,19 @@ class GrapeEmsApplicationTests {
     void testSelectOneUserById() {
         System.out.println(userDao.getOneUserById(1000L));
     }
+
+
+    @Test
+    void testInsertAnnounce() {
+        Announce announce = new Announce();
+        announce.setAnnounceCreateTime(new Timestamp(new Date().getTime()));
+        announce.setAnnounceTitle("测试");
+        announce.setAnnounceContent("测试公告内容");
+        announce.setIsDeleted(1);
+        announce.setDeptId(1000L);
+        Integer result = announceDao.addOneAnnounce(announce);
+        System.out.println("================================");
+        System.out.println(result);
+    }
+
 }

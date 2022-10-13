@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.AnnounceDao">
+    <sql id="announceKey">
+        announceCreateTime, announceTitle, announceContent, isDeleted, deptId
+    </sql>
+
+    <insert id="addOneAnnounce">
+        insert into
+            grapeems_announce(<include refid="announceKey" />)
+        values
+            (#{announceCreateTime}, #{announceTitle}, #{announceContent}, #{isDeleted}, #{deptId})
+    </insert>
+
+    <update id="editOneAnnounce">
+        update
+            grapeems_announce
+        set
+            announceTitle = #{announceTitle}, announceContent = #{announceContent}
+        where
+            announceId = #{announceId}
+    </update>
+
+    <update id="deleteOneAnnounce">
+        update
+            grapeems_announce
+        set
+            isDeleted = #{isDeleted}
+        where
+            announceId = #{announceId}
+    </update>
+
+    <select id="getAllAnnounce" resultType="com.pushihao.bean.Announce">
+        select
+            announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
+        from
+            grapeems_announce
+        where
+            isDeleted = 1
+    </select>
+
+    <select id="queryAnnounce" resultType="com.pushihao.bean.Announce">
+        select
+            announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
+        from
+            grapeems_announce
+        where
+            isDeleted = 1
+            <if test="deptId != null and deptId != ''">
+                and deptId = #{deptId}
+            </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and announceCreateTime between #{startTime} and #{endTime}
+            </if>
+    </select>
+
+
+</mapper>

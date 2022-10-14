@@ -106,6 +106,7 @@ function addDeptPost() {
     instance.get("/dept/addNewDept/" + addDeptForm.deptName).then(
         response => {
             ElMessage.success("添加成功")
+            addDeptForm.deptName = null
             refresh_dept_list()
         }, error => {
             ElMessage.error("系统繁忙，请稍后再试")

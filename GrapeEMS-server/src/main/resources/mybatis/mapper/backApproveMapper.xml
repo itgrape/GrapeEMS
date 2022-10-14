@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.BackApproveDao">
+    <select id="getAllBackApplication" resultType="com.pushihao.bean.BackApplication">
+        select * from grapeems_back_application where isDeleted = 1 and backApplicationIsApprove = 0
+    </select>
+
+    <select id="getBackApplicationById" resultType="com.pushihao.bean.BackApplication">
+        select * from grapeems_back_application where isDeleted = 1 and BackApplicationId = #{id}
+    </select>
+
+    <update id="updateBackApplication">
+        update
+            grapeems_back_application
+        set
+            backApplicationIsApprove = #{backApplicationIsApprove}, backApplicationApproveTime = #{backApplicationApproveTime}, backApplicationApproveResult = #{backApplicationApproveResult}
+        where
+            backApplicationId = #{backApplicationId}
+    </update>
+</mapper>

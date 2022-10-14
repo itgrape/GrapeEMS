@@ -78,6 +78,7 @@ const username = "admin"
 .username {
     font-size: 16px;
     color: #51a7ff;
+    cursor: pointer;
 }
 
 .el-icon--right {

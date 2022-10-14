@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.pushihao.dao.LeaveApproveDao">
+    <select id="getAllLeaveApplication" resultType="com.pushihao.bean.LeaveApplication">
+        select * from grapeems_leave_application where isDeleted = 1 and leaveApplicationIsApprove = 0
+    </select>
+
+    <select id="getLeaveApplicationById" resultType="com.pushihao.bean.LeaveApplication">
+        select * from grapeems_leave_application where isDeleted = 1 and LeaveApplicationId = #{id}
+    </select>
+
+    <update id="updateLeaveApplication">
+        update
+            grapeems_leave_application
+        set
+            leaveApplicationReason = #{leaveApplicationReason}, leaveApplicationDetail = #{leaveApplicationDetail}, leaveApplicationLeaveStartTime = #{leaveApplicationLeaveStartTime}, leaveApplicationLeaveEndTime = #{leaveApplicationLeaveEndTime}, leaveApplicationIsApprove = #{leaveApplicationIsApprove}, leaveApplicationApproveTime = #{leaveApplicationApproveTime}, leaveApplicationApproveResult = #{leaveApplicationApproveResult}
+        where
+            leaveApplicationId = #{leaveApplicationId}
+    </update>
+</mapper>

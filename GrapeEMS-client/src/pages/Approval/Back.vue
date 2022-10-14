@@ -11,7 +11,7 @@
                 <th class="leave-time">请假时间</th>
                 <th class="opt">操作</th>
             </tr>
-            <BackApplication v-for="(item, index) in leaveApplications" :key="item" :leaveInfo="item" />
+            <BackApplication v-for="(item, index) in backApplications" :key="item" :backInfo="item" />
             </tbody>
         </table>
     </div>
@@ -23,17 +23,42 @@
 
 <script setup>
 import BackApplication from '../../components/BackApplication.vue'
+import {onMounted, ref} from "vue";
+import instance from "../../api/DataAxios";
+import axios from 'axios'
+import {ElMessage} from "element-plus";
 
-let leaveApplications = [
-    {
-        createTime: "2022.09.15",
-        name: "张三",
-        dept: "开发部",
-        role: "总经理",
-        leaveTime: "2022.09.15-2022.10.30",
-        detail: "老子就是想请假，就问你批不批吧！"
-    }
-]
+let backApplications = ref([])
+
+onMounted(() => {
+    axios.all([getAllBackApplications()])
+})
+
+function getAllBackApplications() {
+    return instance.get("/approve/getAllBackApplication").then(
+        response => {
+            let data = response.data
+            console.log(data)
+            for (let a of data) {
+                let backInfo = {
+                    id: a.backApplicationId,
+                    createTime: new Date(a.backApplicationCreateTime).toLocaleString(),
+                    name: a.user.userName,
+                    dept: a.user.deptName,
+                    role: a.user.roleName,
+                    reason: a.leaveApplication.leaveApplicationReason,
+                    detail: a.leaveApplication.leaveApplicationDetail,
+                    email: a.user.userEmail,
+                    leaveStartTime: new Date(a.leaveApplication.leaveApplicationLeaveStartTime).toLocaleString(),
+                    leaveEndTime: new Date(a.leaveApplication.leaveApplicationLeaveEndTime).toLocaleString(),
+                }
+                backApplications.value.push(backInfo)
+            }
+        }, error => {
+            ElMessage.error("系统繁忙，请稍后再试")
+        }
+    )
+}
 </script>
 
 <style scoped>

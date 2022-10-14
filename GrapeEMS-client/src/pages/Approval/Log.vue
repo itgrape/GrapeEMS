@@ -48,6 +48,11 @@
 
 <script setup>
 import { Edit, Delete } from '@element-plus/icons-vue'
+import LeaveApplication from '../../components/LeaveApplication.vue'
+import {onMounted, ref} from "vue";
+import instance from "../../api/DataAxios";
+import axios from 'axios'
+import {ElMessage} from "element-plus";
 
 const userinfo = [
     {
@@ -64,6 +69,10 @@ const userinfo = [
         option: 'option',
     }
 ]
+
+onMounted(() => {
+    axios.all([])
+})
 
 </script>
 

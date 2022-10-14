@@ -24,17 +24,41 @@
 
 <script setup>
 import LeaveApplication from '../../components/LeaveApplication.vue'
+import {onMounted, ref} from "vue";
+import instance from "../../api/DataAxios";
+import axios from 'axios'
+import {ElMessage} from "element-plus";
 
-let leaveApplications = [
-    {
-        createTime: "2022.09.15",
-        name: "张三",
-        dept: "开发部",
-        role: "总经理",
-        leaveTime: "2022.09.15-2022.10.30",
-        detail: "老子就是想请假，就问你批不批吧！"
-    }
-]
+let leaveApplications = ref([])
+
+onMounted(() => {
+    axios.all([getAllLeaveApplications()])
+})
+
+function getAllLeaveApplications() {
+    return instance.get("/approve/getAllLeaveApplication").then(
+        response => {
+            let data = response.data
+            for (let a of data) {
+                let leaveInfo = {
+                    id: a.leaveApplicationId,
+                    createTime: new Date(a.leaveApplicationCreateTime).toLocaleString(),
+                    name: a.user.userName,
+                    dept: a.user.deptName,
+                    role: a.user.roleName,
+                    reason: a.leaveApplicationReason,
+                    detail: a.leaveApplicationDetail,
+                    email: a.user.userEmail,
+                    leaveStartTime: new Date(a.leaveApplicationLeaveStartTime).toLocaleString(),
+                    leaveEndTime: new Date(a.leaveApplicationLeaveEndTime).toLocaleString(),
+                }
+                leaveApplications.value.push(leaveInfo)
+            }
+        }, error => {
+            ElMessage.error("系统繁忙，请稍后再试")
+        }
+    )
+}
 </script>
 
 <style scoped>

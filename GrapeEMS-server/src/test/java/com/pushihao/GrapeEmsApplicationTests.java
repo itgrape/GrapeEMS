@@ -5,6 +5,7 @@ import com.pushihao.bean.Dept;
 import com.pushihao.bean.User;
 import com.pushihao.dao.AnnounceDao;
 import com.pushihao.dao.DeptDao;
+import com.pushihao.dao.LeaveApproveDao;
 import com.pushihao.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ class GrapeEmsApplicationTests {
 
     @Autowired
     private DeptDao deptDao;
+
+    @Autowired
+    private LeaveApproveDao leaveApproveDao;
 
     @Test
     void testUserMapper() {
@@ -66,6 +70,12 @@ class GrapeEmsApplicationTests {
     void testGetAllDept() {
         List<Dept> deptList = deptDao.getAllDept();
         System.out.println(deptList.toString());
+    }
+
+    @Test
+    void testGetAllLeaveApplication() {
+        System.out.println("========================");
+        System.out.println(leaveApproveDao.getAllLeaveApplication());
     }
 
 }

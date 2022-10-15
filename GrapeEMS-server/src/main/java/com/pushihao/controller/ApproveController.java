@@ -46,4 +46,9 @@ public class ApproveController {
     public String queryApproveLog(@RequestBody QueryApproveLog queryApproveLog) {
         return JSON.toJSONString(approveService.queryApproveLog(queryApproveLog));
     }
+
+    @GetMapping("/deleteOneApproveLog/{id}")
+    public String deleteOneApproveLog(@PathVariable("id") Long id) {
+        return JSON.toJSONString(approveService.deleteOneApproveLog(id));
+    }
 }

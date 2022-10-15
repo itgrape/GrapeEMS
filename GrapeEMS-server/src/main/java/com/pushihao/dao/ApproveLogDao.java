@@ -13,4 +13,6 @@ public interface ApproveLogDao {
     public List<ApproveLog<?>> getAllApproveLog();
 
     public List<ApproveLog<?>> queryApproveLog(QueryApproveLog queryApproveLog);
+
+    public Integer deleteOneApproveLog(ApproveLog<?> approveLog);
 }

@@ -28,12 +28,12 @@
 
         <el-form-item>
             <el-button type="primary" @click="doQuery()">查询</el-button>
-            <el-button type="danger">重置</el-button>
-            <el-button type="danger">删除选中</el-button>
+            <el-button type="danger" @click="resetForm">重置</el-button>
+            <el-button type="danger" @click="deleteSelectLogs">删除选中</el-button>
         </el-form-item>
     </el-form>
 
-    <el-table :data="logInfo" class="user-table" stripe>
+    <el-table :data="logInfo" class="user-table" stripe @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55" />
 
         <el-table-column prop="approvalTime" label="审批时间" width="200"/>
@@ -47,7 +47,7 @@
 
         <el-table-column label="操作" width="120" fixed="right">
             <template #default="scope">
-                <el-button type="danger" :icon="Delete" circle />
+                <el-button type="danger" @click="deleteOneLog(scope.row)" :icon="Delete" circle />
             </template>
         </el-table-column>
     </el-table>
@@ -77,6 +77,7 @@ function fillData(data) {
     for (let a of data) {
         if (a.approveLogKind === 1) {
             const approval = {
+                id: a.approveLogId,
                 approvalTime: new Date(a.content.leaveApplicationApproveTime).toLocaleString(),
                 approvalContent: '请假审批',
                 approvalResult: a.content.leaveApplicationApproveResult,
@@ -88,6 +89,7 @@ function fillData(data) {
             logInfo.value.push(approval)
         } else if (a.approveLogKind === 2) {
             const approval = {
+                id: a.approveLogId,
                 approvalTime: new Date(a.content.backApplicationApproveTime).toLocaleString(),
                 approvalContent: '销假审批',
                 approvalResult: a.content.backApplicationApproveResult,
@@ -140,6 +142,39 @@ function doQuery() {
     )
 }
 
+const resetForm = () => {
+    approveTime.value = null
+    queryForm.name = null;
+    queryForm.dept = null;
+    queryForm.kind = null;
+    queryForm.approveStartTime = null;
+    queryForm.approveEndTime = null;
+}
+
+const deleteOneLog = (row) => {
+    instance.get("/approve/deleteOneApproveLog/" + row.id).then(
+        response => {
+            refresh_data()
+            getAllApproveLogs()
+            ElMessage.success("删除成功")
+        }
+    )
+}
+let deleteLogList = ref([])
+const handleSelectChange = (logs) => {
+    deleteLogList.value = []
+    for (let log of logs) {
+        deleteLogList.value.push(log.id)
+    }
+}
+const deleteSelectLogs = () => {
+    for (let id of deleteLogList.value) {
+        instance.get("/approve/deleteOneApproveLog/" + id)
+    }
+    refresh_data()
+    getAllApproveLogs()
+    ElMessage.success("已全部删除")
+}
 </script>
 
 <style scoped>

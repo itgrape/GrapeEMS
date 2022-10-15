@@ -51,9 +51,18 @@
         </if>
     </select>
 
+    <update id="deleteOneApproveLog">
+        update
+            grapeems_approve_log
+        set
+            isDeleted = 0
+        where
+            approveLogId = #{approveLogId}
+    </update>
+
     <sql id="userAndDeptAndTime">
         <if test="name != null and name != ''">
-            and u.userName = #{name}
+            and u.userName like "%" #{name} "%"
         </if>
         <if test="dept != null and dept != ''">
             and d.deptName = #{dept}

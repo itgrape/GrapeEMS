@@ -22,4 +22,6 @@ public interface ApproveService {
     public List<ApproveLog<?>> getAllApproveLog();
 
     public List<ApproveLog<?>> queryApproveLog(QueryApproveLog queryApproveLog);
+
+    public Boolean deleteOneApproveLog(Long id);
 }

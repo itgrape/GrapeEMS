@@ -126,4 +126,12 @@ public class ApproveServiceImpl implements ApproveService {
         }
         return approveLogs;
     }
+
+    @Override
+    public Boolean deleteOneApproveLog(Long id) {
+        ApproveLog<?> approveLog = new ApproveLog<>();
+        approveLog.setApproveLogId(id);
+        int result = approveLogDao.deleteOneApproveLog(approveLog);
+        return result == 1;
+    }
 }

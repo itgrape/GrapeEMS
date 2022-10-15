@@ -11,7 +11,7 @@
         </div>
 
         <div class="user">
-            <el-dropdown @command="commandAction">
+            <el-dropdown><!--@command="commandAction"-->
             <span class="el-dropdown-link">
                 <el-avatar :icon="UserFilled" :size="30" style="margin-right: 6px; vertical-align: middle;"/>
                 <span class="username">{{ username }}<el-icon class="el-icon--right"><arrow-down/></el-icon></span>

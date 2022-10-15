@@ -1,6 +1,7 @@
 <template>
-    <div id="my_scrollbar" style="background-color: #304156;">
-        <el-scrollbar>
+    <div>
+        <div id="fill-color"></div>
+        <el-scrollbar height="calc(100vh - 80px)">
             <el-menu
                 :default-active="menuActive"
                 active-text-color="#ffd04b"
@@ -9,7 +10,6 @@
                 :unique-opened="true"
                 class="el-menu-vertical-demo"
                 :router="true"
-                @select="menuSelect"
             >
                 <el-menu-item index="/admin/index">
                     <template #title>
@@ -75,8 +75,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#my_scrollbar {
+#fill-color {
+    position: absolute;
     height: calc(100vh - 80px);
+    width: 209px;
+    background-color: #304156;
 }
 
 </style>

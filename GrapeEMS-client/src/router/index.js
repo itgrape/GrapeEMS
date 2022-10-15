@@ -17,6 +17,7 @@ import UserCenter from '../pages/User/UserCenter.vue'
 import DeptCenter from '../pages/Department/DeptCenter.vue'
 import Publish from '../pages/Announcement/Publish.vue'
 import Check from '../pages/Announcement/Check.vue'
+import NotFound from '../pages/404.vue'
 
 
 //定义一些路由
@@ -34,6 +35,16 @@ const routes = [
         path: '/error',
         name: 'error',
         component: Error,
+    },
+    {
+        path: '/404',
+        name: 'notFound',
+        component: NotFound,
+        hidden: true
+    },
+    {
+        path: '/:pathMath(.*)',
+        redirect: '/404'
     },
     {
         path: '/plainUser',
@@ -131,9 +142,11 @@ router.onError = function () {
 
 //导航守卫(全局前置守卫) -> 登录验证
 router.beforeEach(async (to, from) => {
+    //进入管理后台页面的判断
     if (!sessionStorage.getItem("isAdmin") && to.name !== 'login' && (to.fullPath.split('/')[1] === 'admin')) {
         return {name: 'login'}
     }
+    //进入页面用户的判断
     if (!sessionStorage.getItem("isPlainUser") && to.name !== 'login' && (to.fullPath.split('/')[1] === 'plainUser')) {
         return {name: 'login'}
     }

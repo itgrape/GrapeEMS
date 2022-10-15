@@ -7,6 +7,7 @@ import com.pushihao.dao.ApproveLogDao;
 import com.pushihao.dao.BackApproveDao;
 import com.pushihao.dao.LeaveApproveDao;
 import com.pushihao.dao.UserDao;
+import com.pushihao.pojo.QueryApproveLog;
 import com.pushihao.service.ApproveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@SuppressWarnings({"all"})
 public class ApproveServiceImpl implements ApproveService {
     @Autowired
     private LeaveApproveDao leaveApproveDao;
@@ -89,5 +91,39 @@ public class ApproveServiceImpl implements ApproveService {
         approveLog.setApproveLogContentId(id);
         int result2 = approveLogDao.addOneApproveLog(approveLog);
         return (result1 == 1 && result2 == 1);
+    }
+
+    @Override
+    public List<ApproveLog<?>> getAllApproveLog() {
+        List<ApproveLog<?>> approveLogs = approveLogDao.getAllApproveLog();
+        for (ApproveLog approveLog : approveLogs) {
+            if (approveLog.getApproveLogKind() == 1) {
+                LeaveApplication leaveApplication = leaveApproveDao.getLeaveApplicationById(approveLog.getApproveLogContentId());
+                leaveApplication.setUser(userDao.getOneUserById(leaveApplication.getUserId()));
+                approveLog.setContent(leaveApplication);
+            } else if (approveLog.getApproveLogKind() == 2) {
+                BackApplication backApplication = backApproveDao.getBackApplicationById(approveLog.getApproveLogContentId());
+                backApplication.setUser(userDao.getOneUserById(backApplication.getUserId()));
+                approveLog.setContent(backApplication);
+            }
+        }
+        return approveLogs;
+    }
+
+    @Override
+    public List<ApproveLog<?>> queryApproveLog(QueryApproveLog queryApproveLog) {
+        List<ApproveLog<?>> approveLogs = approveLogDao.queryApproveLog(queryApproveLog);
+        for (ApproveLog approveLog : approveLogs) {
+            if (approveLog.getApproveLogKind() == 1) {
+                LeaveApplication leaveApplication = leaveApproveDao.getLeaveApplicationById(approveLog.getApproveLogContentId());
+                leaveApplication.setUser(userDao.getOneUserById(leaveApplication.getUserId()));
+                approveLog.setContent(leaveApplication);
+            } else if (approveLog.getApproveLogKind() == 2) {
+                BackApplication backApplication = backApproveDao.getBackApplicationById(approveLog.getApproveLogContentId());
+                backApplication.setUser(userDao.getOneUserById(backApplication.getUserId()));
+                approveLog.setContent(backApplication);
+            }
+        }
+        return approveLogs;
     }
 }

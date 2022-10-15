@@ -9,4 +9,57 @@
         insert into grapeems_approve_log(approveLogKind, approveLogContentId)
         values (#{approveLogKind}, #{approveLogContentId})
     </insert>
+
+    <select id="getAllApproveLog" resultType="com.pushihao.bean.ApproveLog">
+        select
+            *
+        from
+            grapeems_approve_log
+        where isDeleted = 1
+    </select>
+
+    <select id="queryApproveLog" resultType="com.pushihao.bean.ApproveLog">
+        select
+            l.*
+        from
+            grapeems_approve_log l, grapeems_user u, grapeems_dept d, grapeems_leave_application la, grapeems_back_application ba
+        where
+            l.isDeleted = 1
+        <if test="kind != null and kind != ''">
+            <if test="kind == 1">
+                and l.approveLogContentId = la.leaveApplicationId
+                and la.userId = u.userId
+                and u.deptId = d.deptId
+                and l.approveLogKind = 1
+                <include refid="userAndDeptAndTime"/>
+            </if>
+            <if test="kind == 2">
+                and l.approveLogContentId = ba.backApplicationId
+                and ba.userId = u.userId
+                and u.deptId = d.deptId
+                and l.approveLogKind = 2
+                and ba.leaveApplicationId = la.leaveApplicationId
+                <include refid="userAndDeptAndTime"/>
+            </if>
+        </if>
+        <if test="kind == null or kind == ''">
+            and l.approveLogContentId = la.leaveApplicationId
+            and l.approveLogContentId = ba.backApplicationId
+            and la.userId = u.userId
+            and u.deptId = d.deptId
+            <include refid="userAndDeptAndTime"/>
+        </if>
+    </select>
+
+    <sql id="userAndDeptAndTime">
+        <if test="name != null and name != ''">
+            and u.userName = #{name}
+        </if>
+        <if test="dept != null and dept != ''">
+            and d.deptName = #{dept}
+        </if>
+        <if test="approveStartTime != null and approveStartTime != '' and approveEndTime != null and approveEndTime != ''">
+            and la.leaveApplicationApproveTime between #{approveStartTime} and #{approveEndTime}
+        </if>
+    </sql>
 </mapper>

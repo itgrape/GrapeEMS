@@ -1,12 +1,10 @@
 package com.pushihao.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.pushihao.pojo.QueryApproveLog;
 import com.pushihao.service.ApproveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/approve")
@@ -37,5 +35,15 @@ public class ApproveController {
     @GetMapping("/acceptBack/{id}")
     public String acceptBack(@PathVariable("id") Long id) {
         return JSON.toJSONString(approveService.acceptBack(id));
+    }
+
+    @GetMapping("/getAllApproveLogs")
+    public String getAllApproveLogs() {
+        return JSON.toJSONString(approveService.getAllApproveLog());
+    }
+
+    @PostMapping("/queryApproveLog")
+    public String queryApproveLog(@RequestBody QueryApproveLog queryApproveLog) {
+        return JSON.toJSONString(approveService.queryApproveLog(queryApproveLog));
     }
 }

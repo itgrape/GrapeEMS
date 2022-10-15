@@ -20,14 +20,12 @@
 
 </template>
 
-
-
 <script setup>
 import LeaveApplication from '../../components/LeaveApplication.vue'
-import {onMounted, ref} from "vue";
-import instance from "../../api/DataAxios";
+import {onMounted, ref} from "vue"
+import instance from "../../api/DataAxios"
 import axios from 'axios'
-import {ElMessage} from "element-plus";
+import {ElMessage} from "element-plus"
 
 let leaveApplications = ref([])
 
@@ -54,8 +52,6 @@ function getAllLeaveApplications() {
                 }
                 leaveApplications.value.push(leaveInfo)
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }

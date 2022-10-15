@@ -64,27 +64,21 @@
 
 <script setup>
 import { Edit, Delete } from '@element-plus/icons-vue'
-import instance from "../../api/DataAxios";
-import {ElMessage, ElMessageBox} from "element-plus";
+import instance from "../../api/DataAxios"
+import {ElMessage, ElMessageBox} from "element-plus"
 import axios from 'axios'
-import {ref, onMounted, reactive} from "vue";
+import {ref, onMounted, reactive} from "vue"
+import {useAdminStore} from "../../store/adminStore";
+
+const adminStore = useAdminStore()
 
 let announceList = ref([])
 let depts = ref([])
 
 onMounted(() => {
-    axios.all([getAllDeptName(), getAllAnnounce()])
+    axios.all([getAllAnnounce()])
+    depts.value = adminStore.depts
 })
-
-function getAllDeptName() {
-    return instance.get("/userCenter/getAllDeptName").then(
-        response => {
-            for (let dept of response.data) {
-                depts.value.push(dept)
-            }
-        }
-    )
-}
 
 function getAllAnnounce() {
     return instance.get("/announce/getAllAnnounce").then(

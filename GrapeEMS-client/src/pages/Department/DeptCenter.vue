@@ -60,11 +60,13 @@
 </template>
 
 <script setup>
-import { Edit, Delete } from '@element-plus/icons-vue'
 import {ref, onMounted, reactive} from "vue";
 import instance from "../../api/DataAxios";
 import axios from "axios";
 import {ElMessageBox, ElMessage} from "element-plus";
+import {useAdminStore} from "../../store/adminStore";
+
+const adminStore = useAdminStore()
 
 let deptList = ref([])
 
@@ -75,6 +77,7 @@ onMounted(() => {
 function getAllDept() {
     return instance.get("/dept/getAllDept").then(
         response => {
+            adminStore.depts = []
             for (let r of response.data) {
                 let dept = {
                     id: r.deptId,
@@ -82,6 +85,7 @@ function getAllDept() {
                     deptPersonNumber: r.deptPersonNumber,
                     deptCreateTime: new Date(r.deptBuildTime).toLocaleDateString()
                 }
+                adminStore.depts.push(dept.deptName)
                 deptList.value.push(dept)
             }
         }

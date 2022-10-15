@@ -191,6 +191,9 @@ import {ElMessage, ElDrawer, ElMessageBox} from 'element-plus'
 import axios from 'axios'
 import instance from '../../api/DataAxios'
 import {onMounted, reactive, ref} from "vue"
+import {useAdminStore} from "../../store/adminStore";
+
+const adminStore = useAdminStore()
 
 let userinfo = reactive([])
 let userInter = ref([])
@@ -214,7 +217,8 @@ let roles = ref([])
 let states = ref(["正常", "请假中"])
 
 onMounted(() => {
-    axios.all([getAllUserCenterUsers(), getAllDeptName(), getAllRoleName()])
+    axios.all([getAllUserCenterUsers(), getAllRoleName()])
+    depts.value = adminStore.depts
 })
 
 function query() {
@@ -277,16 +281,6 @@ function getAllUserCenterUsers() {
                     userState: user.userState
                 }
                 userinfo.push(singleUser)
-            }
-        }
-    )
-}
-
-function getAllDeptName() {
-    return instance.get("/userCenter/getAllDeptName").then(
-        response => {
-            for (let dept of response.data) {
-                depts.value.push(dept)
             }
         }
     )

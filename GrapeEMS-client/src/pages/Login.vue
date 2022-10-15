@@ -33,13 +33,11 @@
 import '../api/md5'
 import {onMounted, reactive, ref} from 'vue'
 import instance from "../api/LoginAxios";
-import {useUserStore} from "../store/userStore"
 import {useRouter} from "vue-router";
 import {HelpFilled, Coin, Avatar} from '@element-plus/icons-vue'
 import {ElMessage} from "element-plus";
 
 const router = useRouter()
-const userStore = useUserStore()
 let activeCodeText = ref()
 const userinfo = reactive({
     userEmail: '',
@@ -65,11 +63,9 @@ function login() {
                     sessionStorage.clear()
                     sessionStorage.setItem("token", response.data.data.token)
                     if (response.data.data.role === '1') {
-                        userStore.isPlainUser = true
                         sessionStorage.setItem("isPlainUser", true)
                         router.push("/plainUser/")
                     } else if (response.data.data.role === '0') {
-                        userStore.isAdmin = true
                         sessionStorage.setItem("isAdmin", true)
                         router.push("/admin/")
                     }

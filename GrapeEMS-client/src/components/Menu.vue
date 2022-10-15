@@ -24,7 +24,6 @@
 <!--                </el-sub-menu>-->
                 <el-sub-menu index="3">
                     <template #title>
-                        <!--<el-icon><location /></el-icon>-->
                         <span><el-icon><Coordinate /></el-icon>审批管理</span>
                     </template>
                     <el-menu-item index="/admin/approve/leave"><el-icon><Smoking /></el-icon>请假申请</el-menu-item>
@@ -34,21 +33,18 @@
                 </el-sub-menu>
                 <el-sub-menu index="4">
                     <template #title>
-                        <!--<el-icon><location /></el-icon>-->
                         <span><el-icon><Menu /></el-icon>用户管理</span>
                     </template>
                     <el-menu-item index="/admin/user/userCenter"><el-icon><Avatar /></el-icon>用户中心</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="5">
                     <template #title>
-                        <!--<el-icon><location /></el-icon>-->
                         <span><el-icon><Histogram /></el-icon>部门管理</span>
                     </template>
                     <el-menu-item index="/admin/dept/deptCenter"><el-icon><OfficeBuilding /></el-icon>部门中心</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="6">
                     <template #title>
-                        <!--<el-icon><location /></el-icon>-->
                         <span><el-icon><BellFilled /></el-icon>公告管理</span>
                     </template>
                     <el-menu-item index="/admin/announce/publish"><el-icon><Promotion /></el-icon>发布公告</el-menu-item>

@@ -278,8 +278,6 @@ function getAllUserCenterUsers() {
                 }
                 userinfo.push(singleUser)
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -327,8 +325,6 @@ function addUserPost() {
             ElMessage.success("添加成功")
             userinfo.splice(0,userinfo.length)
             getAllUserCenterUsers()
-        }, error => {
-            ElMessage.error('系统繁忙，请稍后再试')
         }
     )
 }
@@ -366,8 +362,6 @@ function editUser(row) {
                 userInterTime: new Date(data.userInterTime),
                 userState: data.userState
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -377,8 +371,6 @@ function editUserPost() {
             ElMessage.success("修改成功")
             userinfo.splice(0,userinfo.length)
             getAllUserCenterUsers()
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -400,8 +392,6 @@ function deleteUser(row) {
                 })
                 userinfo.splice(0,userinfo.length)
                 getAllUserCenterUsers()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }).catch(() => {
@@ -429,8 +419,6 @@ function deleteSelectUser() {
                 })
                 userinfo.splice(0,userinfo.length)
                 getAllUserCenterUsers()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }

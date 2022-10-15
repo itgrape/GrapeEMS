@@ -53,8 +53,6 @@ function getAllBackApplications() {
                 }
                 backApplications.value.push(backInfo)
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }

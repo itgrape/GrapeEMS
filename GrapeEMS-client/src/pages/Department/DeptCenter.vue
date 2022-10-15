@@ -107,8 +107,6 @@ function addDeptPost() {
             ElMessage.success("添加成功")
             addDeptForm.deptName = null
             refresh_dept_list()
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -133,8 +131,6 @@ function editDeptPost() {
         response => {
             ElMessage.success("修改成功")
             refresh_dept_list()
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -155,8 +151,6 @@ function deleteDept(row) {
                     message: '部门已删除',
                 })
                 refresh_dept_list()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }).catch(() => {
@@ -183,8 +177,6 @@ function deleteSelectDept() {
                     message: '部门已删除',
                 })
                 refresh_dept_list()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }

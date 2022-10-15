@@ -99,8 +99,6 @@ function getAllAnnounce() {
                 }
                 announceList.value.push(announce)
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -134,8 +132,6 @@ function queryAnnounce() {
                 }
                 announceList.value.push(announce)
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -167,8 +163,6 @@ function editAnnouncePost() {
         response => {
             ElMessage.success("修改成功")
             refreshAnnounceList()
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
         }
     )
 }
@@ -189,8 +183,6 @@ function deleteOneAnnounce(row) {
                     message: '公告已删除',
                 })
                 refreshAnnounceList()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }).catch(() => {
@@ -217,8 +209,6 @@ function deleteSelectAnnounce() {
                     message: '公告已删除',
                 })
                 refreshAnnounceList()
-            }, error => {
-                ElMessage.error("系统繁忙，请稍后再试")
             }
         )
     }

@@ -18,7 +18,7 @@
             </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :command="1">退出登录</el-dropdown-item>
+                        <el-dropdown-item :command="1" @click="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -28,8 +28,21 @@
 
 <script setup>
 import {UserFilled, ArrowDown} from "@element-plus/icons-vue"
+import router from '../router'
+import instance from "../api/DataAxios";
+import {ElMessage} from "element-plus";
 
 const username = "admin"
+
+const logout = () => {
+    instance.post("/user/logout").then(
+        response => {
+            ElMessage.success("退出登录成功")
+            sessionStorage.clear()
+            router.push("/login")
+        }
+    )
+}
 </script>
 
 <style scoped>

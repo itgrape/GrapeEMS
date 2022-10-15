@@ -38,7 +38,6 @@ function getAllBackApplications() {
     return instance.get("/approve/getAllBackApplication").then(
         response => {
             let data = response.data
-            console.log(data)
             for (let a of data) {
                 let backInfo = {
                     id: a.backApplicationId,

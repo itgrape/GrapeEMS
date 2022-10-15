@@ -75,7 +75,6 @@ onMounted(() => {
 function getAllDept() {
     return instance.get("/dept/getAllDept").then(
         response => {
-            console.log(response.data)
             for (let r of response.data) {
                 let dept = {
                     id: r.deptId,

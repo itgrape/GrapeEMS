@@ -1,25 +1,25 @@
 <template>
 
- 
+
     <el-form :model="userinfo">
         <div class="login-div">
             <div class="login-text">Grape 员工管理系统</div>
-            <el-input v-model="userinfo.userEmail" placeholder="请输入邮箱" class="username">
+            <el-input @keydown.enter="pressEmailInput" v-model="userinfo.userEmail" placeholder="请输入邮箱" class="username">
                 <template #prepend>
                     <el-icon><Avatar /></el-icon>
                 </template>
             </el-input>
-            <el-input v-model="userinfo.userPassword" placeholder="请输入密码" class="password" type="password">
+            <el-input @keydown.enter="pressPasswordInput" id="password-input" v-model="userinfo.userPassword" placeholder="请输入密码" class="password" type="password">
                 <template #prepend>
                     <el-icon><Coin /></el-icon>
                 </template>
             </el-input>
-            <el-input v-model="userinfo.activeCode" placeholder="请输入图片验证码" class="activeCode">
+            <el-input @keydown.enter="login" id="active-code-input" v-model="userinfo.activeCode" placeholder="点击图片可以刷新验证码" class="activeCode">
                 <template #prepend>
                     <el-icon><HelpFilled /></el-icon>
                 </template>
                 <template #append>
-                    <img id="kaptcha" alt="activeCode" @click="flushActiveCode" />
+                    <img src="" id="kaptcha" alt="activeCode" @click="flushActiveCode" />
                 </template>
             </el-input>
             <el-button type="primary" class="login-button" @click="login">登录</el-button>
@@ -32,9 +32,11 @@
 <script setup>
 import '../api/md5'
 import {onMounted, reactive, ref} from 'vue'
-import axios from 'axios'
+import instance from "../api/LoginAxios";
 import {useUserStore} from "../store/userStore"
 import {useRouter} from "vue-router";
+import {HelpFilled, Coin, Avatar} from '@element-plus/icons-vue'
+import {ElMessage} from "element-plus";
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -57,34 +59,36 @@ function login() {
             userEmail: userinfo.userEmail,
             userPassword: userinfo.userPassword
         }
-        axios.post("http://localhost:8088/user/login", data).then(
+        instance.post("/user/login", data).then(
             response => {
                 if (response.data.code === 200) {
-                    //登录成功
-                    localStorage.setItem("token", response.data.data.token)
+                    sessionStorage.clear()
+                    sessionStorage.setItem("token", response.data.data.token)
                     if (response.data.data.role === '1') {
                         userStore.isPlainUser = true
-                        localStorage.setItem("isPlainUser", true)
+                        sessionStorage.setItem("isPlainUser", true)
+                        router.push("/plainUser/")
                     } else if (response.data.data.role === '0') {
                         userStore.isAdmin = true
-                        localStorage.setItem("isAdmin", true)
-                        router.push("/")
+                        sessionStorage.setItem("isAdmin", true)
+                        router.push("/admin/")
                     }
+                    ElMessage.success("登录成功")
                 } else {
-                    alert("登录失败，请检查用户名密码是否正确")
+                    ElMessage.error("登录失败，请检查用户名密码是否正确")
                 }
-            }, error => {
-                alert("系统繁忙，请稍后再试")
             }
         )
     } else {
-        alert("验证码有误，请重新输入")
+        ElMessage.error("验证码有误，请重新输入")
+        document.getElementById("active-code-input").focus()
+        userinfo.activeCode = ""
         flushActiveCode()
     }
 }
 
 function flushActiveCode() {
-    axios.get("http://localhost:8088/img/getActiveCode").then(
+    instance.get("/img/getActiveCode").then(
         response => {
             let imgByte = response.data.data.imgByte
             activeCodeText.value = response.data.data.imgText
@@ -94,6 +98,14 @@ function flushActiveCode() {
             console.log("验证码请求错误")
         }
     )
+}
+
+const pressEmailInput = () => {
+    document.getElementById('password-input').focus()
+}
+
+const pressPasswordInput = () => {
+    document.getElementById('active-code-input').focus()
 }
 
 </script>

@@ -19,7 +19,7 @@
                     <el-icon><HelpFilled /></el-icon>
                 </template>
                 <template #append>
-                    <img src="" id="kaptcha" alt="activeCode" @click="flushActiveCode" />
+                    <img src="../assets/kaptcha.png" id="kaptcha" alt="activeCode" @click="flushActiveCode" />
                 </template>
             </el-input>
             <el-button type="primary" class="login-button" @click="login">登录</el-button>
@@ -63,6 +63,7 @@ function login() {
                     sessionStorage.clear()
                     sessionStorage.setItem("token", response.data.data.token)
                     if (response.data.data.role === '1') {
+                        sessionStorage.setItem("userId", response.data.data.id)
                         sessionStorage.setItem("isPlainUser", true)
                         router.push("/plainUser/")
                     } else if (response.data.data.role === '0') {

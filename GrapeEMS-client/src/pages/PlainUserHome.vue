@@ -1,9 +1,5 @@
 <template>
-<h1>普通用户</h1>
+
+    <router-view/>
+
 </template>
-
-<script setup>
-
-</script>
-
-<style scoped></style>

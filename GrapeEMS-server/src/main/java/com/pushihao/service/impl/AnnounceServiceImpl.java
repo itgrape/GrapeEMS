@@ -3,8 +3,10 @@ package com.pushihao.service.impl;
 import com.pushihao.bean.Announce;
 import com.pushihao.dao.AnnounceDao;
 import com.pushihao.dao.DeptDao;
+import com.pushihao.dao.UserDao;
 import com.pushihao.pojo.AddAnnounce;
 import com.pushihao.pojo.QueryAnnounce;
+import com.pushihao.pojo.UserCenterUsers;
 import com.pushihao.service.AnnounceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Service
 public class AnnounceServiceImpl implements AnnounceService {
+    @Autowired
+    private UserDao userDao;
+
     @Autowired
     private AnnounceDao announceDao;
 
@@ -39,6 +44,11 @@ public class AnnounceServiceImpl implements AnnounceService {
     }
 
     @Override
+    public Announce getAnnounceById(Long id) {
+        return announceDao.getAnnounceById(id);
+    }
+
+    @Override
     public Boolean editOneAnnounce(Announce announce) {
         Integer result = announceDao.editOneAnnounce(announce);
         return result == 1;
@@ -56,5 +66,12 @@ public class AnnounceServiceImpl implements AnnounceService {
     @Override
     public List<Announce> queryAnnounce(QueryAnnounce queryAnnounce) {
         return announceDao.queryAnnounce(queryAnnounce);
+    }
+
+    @Override
+    public List<Announce> getAllAnnounceByUserId(Long id) {
+        UserCenterUsers user = userDao.getOneUserById(id);
+        Long deptId = deptDao.getDeptIdByName(user.getDeptName());
+        return announceDao.getAnnounceByDeptId(deptId);
     }
 }

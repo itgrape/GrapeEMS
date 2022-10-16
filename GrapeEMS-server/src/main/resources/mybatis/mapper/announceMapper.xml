@@ -58,5 +58,23 @@
             </if>
     </select>
 
+    <select id="getAnnounceByDeptId" resultType="com.pushihao.bean.Announce">
+        select
+            announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
+        from
+            grapeems_announce
+        where
+            isDeleted = 1 and deptId = #{deptId}
+    </select>
+
+    <select id="getAnnounceById" resultType="com.pushihao.bean.Announce">
+        select
+            announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
+        from
+            grapeems_announce
+        where
+            isDeleted = 1 and announceId = #{id}
+    </select>
+
 
 </mapper>

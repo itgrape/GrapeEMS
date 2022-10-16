@@ -12,9 +12,13 @@ public interface AnnounceService {
 
     public List<Announce> getAllAnnounce();
 
+    public Announce getAnnounceById(Long id);
+
     public Boolean editOneAnnounce(Announce announce);
 
     public Boolean deleteOneAnnounce(Long announceId);
 
     public List<Announce> queryAnnounce(QueryAnnounce queryAnnounce);
+
+    public List<Announce> getAllAnnounceByUserId(Long id);
 }

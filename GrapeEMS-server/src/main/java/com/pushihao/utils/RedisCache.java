@@ -61,7 +61,7 @@ public class RedisCache
      * @param unit 时间单位
      * @return true=设置成功；false=设置失败
      */
-    public boolean expire(final String key, final long timeout, final TimeUnit unit)
+    public Boolean expire(final String key, final long timeout, final TimeUnit unit)
     {
         return redisTemplate.expire(key, timeout, unit);
     }
@@ -83,7 +83,7 @@ public class RedisCache
      *
      * @param key
      */
-    public boolean deleteObject(final String key)
+    public Boolean deleteObject(final String key)
     {
         return redisTemplate.delete(key);
     }

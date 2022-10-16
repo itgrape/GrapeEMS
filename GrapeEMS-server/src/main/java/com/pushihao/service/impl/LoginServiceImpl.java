@@ -46,6 +46,7 @@ public class LoginServiceImpl implements LoginService {
         String jwt = JwtUtil.createJWT(uid.toString());
 
         Map<String, String> result = new HashMap<>();
+        result.put("id", uid.toString());
         result.put("token", jwt);
         result.put("role", loginUser.getUser().getUserRole().toString());
 

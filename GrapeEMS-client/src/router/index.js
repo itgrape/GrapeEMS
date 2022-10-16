@@ -6,6 +6,7 @@ import PlainUserHome from '../pages/PlainUserHome.vue'
 import AdminHome from '../pages/AdminHome.vue'
 import Error from '../pages/Error.vue'
 import Login from '../pages/Login.vue'
+import NotFound from '../pages/404.vue'
 
 import Front from '../pages/Front/Front.vue'
 import Salary from '../pages/Finance/Salary.vue'
@@ -17,8 +18,9 @@ import UserCenter from '../pages/User/UserCenter.vue'
 import DeptCenter from '../pages/Department/DeptCenter.vue'
 import Publish from '../pages/Announcement/Publish.vue'
 import Check from '../pages/Announcement/Check.vue'
-import NotFound from '../pages/404.vue'
 
+import UserIndex from '../pages/PlainUser/Index.vue'
+import AnnounceDetail from '../pages/PlainUser/AnnounceDetail.vue'
 
 //定义一些路由
 const routes = [
@@ -50,6 +52,21 @@ const routes = [
         path: '/plainUser',
         name: 'plainUser',
         component: PlainUserHome,
+        children: [
+            {
+                path: '',
+                name: 'userIndex',
+                component: UserIndex
+            },
+            {
+                path: 'index',
+                component: UserIndex
+            },
+            {
+                path: 'detail',
+                component: AnnounceDetail
+            },
+        ]
     },
     {
         path: '/admin',
@@ -58,7 +75,7 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'index',
+                name: 'adminIndex',
                 component: Front,
             },
             {

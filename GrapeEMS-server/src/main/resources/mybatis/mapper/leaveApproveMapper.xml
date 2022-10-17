@@ -5,12 +5,23 @@
 
 
 <mapper namespace="com.pushihao.dao.LeaveApproveDao">
+    <insert id="addOneLeaveApplication">
+        insert into
+            grapeems_leave_application(leaveApplicationCreateTime, leaveApplicationReason, leaveApplicationDetail, leaveApplicationLeaveStartTime, leaveApplicationLeaveEndTime, userId)
+        values
+            (#{leaveApplicationCreateTime}, #{leaveApplicationReason}, #{leaveApplicationDetail}, #{leaveApplicationLeaveStartTime}, #{leaveApplicationLeaveEndTime}, #{userId})
+    </insert>
+
     <select id="getAllLeaveApplication" resultType="com.pushihao.bean.LeaveApplication">
         select * from grapeems_leave_application where isDeleted = 1 and leaveApplicationIsApprove = 0
     </select>
 
     <select id="getLeaveApplicationById" resultType="com.pushihao.bean.LeaveApplication">
         select * from grapeems_leave_application where isDeleted = 1 and LeaveApplicationId = #{id}
+    </select>
+
+    <select id="getLeaveApplicationByUserId" resultType="com.pushihao.bean.LeaveApplication">
+        select * from grapeems_leave_application where isDeleted = 1 and userId = #{userId}
     </select>
 
     <update id="updateLeaveApplication">

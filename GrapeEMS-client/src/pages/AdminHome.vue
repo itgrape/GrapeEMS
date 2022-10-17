@@ -18,29 +18,6 @@
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import Menu from '../components/Menu.vue'
-import { onMounted, ref } from "vue"
-import axios from "axios"
-import instance from "../api/DataAxios"
-import { useAdminStore } from "../store/adminStore"
-
-const adminStore = useAdminStore()
-
-onMounted(() => {
-    axios.all([getAllDeptName()])
-})
-
-function getAllDeptName() {
-    return instance.get("/userCenter/getAllDeptName").then(
-        response => {
-            let depts = []
-            for (let dept of response.data) {
-                depts.push(dept)
-            }
-            adminStore.depts = depts
-        }
-    )
-}
-
 </script>
 
 <style scoped>

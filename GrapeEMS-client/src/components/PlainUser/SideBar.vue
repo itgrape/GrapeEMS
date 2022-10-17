@@ -28,15 +28,22 @@
                 </el-select>
             </el-form-item>
 
+            <!--以下一项仅在销假申请时显示-->
+            <el-form-item v-if="!isLeaveApplication" label="销哪次假" label-width="30%">
+                <el-select v-model="backApplication.leaveApplicationId">
+                    <el-option v-for="item in leaveApplicationNotApprove" :value="item.leaveApplicationId">{{new Date(item.leaveApplicationCreateTime).toLocaleString()}}</el-option>
+                </el-select>
+            </el-form-item>
+
             <!--以下三项仅在请假申请时显示-->
             <el-form-item v-if="isLeaveApplication" label="请假原因" label-width="30%">
-                <el-select v-model="leaveApplication.reason">
+                <el-select v-model="leaveApplication.leaveApplicationReason">
                     <el-option value="病假">病假</el-option>
                     <el-option value="事假">事假</el-option>
                 </el-select>
             </el-form-item>
             <el-form-item v-if="isLeaveApplication" label="详细描述" label-width="30%">
-                <el-input type="textarea" v-model="leaveApplication.detail" />
+                <el-input type="textarea" v-model="leaveApplication.leaveApplicationDetail" />
             </el-form-item>
             <el-form-item v-if="isLeaveApplication" label="请假时间" label-width="30%">
                 <el-date-picker
@@ -61,7 +68,22 @@
 import {UserFilled, Position} from '@element-plus/icons-vue'
 import instance from "../../api/DataAxios";
 import router from "../../router";
-import {reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
+import {ElMessage} from "element-plus";
+
+onMounted(() => {
+    instance.get("/plainUser/approve/getLeaveApplicationByUserId/" + sessionStorage.getItem("userId")).then(
+        response => {
+            leaveApplicationNotApprove.value.splice(0, leaveApplicationNotApprove.value.length)
+            const data = response.data
+            for (let d of data) {
+                if (d.leaveApplicationIsApprove === 0) {
+                    leaveApplicationNotApprove.value.push(d)
+                }
+            }
+        }
+    )
+})
 
 const logout = () => {
     instance.post("/user/logout").then(
@@ -76,17 +98,52 @@ const logout = () => {
 let dialogFormVisible = ref(false)
 let applicationKind = ref('请假申请')
 let isLeaveApplication = ref(true)
-let leaveTime = ref()
+let leaveTime = ref(null)
 let leaveApplication = reactive({
-    userId: sessionStorage.getItem("id"),
-    reason: null,
-    detail: null,
-    startTime: null,
-    endTime: null
+    userId: sessionStorage.getItem("userId"),
+    leaveApplicationReason: null,
+    leaveApplicationDetail: null,
+    leaveApplicationLeaveStartTime: null,
+    leaveApplicationLeaveEndTime: null
+})
+let leaveApplicationNotApprove = ref([])
+let backApplication = reactive({
+    userId: sessionStorage.getItem("userId"),
+    leaveApplicationId: null,
 })
 
-const applicationPost = () => {
-    
+function applicationPost() {
+    if (isLeaveApplication.value) {
+        //请假申请
+        if (leaveTime.value !== null) {
+            leaveApplication.leaveApplicationLeaveStartTime = leaveTime.value[0]
+            leaveApplication.leaveApplicationLeaveEndTime = leaveTime.value[1]
+            instance.post("/plainUser/approve/leaveApprove", leaveApplication).then(
+                response => {
+                    if (response.data) {
+                        ElMessage.success("申请成功")
+                        leaveApplication.leaveApplicationReason = null
+                        leaveApplication.leaveApplicationDetail = null
+                        leaveTime.value = null
+                    } else {
+                        ElMessage.error("申请失败")
+                    }
+                }
+            )
+        }
+    } else {
+        //销假申请
+        instance.post("/plainUser/approve/backApprove", backApplication).then(
+            response => {
+                if (response.data) {
+                    ElMessage.success("申请成功")
+                    backApplication.leaveApplicationId = null
+                } else {
+                    ElMessage.error("申请失败")
+                }
+            }
+        )
+    }
 }
 
 watch(applicationKind, async (newValue, oldValue) => {

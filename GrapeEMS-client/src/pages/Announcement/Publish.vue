@@ -31,9 +31,6 @@
 import {reactive, onMounted, ref} from "vue"
 import instance from "../../api/DataAxios"
 import {ElMessage} from "element-plus"
-import {useAdminStore} from "../../store/adminStore";
-
-const adminStore = useAdminStore()
 
 let depts = ref([])
 let announcement = reactive({
@@ -43,8 +40,19 @@ let announcement = reactive({
 })
 
 onMounted(() => {
-    depts.value = adminStore.depts
+    getAllDeptName()
 })
+
+function getAllDeptName() {
+    return instance.get("/userCenter/getAllDeptName").then(
+        response => {
+            depts.value = []
+            for (let dept of response.data) {
+                depts.value.push(dept)
+            }
+        }
+    )
+}
 
 function pubAnnounce() {
     instance.post("/announce/addOneAnnounce", announcement).then(

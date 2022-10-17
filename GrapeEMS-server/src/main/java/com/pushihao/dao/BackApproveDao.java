@@ -13,4 +13,6 @@ public interface BackApproveDao {
     public BackApplication getBackApplicationById(@Param("id") Long id);
 
     public Integer updateBackApplication(BackApplication backApplication);
+
+    public Integer addOneBackApprove(BackApplication backApplication);
 }

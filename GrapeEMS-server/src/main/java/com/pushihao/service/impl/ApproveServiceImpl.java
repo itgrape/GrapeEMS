@@ -134,4 +134,23 @@ public class ApproveServiceImpl implements ApproveService {
         int result = approveLogDao.deleteOneApproveLog(approveLog);
         return result == 1;
     }
+
+    @Override
+    public Boolean addOneLeaveApprove(LeaveApplication leaveApplication) {
+        leaveApplication.setLeaveApplicationCreateTime(new Timestamp(new Date().getTime()));
+        int result = leaveApproveDao.addOneLeaveApplication(leaveApplication);
+        return result == 1;
+    }
+
+    @Override
+    public List<LeaveApplication> getLeaveApplicationByUserId(Long userId) {
+        return leaveApproveDao.getLeaveApplicationByUserId(userId);
+    }
+
+    @Override
+    public Boolean addOneBackApprove(BackApplication backApplication) {
+        backApplication.setBackApplicationCreateTime(new Timestamp(new Date().getTime()));
+        int result = backApproveDao.addOneBackApprove(backApplication);
+        return result == 1;
+    }
 }

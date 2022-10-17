@@ -60,17 +60,24 @@ import {onMounted, reactive, ref} from "vue";
 import instance from "../../api/DataAxios";
 import axios from 'axios'
 import {ElMessage} from "element-plus";
-import {useAdminStore} from "../../store/adminStore";
-
-const adminStore = useAdminStore()
 
 let logInfo = ref([])
 let depts = ref([])
 
 onMounted(() => {
-    axios.all([getAllApproveLogs()])
-    depts.value = adminStore.depts
+    axios.all([getAllApproveLogs(), getAllDeptName()])
 })
+
+function getAllDeptName() {
+    return instance.get("/userCenter/getAllDeptName").then(
+        response => {
+            depts.value = []
+            for (let dept of response.data) {
+                depts.value.push(dept)
+            }
+        }
+    )
+}
 
 function refresh_data() {
     logInfo.value.splice(0,logInfo.value.length)

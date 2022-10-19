@@ -18,7 +18,7 @@
                     <el-option v-for="dept in depts" :value="dept">{{dept}}</el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="确认发布">
+            <el-form-item label="">
                 <el-button type="success" @click="pubAnnounce()">发布</el-button>
             </el-form-item>
         </el-form>

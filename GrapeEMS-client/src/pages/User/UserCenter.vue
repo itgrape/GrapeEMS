@@ -191,9 +191,10 @@ import {ElMessage, ElDrawer, ElMessageBox} from 'element-plus'
 import axios from 'axios'
 import instance from '../../api/DataAxios'
 import {onMounted, reactive, ref} from "vue"
+import {matchEmail, matchNumber} from "../../utils/RegUtils"
 
 let userinfo = reactive([])
-let userInter = ref([])
+let userInter = ref(null)
 let queryUser = reactive({
     userName: "",
     userSex: "",
@@ -229,32 +230,35 @@ function getAllDeptName() {
 }
 
 function query() {
-    queryUser.userInterTimeStart = userInter.value[0]
-    queryUser.userInterTimeEnd = userInter.value[1]
-    instance.post("/userCenter/queryUserCenterUsers", queryUser).then(
-        response => {
-            userinfo.splice(0, userinfo.length)
-            for (let user of response.data) {
-                let singleUser = {
-                    userId: user.userId,
-                    userName: user.userName,
-                    userSex: user.userSex,
-                    userAge: user.userAge,
-                    deptName: user.deptName,
-                    roleName: user.roleName,
-                    userEmail: user.userEmail,
-                    userAddress: user.userProvince + user.userCity + user.userCommunity,
-                    userInterTime: new Date(user.userInterTime).toLocaleString(),
-                    userState: user.userState
+    if (userInter.value !== null) {
+        queryUser.userInterTimeStart = userInter.value[0]
+        queryUser.userInterTimeEnd = userInter.value[1]
+        instance.post("/userCenter/queryUserCenterUsers", queryUser).then(
+            response => {
+                userinfo.splice(0, userinfo.length)
+                for (let user of response.data) {
+                    let singleUser = {
+                        userId: user.userId,
+                        userName: user.userName,
+                        userSex: user.userSex,
+                        userAge: user.userAge,
+                        deptName: user.deptName,
+                        roleName: user.roleName,
+                        userEmail: user.userEmail,
+                        userAddress: user.userProvince + user.userCity + user.userCommunity,
+                        userInterTime: new Date(user.userInterTime).toLocaleString(),
+                        userState: user.userState
+                    }
+                    userinfo.push(singleUser)
                 }
-                userinfo.push(singleUser)
             }
-        }
-    )
+        )
+    }
 }
 
 function resetForm() {
     document.querySelector("#my-form").reset()
+    userInter.value = null
     queryUser = {
         userName: "",
         userSex: "",
@@ -321,13 +325,17 @@ const addUserForm = reactive({
     userInterTime: "",
 })
 function addUserPost() {
-    instance.post("/userCenter/addNewUser", addUserForm).then(
-        response => {
-            ElMessage.success("添加成功")
-            userinfo.splice(0,userinfo.length)
-            getAllUserCenterUsers()
-        }
-    )
+    if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge)) {
+        instance.post("/userCenter/addNewUser", addUserForm).then(
+            response => {
+                ElMessage.success("添加成功")
+                userinfo.splice(0,userinfo.length)
+                getAllUserCenterUsers()
+            }
+        )
+    } else {
+        ElMessage.warning("请输入正确的信息")
+    }
 }
 
 const editDialogFormVisible = ref(false)
@@ -367,13 +375,17 @@ function editUser(row) {
     )
 }
 function editUserPost() {
-    instance.post("/userCenter/editOneUser" ,editUserForm.value).then(
-        response => {
-            ElMessage.success("修改成功")
-            userinfo.splice(0,userinfo.length)
-            getAllUserCenterUsers()
-        }
-    )
+    if (matchEmail(editUserForm.value.userEmail) && matchNumber(editUserForm.value.userAge)) {
+        instance.post("/userCenter/editOneUser" ,editUserForm.value).then(
+            response => {
+                ElMessage.success("修改成功")
+                userinfo.splice(0,userinfo.length)
+                getAllUserCenterUsers()
+            }
+        )
+    } else {
+        ElMessage.warning("请输入正确的信息")
+    }
 }
 
 function deleteUser(row) {

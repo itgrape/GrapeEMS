@@ -24,4 +24,6 @@ public interface UserDao {
     public Integer editOneUser(User user);
 
     public Integer deleteOneUserById(@Param("userId") Long id);
+
+    public Integer getDeptPersonNumber(@Param("deptId") Long deptId);
 }

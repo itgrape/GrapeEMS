@@ -21,4 +21,6 @@ public interface DeptDao {
     public Integer addNewDept(Dept dept);
 
     public Integer editDept(Dept dept);
+
+    public Integer updateDept(Dept dept);
 }

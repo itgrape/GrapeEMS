@@ -1,5 +1,6 @@
 package com.pushihao.service.impl;
 
+import com.pushihao.bean.Dept;
 import com.pushihao.bean.User;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.RoleDao;
@@ -54,7 +55,12 @@ public class UserCenterServiceImpl implements UserCenterService {
         user.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
         user.setRoleId(roleDao.getRoleIdByName(addUser.getRoleName()));
         Integer result = userDao.addNewUser(user);
-        return result == 1;
+
+        Dept dept = new Dept();
+        dept.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
+        dept.setDeptPersonNumber(getDeptPersonNumber(addUser.getDeptName()));
+        int result2 = deptDao.updateDept(dept);
+        return result == 1 && result2 == 1;
     }
 
     @Override
@@ -80,7 +86,12 @@ public class UserCenterServiceImpl implements UserCenterService {
         user.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
         user.setRoleId(roleDao.getRoleIdByName(userCenterUsers.getRoleName()));
         Integer result = userDao.editOneUser(user);
-        return result == 1;
+
+        Dept dept = new Dept();
+        dept.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
+        dept.setDeptPersonNumber(getDeptPersonNumber(userCenterUsers.getDeptName()));
+        int result2 = deptDao.updateDept(dept);
+        return result == 1 && result2 == 1;
     }
 
     @Override
@@ -88,8 +99,19 @@ public class UserCenterServiceImpl implements UserCenterService {
         if (userDao.getOneUserById(id) == null) {
             return false;
         } else {
+            UserCenterUsers users = userDao.getOneUserById(id);
             Integer result = userDao.deleteOneUserById(id);
-            return result == 1;
+            Dept dept = new Dept();
+            dept.setDeptId(deptDao.getDeptIdByName(users.getDeptName()));
+            dept.setDeptPersonNumber(getDeptPersonNumber(users.getDeptName()));
+            int result2 = deptDao.updateDept(dept);
+            return result == 1 && result2 == 1;
         }
+    }
+
+    @Override
+    public Integer getDeptPersonNumber(String deptName) {
+        Long deptId = deptDao.getDeptIdByName(deptName);
+        return userDao.getDeptPersonNumber(deptId);
     }
 }

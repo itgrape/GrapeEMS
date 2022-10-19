@@ -45,4 +45,13 @@
     <select id="getAllDept" resultType="com.pushihao.bean.Dept">
         select * from grapeems_dept where isDeleted = 1
     </select>
+
+    <update id="updateDept">
+        update
+            grapeems_dept
+        set
+            deptPersonNumber = #{deptPersonNumber}
+        where
+            deptId = #{deptId}
+    </update>
 </mapper>

@@ -101,4 +101,13 @@
         where
             u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1 and u.userId = #{userId}
     </select>
+
+    <select id="getDeptPersonNumber" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            grapeems_user
+        where
+            deptId = #{deptId} and isDeleted = 1
+    </select>
 </mapper>

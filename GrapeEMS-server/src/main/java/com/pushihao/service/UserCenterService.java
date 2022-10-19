@@ -18,4 +18,6 @@ public interface UserCenterService {
     public Boolean editOneUser(UserCenterUsers userCenterUsers);
 
     public Boolean deleteOneUserByUserId(Long id);
+
+    public Integer getDeptPersonNumber(String deptName);
 }

@@ -136,7 +136,7 @@ function editDeptPost() {
 
 function deleteDept(row) {
     ElMessageBox.confirm(
-        '删除部门后，部门的所有员工将会被转移到默认部门',
+        '删除部门前，请先删除部门内所有成员，否则将导致删除失败！',
         '部门删除提示', {
             confirmButtonText: '确定删除',
             cancelButtonText: '我再想想',
@@ -145,11 +145,15 @@ function deleteDept(row) {
     ).then(() => {
         instance.get("/dept/deleteDept/" + row.id).then(
             response => {
-                ElMessage({
-                    type: 'success',
-                    message: '部门已删除',
-                })
-                refresh_dept_list()
+                if (response.data) {
+                    ElMessage({
+                        type: 'success',
+                        message: '部门已删除',
+                    })
+                    refresh_dept_list()
+                } else {
+                    ElMessage.warning("删除失败")
+                }
             }
         )
     }).catch(() => {
@@ -170,12 +174,16 @@ const handleSelectChange = (depts) => {
 function deleteSelectDept() {
     for (let id of deleteDeptIdList.value) {
         instance.get("/dept/deleteDept/" + id).then(
-            respone => {
-                ElMessage({
-                    type: 'success',
-                    message: '部门已删除',
-                })
-                refresh_dept_list()
+            response => {
+                if (response.data) {
+                    ElMessage({
+                        type: 'success',
+                        message: '部门已删除',
+                    })
+                    refresh_dept_list()
+                } else {
+                    ElMessage.warning("删除失败")
+                }
             }
         )
     }

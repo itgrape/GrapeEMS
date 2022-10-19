@@ -2,6 +2,7 @@ package com.pushihao.service.impl;
 
 import com.pushihao.bean.Dept;
 import com.pushihao.dao.DeptDao;
+import com.pushihao.dao.UserDao;
 import com.pushihao.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ import java.util.List;
 public class DeptServiceImpl implements DeptService {
     @Autowired
     private DeptDao deptDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public List<String> getAllDeptName() {
@@ -32,8 +36,13 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public Boolean deletedOneDeptById(Long id) {
-        Integer result = deptDao.deleteOneDeptById(id);
-        return result == 1;
+        int deptPersonNumber = userDao.getDeptPersonNumber(id);
+        if (deptPersonNumber != 0) {
+            return false;
+        } else {
+            Integer result = deptDao.deleteOneDeptById(id);
+            return result == 1;
+        }
     }
 
     @Override

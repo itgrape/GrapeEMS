@@ -278,6 +278,7 @@ function resetForm() {
 function getAllUserCenterUsers() {
     return instance.get("/userCenter/getAllUserCenterUsers").then(
         response => {
+            userinfo.splice(0, userinfo.length)
             for (let user of response.data) {
                 let singleUser = {
                     userId: user.userId,
@@ -328,9 +329,13 @@ function addUserPost() {
     if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge)) {
         instance.post("/userCenter/addNewUser", addUserForm).then(
             response => {
-                ElMessage.success("添加成功")
-                userinfo.splice(0,userinfo.length)
-                getAllUserCenterUsers()
+                if (response.data) {
+                    ElMessage.success("添加成功")
+                    userinfo.splice(0,userinfo.length)
+                    getAllUserCenterUsers()
+                } else {
+                    ElMessage.warning("添加失败")
+                }
             }
         )
     } else {
@@ -378,9 +383,13 @@ function editUserPost() {
     if (matchEmail(editUserForm.value.userEmail) && matchNumber(editUserForm.value.userAge)) {
         instance.post("/userCenter/editOneUser" ,editUserForm.value).then(
             response => {
-                ElMessage.success("修改成功")
-                userinfo.splice(0,userinfo.length)
-                getAllUserCenterUsers()
+                if (response.data) {
+                    ElMessage.success("修改成功")
+                    userinfo.splice(0,userinfo.length)
+                    getAllUserCenterUsers()
+                } else {
+                    ElMessage.warning("修改失败")
+                }
             }
         )
     } else {

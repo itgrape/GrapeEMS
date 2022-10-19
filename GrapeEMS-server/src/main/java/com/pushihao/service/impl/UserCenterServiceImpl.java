@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserCenterServiceImpl implements UserCenterService {
@@ -38,29 +39,33 @@ public class UserCenterServiceImpl implements UserCenterService {
 
     @Override
     public Boolean addNewUser(AddUser addUser) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = new User();
-        user.setUserName(addUser.getUserName());
-        user.setUserSex(addUser.getUserSex());
-        user.setUserAge(addUser.getUserAge());
-        user.setUserEmail(addUser.getUserEmail());
-        user.setUserPassword(passwordEncoder.encode(addUser.getUserPassword()));
-        user.setUserProvince(addUser.getUserProvince());
-        user.setUserCity(addUser.getUserCity());
-        user.setUserCommunity(addUser.getUserCommunity());
-        user.setUserInterTime(addUser.getUserInterTime());
-        user.setUserState(addUser.getUserState());
-        user.setUserRole(1);
-        user.setIsDeleted(1);
-        user.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
-        user.setRoleId(roleDao.getRoleIdByName(addUser.getRoleName()));
-        Integer result = userDao.addNewUser(user);
+        if (userDao.getOneUserByEmail(addUser.getUserEmail()) != null) {
+            return false;
+        } else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            User user = new User();
+            user.setUserName(addUser.getUserName());
+            user.setUserSex(addUser.getUserSex());
+            user.setUserAge(addUser.getUserAge());
+            user.setUserEmail(addUser.getUserEmail());
+            user.setUserPassword(passwordEncoder.encode(addUser.getUserPassword()));
+            user.setUserProvince(addUser.getUserProvince());
+            user.setUserCity(addUser.getUserCity());
+            user.setUserCommunity(addUser.getUserCommunity());
+            user.setUserInterTime(addUser.getUserInterTime());
+            user.setUserState(addUser.getUserState());
+            user.setUserRole(1);
+            user.setIsDeleted(1);
+            user.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
+            user.setRoleId(roleDao.getRoleIdByName(addUser.getRoleName()));
+            Integer result = userDao.addNewUser(user);
 
-        Dept dept = new Dept();
-        dept.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
-        dept.setDeptPersonNumber(getDeptPersonNumber(addUser.getDeptName()));
-        int result2 = deptDao.updateDept(dept);
-        return result == 1 && result2 == 1;
+            Dept dept = new Dept();
+            dept.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
+            dept.setDeptPersonNumber(getDeptPersonNumber(addUser.getDeptName()));
+            int result2 = deptDao.updateDept(dept);
+            return result == 1 && result2 == 1;
+        }
     }
 
     @Override
@@ -70,28 +75,32 @@ public class UserCenterServiceImpl implements UserCenterService {
 
     @Override
     public Boolean editOneUser(UserCenterUsers userCenterUsers) {
-        User user = new User();
-        user.setUserId(userCenterUsers.getUserId());
-        user.setUserName(userCenterUsers.getUserName());
-        user.setUserSex(userCenterUsers.getUserSex());
-        user.setUserAge(userCenterUsers.getUserAge());
-        user.setUserEmail(userCenterUsers.getUserEmail());
-        user.setUserProvince(userCenterUsers.getUserProvince());
-        user.setUserCity(userCenterUsers.getUserCity());
-        user.setUserCommunity(userCenterUsers.getUserCommunity());
-        user.setUserInterTime(userCenterUsers.getUserInterTime());
-        user.setUserState(userCenterUsers.getUserState());
-        user.setUserRole(1);
-        user.setIsDeleted(1);
-        user.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
-        user.setRoleId(roleDao.getRoleIdByName(userCenterUsers.getRoleName()));
-        Integer result = userDao.editOneUser(user);
+        if (userDao.getOneUserByEmail(userCenterUsers.getUserEmail()) == null || Objects.equals(userDao.getOneUserByEmail(userCenterUsers.getUserEmail()).getUserId(), userCenterUsers.getUserId())) {
+            User user = new User();
+            user.setUserId(userCenterUsers.getUserId());
+            user.setUserName(userCenterUsers.getUserName());
+            user.setUserSex(userCenterUsers.getUserSex());
+            user.setUserAge(userCenterUsers.getUserAge());
+            user.setUserEmail(userCenterUsers.getUserEmail());
+            user.setUserProvince(userCenterUsers.getUserProvince());
+            user.setUserCity(userCenterUsers.getUserCity());
+            user.setUserCommunity(userCenterUsers.getUserCommunity());
+            user.setUserInterTime(userCenterUsers.getUserInterTime());
+            user.setUserState(userCenterUsers.getUserState());
+            user.setUserRole(1);
+            user.setIsDeleted(1);
+            user.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
+            user.setRoleId(roleDao.getRoleIdByName(userCenterUsers.getRoleName()));
+            Integer result = userDao.editOneUser(user);
 
-        Dept dept = new Dept();
-        dept.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
-        dept.setDeptPersonNumber(getDeptPersonNumber(userCenterUsers.getDeptName()));
-        int result2 = deptDao.updateDept(dept);
-        return result == 1 && result2 == 1;
+            Dept dept = new Dept();
+            dept.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
+            dept.setDeptPersonNumber(getDeptPersonNumber(userCenterUsers.getDeptName()));
+            int result2 = deptDao.updateDept(dept);
+            return result == 1 && result2 == 1;
+        } else {
+            return false;
+        }
     }
 
     @Override

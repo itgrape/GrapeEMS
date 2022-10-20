@@ -332,7 +332,8 @@ function getAllUserCenterUsers() {
                 }
                 userinfo.push(singleUser)
             }
-            userinfoTable.value = userinfo.slice(pageSize.value * (currentPage.value - 1), pageSize.value * currentPage.value)
+            getUserTotalNum()
+            refresh_user_info_table()
         }
     )
 }
@@ -478,7 +479,7 @@ function deleteSelectUser() {
                     type: 'success',
                     message: '员工已删除',
                 })
-                userinfo.splice(0,userinfo.length)
+                userinfo.splice(0, userinfo.length)
                 getAllUserCenterUsers()
             }
         )

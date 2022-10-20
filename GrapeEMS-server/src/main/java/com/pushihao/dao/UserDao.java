@@ -13,6 +13,8 @@ public interface UserDao {
 
     public List<UserCenterUsers> getAllUserCenterUsers();
 
+    public Integer getTotalNum();
+
     public User getOneUserByEmail(@Param("userEmail") String userEmail);
 
     public List<UserCenterUsers> queryUserCenterUsers(QueryUser queryUser);

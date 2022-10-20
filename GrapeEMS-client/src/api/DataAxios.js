@@ -3,7 +3,7 @@ import {ElMessage} from "element-plus";
 import router from "../router";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8088',
+    baseURL: 'http://localhost:12280',
     timeout: 2500
 })
 

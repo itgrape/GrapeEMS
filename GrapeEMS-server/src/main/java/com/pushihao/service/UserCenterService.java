@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserCenterService {
     public List<UserCenterUsers> getAllUserCenterUsers();
 
+    public Integer getTotalNum();
+
     public List<UserCenterUsers> queryUserCenterUsers(QueryUser queryUser);
 
     public Boolean addNewUser(AddUser addUser);

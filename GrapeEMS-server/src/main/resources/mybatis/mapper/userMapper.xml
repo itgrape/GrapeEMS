@@ -110,4 +110,12 @@
         where
             deptId = #{deptId} and isDeleted = 1
     </select>
+
+    <select id="getTotalNum" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            grapeems_user
+        where isDeleted = 1
+    </select>
 </mapper>

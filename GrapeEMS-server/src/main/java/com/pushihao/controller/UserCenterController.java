@@ -1,6 +1,7 @@
 package com.pushihao.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import com.pushihao.pojo.AddUser;
 import com.pushihao.pojo.QueryUser;
 import com.pushihao.pojo.UserCenterUsers;
@@ -23,8 +24,16 @@ public class UserCenterController {
     private RoleService roleService;
 
     @RequestMapping("/getAllUserCenterUsers")
-    public String getAllUserCenterUsers() {
+    public String getAllUserCenterUsers(
+            @RequestParam(name = "currentPage", defaultValue = "1") Integer currentPage,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        PageHelper.startPage(currentPage, pageSize);
         return JSON.toJSONString(userCenterService.getAllUserCenterUsers());
+    }
+
+    @GetMapping("/getTotalNum")
+    public String getTotalNum() {
+        return JSON.toJSONString(userCenterService.getTotalNum());
     }
 
     @RequestMapping("/getAllDeptName")
@@ -39,8 +48,6 @@ public class UserCenterController {
 
     @PostMapping("/queryUserCenterUsers")
     public String queryUserCenterUsers(@RequestBody QueryUser queryUser) {
-        System.out.println(queryUser.getUserName());
-        System.out.println(queryUser.getUserSex());
         return JSON.toJSONString(userCenterService.queryUserCenterUsers(queryUser));
     }
 

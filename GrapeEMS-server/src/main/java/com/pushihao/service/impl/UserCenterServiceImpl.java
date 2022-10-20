@@ -33,6 +33,11 @@ public class UserCenterServiceImpl implements UserCenterService {
     }
 
     @Override
+    public Integer getTotalNum() {
+        return userDao.getTotalNum();
+    }
+
+    @Override
     public List<UserCenterUsers> queryUserCenterUsers(QueryUser queryUser) {
         return userDao.queryUserCenterUsers(queryUser);
     }

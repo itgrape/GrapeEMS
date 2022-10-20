@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 12280
 
 spring:
   application:
@@ -25,5 +25,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
+
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
 
 

@@ -1,6 +1,6 @@
 <template>
 
-    <el-form :model="queryUser" :inline="true" class="query-form" id="my-form">
+    <el-form :model="queryUser" :inline="true" class="query-form" id="my-query-form">
         <el-form-item label="姓名">
             <el-input v-model="queryUser.userName" class="name-input" placeholder="支持模糊匹配"></el-input>
         </el-form-item>
@@ -106,7 +106,7 @@
         </el-form-item>
     </el-form>
 
-    <el-table :data="userinfo" border class="user-table" @selection-change="handleSelectChange">
+    <el-table :data="userinfoTable" border class="user-table" @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55"/>
 
         <el-table-column prop="userName" label="姓名"/>
@@ -126,6 +126,19 @@
             </template>
         </el-table-column>
     </el-table>
+
+    <div id="my-pagination">
+        <el-pagination
+            v-model:currentPage="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[5, 10, 15, 20]"
+            :background="true"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalNum"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
 
     <el-drawer
         ref="drawerRef"
@@ -193,6 +206,7 @@ import instance from '../../api/DataAxios'
 import {onMounted, reactive, ref} from "vue"
 import {matchEmail, matchNumber} from "../../utils/RegUtils"
 
+let userinfoTable = ref([])
 let userinfo = reactive([])
 let userInter = ref(null)
 let queryUser = reactive({
@@ -214,9 +228,35 @@ let depts = ref([])
 let roles = ref([])
 let states = ref(["正常", "请假中"])
 
+let currentPage = ref(1)
+let pageSize = ref(10)
+let totalNum = ref(0)
+
+const handleSizeChange = (ps) => {
+    pageSize.value = ps
+    refresh_user_info_table()
+}
+
+const handleCurrentChange = (cp) => {
+    currentPage.value = cp
+    refresh_user_info_table()
+}
+
+const refresh_user_info_table = () => {
+    userinfoTable.value = userinfo.slice(pageSize.value * (currentPage.value - 1), pageSize.value * currentPage.value)
+}
+
 onMounted(() => {
-    axios.all([getAllUserCenterUsers(), getAllRoleName(), getAllDeptName()])
+    axios.all([getAllUserCenterUsers(), getAllRoleName(), getAllDeptName(), getUserTotalNum()])
 })
+
+function getUserTotalNum() {
+    return instance.get("/userCenter/getTotalNum").then(
+        response => {
+            totalNum.value = response.data
+        }
+    )
+}
 
 function getAllDeptName() {
     return instance.get("/userCenter/getAllDeptName").then(
@@ -233,46 +273,44 @@ function query() {
     if (userInter.value !== null) {
         queryUser.userInterTimeStart = userInter.value[0]
         queryUser.userInterTimeEnd = userInter.value[1]
-        instance.post("/userCenter/queryUserCenterUsers", queryUser).then(
-            response => {
-                userinfo.splice(0, userinfo.length)
-                for (let user of response.data) {
-                    let singleUser = {
-                        userId: user.userId,
-                        userName: user.userName,
-                        userSex: user.userSex,
-                        userAge: user.userAge,
-                        deptName: user.deptName,
-                        roleName: user.roleName,
-                        userEmail: user.userEmail,
-                        userAddress: user.userProvince + user.userCity + user.userCommunity,
-                        userInterTime: new Date(user.userInterTime).toLocaleString(),
-                        userState: user.userState
-                    }
-                    userinfo.push(singleUser)
-                }
-            }
-        )
     }
+    instance.post("/userCenter/queryUserCenterUsers", queryUser).then(
+        response => {
+            userinfo.splice(0, userinfo.length)
+            for (let user of response.data) {
+                let singleUser = {
+                    userId: user.userId,
+                    userName: user.userName,
+                    userSex: user.userSex,
+                    userAge: user.userAge,
+                    deptName: user.deptName,
+                    roleName: user.roleName,
+                    userEmail: user.userEmail,
+                    userAddress: user.userProvince + user.userCity + user.userCommunity,
+                    userInterTime: new Date(user.userInterTime).toLocaleString(),
+                    userState: user.userState
+                }
+                userinfo.push(singleUser)
+            }
+            totalNum.value = userinfo.length
+            refresh_user_info_table()
+        }
+    )
 }
 
 function resetForm() {
-    document.querySelector("#my-form").reset()
     userInter.value = null
-    queryUser = {
-        userName: "",
-        userSex: "",
-        userAgeStart: null,
-        userAgeEnd: null,
-        deptName: "",
-        roleName: "",
-        userState: "",
-        userProvince: "",
-        userCity: "",
-        userCommunity: "",
-        userInterTimeStart: "",
-        userInterTimeEnd: "",
-    }
+    queryUser.userName = null
+    queryUser.userSex = null
+    queryUser.userAgeStart = null
+    queryUser.userAgeEnd = null
+    queryUser.deptName = null
+    queryUser.roleName = null
+    queryUser.userState = null
+    queryUser.userProvince = null
+    queryUser.userCommunity = null
+    queryUser.userInterTimeStart = null
+    queryUser.userInterTimeEnd = null
 }
 
 function getAllUserCenterUsers() {
@@ -294,6 +332,7 @@ function getAllUserCenterUsers() {
                 }
                 userinfo.push(singleUser)
             }
+            userinfoTable.value = userinfo.slice(pageSize.value * (currentPage.value - 1), pageSize.value * currentPage.value)
         }
     )
 }
@@ -458,7 +497,7 @@ function deleteSelectUser() {
 
 .user-table {
     width: 100%;
-    height: calc(100vh - 285px);
+    /*height: calc(100vh - 285px);*/
 }
 
 .name-input {
@@ -475,6 +514,10 @@ function deleteSelectUser() {
 
 .age-input {
     width: 50px;
+}
+
+#my-pagination {
+    margin-top: 30px;
 }
 
 </style>

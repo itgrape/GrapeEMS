@@ -33,7 +33,7 @@
         </el-form-item>
     </el-form>
 
-    <el-table :data="logInfo" class="user-table" stripe @selection-change="handleSelectChange">
+    <el-table :data="logInfoTable" class="user-table" stripe @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55" />
 
         <el-table-column prop="approvalTime" label="审批时间" width="200"/>
@@ -52,21 +52,53 @@
         </el-table-column>
     </el-table>
 
+    <div id="my-pagination">
+        <el-pagination
+            v-model:currentPage="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[5, 10, 15, 20]"
+            :background="true"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalNum"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
+
 </template>
 
 <script setup>
 import { Delete } from '@element-plus/icons-vue'
-import {onMounted, reactive, ref} from "vue";
+import { onMounted, reactive, ref } from "vue";
 import instance from "../../api/DataAxios";
 import axios from 'axios'
 import {ElMessage} from "element-plus";
 
+let logInfoTable = ref([])
 let logInfo = ref([])
 let depts = ref([])
+
+let currentPage = ref(1)
+let pageSize = ref(10)
+let totalNum = ref(0)
 
 onMounted(() => {
     axios.all([getAllApproveLogs(), getAllDeptName()])
 })
+
+const handleSizeChange = (ps) => {
+    pageSize.value = ps
+    refresh_log_info_table()
+}
+
+const handleCurrentChange = (cp) => {
+    currentPage.value = cp
+    refresh_log_info_table()
+}
+
+const refresh_log_info_table = () => {
+    logInfoTable.value = logInfo.value.slice(pageSize.value * (currentPage.value - 1), pageSize.value * currentPage.value)
+}
 
 function getAllDeptName() {
     return instance.get("/userCenter/getAllDeptName").then(
@@ -85,6 +117,7 @@ function refresh_data() {
 
 function fillData(data) {
     refresh_data()
+    totalNum.value = data.length
     for (let a of data) {
         if (a.approveLogKind === 1) {
             const approval = {
@@ -112,6 +145,7 @@ function fillData(data) {
             logInfo.value.push(approval)
         }
     }
+    refresh_log_info_table()
 }
 
 function getAllApproveLogs() {

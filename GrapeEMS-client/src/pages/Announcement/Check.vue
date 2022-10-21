@@ -22,7 +22,7 @@
         </el-form-item>
     </el-form>
 
-    <el-table :data="announceList" border class="user-table" @selection-change="handleSelectChange">
+    <el-table :data="announceListTable" border class="user-table" @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55" />
 
         <el-table-column prop="title" label="公告标题"/>
@@ -37,6 +37,18 @@
         </el-table-column>
     </el-table>
 
+    <div style="margin-top: 20px;">
+        <el-pagination
+            v-model:currentPage="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[5, 10, 15, 20]"
+            :background="true"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalNum"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
 
     <el-drawer
         ref="drawerRef"
@@ -69,12 +81,31 @@ import {ElMessage, ElMessageBox} from "element-plus"
 import axios from 'axios'
 import {ref, onMounted, reactive} from "vue"
 
+let announceListTable = ref([])
 let announceList = ref([])
 let depts = ref([])
+
+let currentPage = ref(1)
+let pageSize = ref(10)
+let totalNum = ref(0)
 
 onMounted(() => {
     axios.all([getAllAnnounce(), getAllDeptName()])
 })
+
+const handleSizeChange = (ps) => {
+    pageSize.value = ps
+    refresh_announce_info_table()
+}
+
+const handleCurrentChange = (cp) => {
+    currentPage.value = cp
+    refresh_announce_info_table()
+}
+
+const refresh_announce_info_table = () => {
+    announceListTable.value = announceList.value.slice(pageSize.value * (currentPage.value - 1), pageSize.value * currentPage.value)
+}
 
 function getAllDeptName() {
     return instance.get("/userCenter/getAllDeptName").then(
@@ -100,6 +131,8 @@ function getAllAnnounce() {
                 }
                 announceList.value.push(announce)
             }
+            totalNum.value = response.data.length
+            refresh_announce_info_table()
         }
     )
 }
@@ -133,6 +166,8 @@ function queryAnnounce() {
                 }
                 announceList.value.push(announce)
             }
+            totalNum.value = response.data.length
+            refresh_announce_info_table()
         }
     )
 }

@@ -28,7 +28,6 @@
                     </template>
                     <el-menu-item index="/admin/approve/leave"><el-icon><Smoking /></el-icon>请假申请</el-menu-item>
                     <el-menu-item index="/admin/approve/back"><el-icon><NoSmoking /></el-icon>销假申请</el-menu-item>
-<!--                    <el-menu-item index="/admin/approve/morework"><el-icon><Cpu /></el-icon>加班申请</el-menu-item>-->
                     <el-menu-item index="/admin/approve/log"><el-icon><Notebook /></el-icon>审批日志</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="4">

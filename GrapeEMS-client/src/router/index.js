@@ -13,7 +13,6 @@ import Salary from '../pages/Finance/Salary.vue'
 import Back from '../pages/Approval/Back.vue'
 import Leave from '../pages/Approval/Leave.vue'
 import Log from '../pages/Approval/Log.vue'
-import MoreWork from '../pages/Approval/MoreWork.vue'
 import UserCenter from '../pages/User/UserCenter.vue'
 import DeptCenter from '../pages/Department/DeptCenter.vue'
 import Publish from '../pages/Announcement/Publish.vue'
@@ -94,10 +93,6 @@ const routes = [
                         component: Back,
                     },
                     {
-                        path: 'morework',
-                        component: MoreWork,
-                    },
-                    {
                         path: 'log',
                         component: Log,
                     },
@@ -134,10 +129,6 @@ const routes = [
                     },
                 ]
             },
-            // {
-            //     path: 'salary',
-            //     component: Salary,
-            // },
         ]
     }
 ]

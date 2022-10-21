@@ -20,7 +20,7 @@
 
     <select id="queryApproveLog" resultType="com.pushihao.bean.ApproveLog">
         select
-            l.*
+            distinct l.*
         from
             grapeems_approve_log l, grapeems_user u, grapeems_dept d, grapeems_leave_application la, grapeems_back_application ba
         where
@@ -31,7 +31,10 @@
                 and la.userId = u.userId
                 and u.deptId = d.deptId
                 and l.approveLogKind = 1
-                <include refid="userAndDeptAndTime"/>
+                <if test="approveStartTime != null and approveStartTime != '' and approveEndTime != null and approveEndTime != ''">
+                    and la.leaveApplicationApproveTime between #{approveStartTime} and #{approveEndTime}
+                </if>
+                <include refid="userAndDept"/>
             </if>
             <if test="kind == 2">
                 and l.approveLogContentId = ba.backApplicationId
@@ -39,15 +42,28 @@
                 and u.deptId = d.deptId
                 and l.approveLogKind = 2
                 and ba.leaveApplicationId = la.leaveApplicationId
-                <include refid="userAndDeptAndTime"/>
+                <if test="approveStartTime != null and approveStartTime != '' and approveEndTime != null and approveEndTime != ''">
+                    and ba.backApplicationApproveTime between #{approveStartTime} and #{approveEndTime}
+                </if>
+                <include refid="userAndDept"/>
             </if>
         </if>
         <if test="kind == null or kind == ''">
-            and l.approveLogContentId = la.leaveApplicationId
-            and l.approveLogContentId = ba.backApplicationId
+            and (
+            l.approveLogContentId = la.leaveApplicationId
+            or
+            l.approveLogContentId = ba.backApplicationId
+            )
             and la.userId = u.userId
             and u.deptId = d.deptId
-            <include refid="userAndDeptAndTime"/>
+            <if test="approveStartTime != null and approveStartTime != '' and approveEndTime != null and approveEndTime != ''">
+                and (
+                (ba.backApplicationApproveTime between #{approveStartTime} and #{approveEndTime})
+                and
+                (la.leaveApplicationApproveTime between #{approveStartTime} and #{approveEndTime})
+                )
+            </if>
+            <include refid="userAndDept"/>
         </if>
     </select>
 
@@ -60,15 +76,12 @@
             approveLogId = #{approveLogId}
     </update>
 
-    <sql id="userAndDeptAndTime">
+    <sql id="userAndDept">
         <if test="name != null and name != ''">
             and u.userName like "%" #{name} "%"
         </if>
         <if test="dept != null and dept != ''">
             and d.deptName = #{dept}
-        </if>
-        <if test="approveStartTime != null and approveStartTime != '' and approveEndTime != null and approveEndTime != ''">
-            and la.leaveApplicationApproveTime between #{approveStartTime} and #{approveEndTime}
         </if>
     </sql>
 </mapper>

@@ -78,4 +78,9 @@ class GrapeEmsApplicationTests {
         System.out.println(leaveApproveDao.getAllLeaveApplication());
     }
 
+    @Test
+    void testDec() {
+        System.out.println(29 / 10);
+    }
+
 }

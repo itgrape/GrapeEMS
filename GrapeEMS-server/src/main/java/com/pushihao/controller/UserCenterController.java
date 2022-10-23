@@ -70,4 +70,14 @@ public class UserCenterController {
     public String deleteOneUserById(@PathVariable("id") Long id) {
         return JSON.toJSONString(userCenterService.deleteOneUserByUserId(id));
     }
+
+    @GetMapping("/getUserSexInfo")
+    public String getUserSexInfo() {
+        return JSON.toJSONString(userCenterService.getUserSexInfo());
+    }
+
+    @GetMapping("/getUserAgeInfo")
+    public String getUserAgeInfo() {
+        return JSON.toJSONString(userCenterService.getUserAgeInfo());
+    }
 }

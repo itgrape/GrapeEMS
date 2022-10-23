@@ -14,6 +14,7 @@ import Back from '../pages/Approval/Back.vue'
 import Leave from '../pages/Approval/Leave.vue'
 import Log from '../pages/Approval/Log.vue'
 import UserCenter from '../pages/User/UserCenter.vue'
+import Visualization from '../pages/User/Visualization.vue'
 import DeptCenter from '../pages/Department/DeptCenter.vue'
 import Publish from '../pages/Announcement/Publish.vue'
 import Check from '../pages/Announcement/Check.vue'
@@ -104,6 +105,10 @@ const routes = [
                     {
                         path: 'userCenter',
                         component: UserCenter,
+                    },
+                    {
+                        path: 'visualization',
+                        component: Visualization,
                     },
                 ]
             },

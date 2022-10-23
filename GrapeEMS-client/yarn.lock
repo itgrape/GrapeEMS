@@ -529,6 +529,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"echarts@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "echarts@npm:5.4.0"
+  dependencies:
+    tslib: 2.3.0
+    zrender: 5.4.0
+  checksum: 81fb304e5304f1fd172fb419e178791213d2f2f0335a187a311bbe8888f2053dc4d9cd790135786ae09171185a1fd906453a5c93bf69097fff8c5b254873a322
+  languageName: node
+  linkType: hard
+
 "element-plus@npm:^2.2.16":
   version: 2.2.16
   resolution: "element-plus@npm:2.2.16"
@@ -934,6 +944,7 @@ __metadata:
     "@vue/reactivity": ^3.2.39
     "@vue/shared": ^3.2.39
     axios: ^0.27.2
+    echarts: ^5.4.0
     element-plus: ^2.2.16
     layui: ^2.8.0-beta.2
     pinia: ^2.0.22
@@ -1670,6 +1681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 8869694c26e4a7b56d449662fd54a4f9ba872c889d991202c74462bd99f10e61d5bd63199566c4284c0f742277736292a969642cc7b590f98727a7cae9529122
+  languageName: node
+  linkType: hard
+
 "unique-filename@npm:^2.0.0":
   version: 2.0.1
   resolution: "unique-filename@npm:2.0.1"
@@ -1798,5 +1816,14 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.4.0":
+  version: 5.4.0
+  resolution: "zrender@npm:5.4.0"
+  dependencies:
+    tslib: 2.3.0
+  checksum: 913cfd53064a9eaab0a6658bb48c8dddc8bd03f13858a2e6792a698af0c0b3d640e89de28eb4f1668f37d94ef125c24912d1bba904ae8a12ac17292fe0db52d5
   languageName: node
   linkType: hard

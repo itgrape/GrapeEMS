@@ -5,9 +5,7 @@ import com.pushihao.bean.User;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.RoleDao;
 import com.pushihao.dao.UserDao;
-import com.pushihao.pojo.AddUser;
-import com.pushihao.pojo.QueryUser;
-import com.pushihao.pojo.UserCenterUsers;
+import com.pushihao.pojo.*;
 import com.pushihao.service.UserCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -127,5 +125,55 @@ public class UserCenterServiceImpl implements UserCenterService {
     public Integer getDeptPersonNumber(String deptName) {
         Long deptId = deptDao.getDeptIdByName(deptName);
         return userDao.getDeptPersonNumber(deptId);
+    }
+
+    @Override
+    public UserSexInfo getUserSexInfo() {
+        List<UserCenterUsers> users = userDao.getAllUserCenterUsers();
+        if (users != null) {
+            UserSexInfo userSexInfo = new UserSexInfo(0, 0, 0);
+            for (UserCenterUsers user : users) {
+                switch (user.getUserSex()) {
+                    case "男" -> {
+                        int num = userSexInfo.getMenNum();
+                        userSexInfo.setMenNum(++num);
+                        break;
+                    }
+                    case "女" -> {
+                        int num = userSexInfo.getWomenNum();
+                        userSexInfo.setWomenNum(++num);
+                        break;
+                    }
+                    case "非二元性别" -> {
+                        int num = userSexInfo.getOther();
+                        userSexInfo.setOther(++num);
+                        break;
+                    }
+                }
+            }
+            return userSexInfo;
+        } else {
+            return new UserSexInfo(0, 0, 0);
+        }
+    }
+
+    @Override
+    public UserAgeInfo getUserAgeInfo() {
+        List<UserCenterUsers> users = userDao.getAllUserCenterUsers();
+        if (users != null) {
+            UserAgeInfo userAgeInfo = new UserAgeInfo(0, 0, 0, 0, 0);
+            for (UserCenterUsers user : users) {
+                switch (user.getUserAge() / 10) {
+                    case 1 -> userAgeInfo.oneAgeAdd();
+                    case 2 -> userAgeInfo.twoAgeAdd();
+                    case 3 -> userAgeInfo.threeAgeAdd();
+                    case 4 -> userAgeInfo.fourAgeAdd();
+                    case 5 -> userAgeInfo.fiveAgeAdd();
+                }
+            }
+            return userAgeInfo;
+        } else {
+            return new UserAgeInfo(0, 0, 0, 0, 0);
+        }
     }
 }

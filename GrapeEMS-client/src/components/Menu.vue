@@ -35,6 +35,7 @@
                         <span><el-icon><Menu /></el-icon>用户管理</span>
                     </template>
                     <el-menu-item index="/admin/user/userCenter"><el-icon><Avatar /></el-icon>用户中心</el-menu-item>
+                    <el-menu-item index="/admin/user/visualization"><el-icon><Platform /></el-icon>可视化图表</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="5">
                     <template #title>
@@ -49,6 +50,11 @@
                     <el-menu-item index="/admin/announce/publish"><el-icon><Promotion /></el-icon>发布公告</el-menu-item>
                     <el-menu-item index="/admin/announce/check"><el-icon><CircleCheck /></el-icon>管理公告</el-menu-item>
                 </el-sub-menu>
+                <el-menu-item index="" @click="goGithub">
+                    <template #title>
+                        <span><span class="iconfont icon-github"></span>Github</span>
+                    </template>
+                </el-menu-item>
             </el-menu>
         </el-scrollbar>
     </div>
@@ -57,7 +63,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Promotion, BellFilled, CircleCheck, OfficeBuilding, Histogram, Avatar, House, Money, Lock, Coordinate, Cpu, Smoking, NoSmoking, Notebook } from "@element-plus/icons-vue"
+import { Platform, Promotion, BellFilled, CircleCheck, OfficeBuilding, Histogram, Avatar, House, Money, Lock, Coordinate, Cpu, Smoking, NoSmoking, Notebook } from "@element-plus/icons-vue"
 
 const router = useRouter()
 
@@ -66,6 +72,10 @@ onMounted(() => {
     // 获取当前路由地址，从而给 menu 设置 default-active
     menuActive.value = router.currentRoute._value.fullPath
 })
+
+const goGithub = () => {
+    window.open('https://github.com/itgrape/GrapeEMS','_blank')
+}
 
 </script>
 
@@ -77,4 +87,7 @@ onMounted(() => {
     background-color: #304156;
 }
 
+.iconfont {
+    margin: 0 9px 0 5px;
+}
 </style>

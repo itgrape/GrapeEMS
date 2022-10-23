@@ -38,6 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/reactivity", "npm:3.2.39"],\
             ["@vue/shared", "npm:3.2.39"],\
             ["axios", "npm:0.27.2"],\
+            ["echarts", "npm:5.4.0"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
             ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
@@ -703,6 +704,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["echarts", [\
+        ["npm:5.4.0", {\
+          "packageLocation": "./.yarn/cache/echarts-npm-5.4.0-23aa9c2dad-81fb304e53.zip/node_modules/echarts/",\
+          "packageDependencies": [\
+            ["echarts", "npm:5.4.0"],\
+            ["tslib", "npm:2.3.0"],\
+            ["zrender", "npm:5.4.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["element-plus", [\
         ["npm:2.2.16", {\
           "packageLocation": "./.yarn/cache/element-plus-npm-2.2.16-167205e704-d5a7e40c50.zip/node_modules/element-plus/",\
@@ -1143,6 +1155,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/reactivity", "npm:3.2.39"],\
             ["@vue/shared", "npm:3.2.39"],\
             ["axios", "npm:0.27.2"],\
+            ["echarts", "npm:5.4.0"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
             ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
@@ -1993,6 +2006,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["tslib", [\
+        ["npm:2.3.0", {\
+          "packageLocation": "./.yarn/cache/tslib-npm-2.3.0-277e75e108-8869694c26.zip/node_modules/tslib/",\
+          "packageDependencies": [\
+            ["tslib", "npm:2.3.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["unique-filename", [\
         ["npm:2.0.1", {\
           "packageLocation": "./.yarn/cache/unique-filename-npm-2.0.1-183c6c7c2b-807acf3381.zip/node_modules/unique-filename/",\
@@ -2175,6 +2197,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yallist-npm-4.0.0-b493d9e907-343617202a.zip/node_modules/yallist/",\
           "packageDependencies": [\
             ["yallist", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["zrender", [\
+        ["npm:5.4.0", {\
+          "packageLocation": "./.yarn/cache/zrender-npm-5.4.0-042daa363a-913cfd5306.zip/node_modules/zrender/",\
+          "packageDependencies": [\
+            ["zrender", "npm:5.4.0"],\
+            ["tslib", "npm:2.3.0"]\
           ],\
           "linkType": "HARD"\
         }]\

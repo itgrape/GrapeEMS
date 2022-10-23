@@ -1,8 +1,6 @@
 package com.pushihao.service;
 
-import com.pushihao.pojo.AddUser;
-import com.pushihao.pojo.QueryUser;
-import com.pushihao.pojo.UserCenterUsers;
+import com.pushihao.pojo.*;
 
 import java.util.List;
 
@@ -22,4 +20,8 @@ public interface UserCenterService {
     public Boolean deleteOneUserByUserId(Long id);
 
     public Integer getDeptPersonNumber(String deptName);
+
+    public UserSexInfo getUserSexInfo();
+
+    public UserAgeInfo getUserAgeInfo();
 }

@@ -1,75 +1,84 @@
 <template>
 
-    <el-form :inline="true" class="query-form">
-        <el-form-item label="姓名">
-            <el-input v-model="queryForm.name" class="name-input" placeholder="支持模糊匹配"></el-input>
-        </el-form-item>
+    <div class="custom-total">
+        <div class="custom-form">
+            <el-form :inline="true">
+                <el-form-item label="对象姓名">
+                    <el-input v-model="queryForm.name" class="name-input" placeholder="支持模糊匹配"></el-input>
+                </el-form-item>
 
-        <el-form-item label="部门">
-            <el-select v-model="queryForm.dept" class="select-input" placeholder="请选择">
-                <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
-            </el-select>
-        </el-form-item>
+                <el-form-item label="对象部门">
+                    <el-select v-model="queryForm.dept" class="select-input" placeholder="请选择">
+                        <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
+                    </el-select>
+                </el-form-item>
 
-        <el-form-item label="审批内容">
-            <el-select v-model="queryForm.kind" class="select-input" placeholder="请选择">
-                <el-option value="1">请假申请</el-option>
-                <el-option value="2">销假申请</el-option>
-            </el-select>
-        </el-form-item>
+                <el-form-item label="审批内容" v-show="isOpen">
+                    <el-select v-model="queryForm.kind" class="select-input" placeholder="请选择">
+                        <el-option value="1">请假申请</el-option>
+                        <el-option value="2">销假申请</el-option>
+                    </el-select>
+                </el-form-item>
 
-        <el-form-item label="审批时间">
-            <el-date-picker type="daterange" unlink-panels range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            v-model="approveTime"
+                <el-form-item label="审批时间" v-show="isOpen">
+                    <el-date-picker type="daterange" unlink-panels range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    v-model="approveTime"
+                    />
+                </el-form-item>
+
+                <el-form-item class="custom-button-group">
+                    <el-button type="primary" @click="doQuery()">查询</el-button>
+                    <el-button type="danger" @click="resetForm">重置</el-button>
+                    <el-button type="danger" @click="deleteSelectLogs">删除选中</el-button>
+                    <span class="custom-span-switch" @click="isOpen = !isOpen"><span v-show="isOpen">合并<el-icon><ArrowUp /></el-icon></span><span v-show="!isOpen">展开<el-icon><ArrowDown /></el-icon></span></span>
+                </el-form-item>
+            </el-form>
+        </div>
+
+        <hr>
+
+        <div class="custom-table">
+            <el-table :data="logInfoTable" :class="userTableClass" stripe @selection-change="handleSelectChange">
+                <el-table-column type="selection" width="55" />
+
+                <el-table-column prop="approvalTime" label="审批时间" width="200"/>
+                <el-table-column prop="approvalContent" label="审批内容"/>
+                <el-table-column prop="approvalResult" label="审批结果"/>
+                <el-table-column prop="name" label="姓名" width="120" />
+                <el-table-column prop="dept" label="部门" />
+                <el-table-column prop="role" label="角色" />
+                <el-table-column prop="email" label="联系方式" width="140" />
+
+
+                <el-table-column label="操作" width="120" fixed="right">
+                    <template #default="scope">
+                        <el-button type="danger" @click="deleteOneLog(scope.row)" :icon="Delete" circle />
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+
+        <div class="custom-pagination">
+            <el-pagination
+                v-model:currentPage="currentPage"
+                v-model:page-size="pageSize"
+                :page-sizes="[5, 10, 15, 20]"
+                :background="true"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalNum"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
             />
-        </el-form-item>
-
-        <el-form-item>
-            <el-button type="primary" @click="doQuery()">查询</el-button>
-            <el-button type="danger" @click="resetForm">重置</el-button>
-            <el-button type="danger" @click="deleteSelectLogs">删除选中</el-button>
-        </el-form-item>
-    </el-form>
-
-    <el-table :data="logInfoTable" class="user-table" stripe @selection-change="handleSelectChange">
-        <el-table-column type="selection" width="55" />
-
-        <el-table-column prop="approvalTime" label="审批时间" width="200"/>
-        <el-table-column prop="approvalContent" label="审批内容"/>
-        <el-table-column prop="approvalResult" label="审批结果"/>
-        <el-table-column prop="name" label="姓名" width="120" />
-        <el-table-column prop="dept" label="部门" />
-        <el-table-column prop="role" label="角色" />
-        <el-table-column prop="email" label="联系方式" width="140" />
-
-
-        <el-table-column label="操作" width="120" fixed="right">
-            <template #default="scope">
-                <el-button type="danger" @click="deleteOneLog(scope.row)" :icon="Delete" circle />
-            </template>
-        </el-table-column>
-    </el-table>
-
-    <div id="my-pagination">
-        <el-pagination
-            v-model:currentPage="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[5, 10, 15, 20]"
-            :background="true"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalNum"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
+        </div>
     </div>
 
 </template>
 
 <script setup>
 import { Delete } from '@element-plus/icons-vue'
-import { onMounted, reactive, ref } from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import instance from "../../api/DataAxios";
 import axios from 'axios'
 import {ElMessage} from "element-plus";
@@ -211,12 +220,45 @@ const deleteSelectLogs = () => {
     getAllApproveLogs()
     ElMessage.success("已全部删除")
 }
+
+
+
+//以下为美化界面JS代码
+let isOpen = ref(false)
+let userTableClass = ref('user-table-when-close')
+watch(isOpen, async (newValue, oldValue) => {
+    if (newValue) {
+        userTableClass.value = 'user-table-when-open'
+    } else {
+        userTableClass.value = 'user-table-when-close'
+    }
+})
 </script>
 
 <style scoped>
-.user-table {
+.custom-total {
     width: 100%;
-    height: calc(100vh - 285px);
+}
+
+.custom-form {
+    padding-right: 300px;
+    height: auto;
+}
+
+.custom-button-group {
+    position: absolute;
+    right: 10px;
+    top: 115px;
+}
+
+.user-table-when-open {
+    width: 100%;
+    height: calc(100vh - 310px);
+}
+
+.user-table-when-close {
+    width: 100%;
+    height: calc(100vh - 260px);
 }
 
 .name-input {
@@ -227,8 +269,15 @@ const deleteSelectLogs = () => {
     width: 120px;
 }
 
-.age-input {
-    width: 50px;
+.custom-span-switch {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #51afff;
 }
 
+.custom-pagination {
+    margin-top: 10px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 </style>

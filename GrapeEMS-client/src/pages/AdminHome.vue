@@ -6,7 +6,6 @@
             <el-aside width="210px" class="my-aside"><Menu /></el-aside>
             <el-container>
                 <el-main class="main-area"><router-view /></el-main>
-                <!--<el-footer>Footer</el-footer>-->
             </el-container>
         </el-container>
     </el-container>
@@ -16,7 +15,6 @@
 
 <script setup>
 import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
 import Menu from '../components/Menu.vue'
 </script>
 

@@ -1,133 +1,87 @@
 <template>
 
-    <el-form :model="queryUser" :inline="true" class="query-form" id="my-query-form">
-        <el-form-item label="姓名">
-            <el-input v-model="queryUser.userName" class="name-input" placeholder="支持模糊匹配"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-            <el-select v-model="queryUser.userSex" class="select-input" placeholder="请选择">
-                <el-option v-for="sex in sexs" :value="sex">{{ sex }}</el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="年龄">
-            <el-input v-model="queryUser.userAgeStart" class="age-input"></el-input>
-            <span>&nbsp;-&nbsp;</span>
-            <el-input v-model="queryUser.userAgeEnd" class="age-input"></el-input>
-        </el-form-item>
-        <el-form-item label="部门">
-            <el-select v-model="queryUser.deptName" class="select-input" placeholder="请选择">
-                <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="角色">
-            <el-select v-model="queryUser.roleName" class="select-input" placeholder="请选择">
-                <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-            <el-select v-model="queryUser.userState" class="select-input" placeholder="请选择">
-                <el-option v-for="state in states" :value="state">{{ state }}</el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="家庭住址">
-            <el-input v-model="queryUser.userProvince" class="address-input" placeholder="省"></el-input>
-            <el-input v-model="queryUser.userCity" class="address-input" placeholder="市"></el-input>
-            <el-input v-model="queryUser.userCommunity" class="address-input" placeholder="县 / 区"></el-input>
-        </el-form-item>
-        <el-form-item label="入职时间">
-            <el-date-picker type="daterange"
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            v-model="userInter"
-            />
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="query()">查询</el-button>
-            <el-button type="danger" @click="resetForm()">重置</el-button>
-            <el-button type="primary" @click="dialogFormVisible = true">添加员工</el-button>
+    <div class="custom-form">
+        <el-form :model="queryUser" :inline="true" class="query-form" id="my-query-form">
+            <div class="custom-not-button-group">
+                <el-form-item label="姓名">
+                    <el-input v-model="queryUser.userName" class="name-input" placeholder="支持模糊匹配"></el-input>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="性别">
+                    <el-select v-model="queryUser.userSex" class="select-input" placeholder="请选择">
+                        <el-option v-for="sex in sexs" :value="sex">{{ sex }}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="年龄">
+                    <el-input v-model="queryUser.userAgeStart" class="age-input"></el-input>
+                    <span>&nbsp;-&nbsp;</span>
+                    <el-input v-model="queryUser.userAgeEnd" class="age-input"></el-input>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="部门">
+                    <el-select v-model="queryUser.deptName" class="select-input" placeholder="请选择">
+                        <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="角色">
+                    <el-select v-model="queryUser.roleName" class="select-input" placeholder="请选择">
+                        <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="状态">
+                    <el-select v-model="queryUser.userState" class="select-input" placeholder="请选择">
+                        <el-option v-for="state in states" :value="state">{{ state }}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="家庭住址">
+                    <el-input v-model="queryUser.userProvince" class="address-input" placeholder="省"></el-input>
+                    <el-input v-model="queryUser.userCity" class="address-input" placeholder="市"></el-input>
+                    <el-input v-model="queryUser.userCommunity" class="address-input" placeholder="县 / 区"></el-input>
+                </el-form-item>
+                <el-form-item v-show="isOpen" label="入职时间">
+                    <el-date-picker type="daterange"
+                                    unlink-panels
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    v-model="userInter"
+                    />
+                </el-form-item>
+            </div>
+            <el-form-item class="custom-button-group">
+                <el-button type="primary" @click="query()">查询</el-button>
+                <el-button type="danger" @click="resetForm()">重置</el-button>
+                <el-button type="primary" @click="dialogFormVisible = true">添加员工</el-button>
+                <el-button type="danger" style="margin-left: 12px;" @click="deleteSelectUser()">删除选中员工</el-button>
+                <span class="custom-span-switch" @click="isOpen = !isOpen"><span v-show="isOpen">合并<el-icon><ArrowUp /></el-icon></span><span v-show="!isOpen">展开<el-icon><ArrowDown /></el-icon></span></span>
+            </el-form-item>
+        </el-form>
+    </div>
 
-            <el-dialog v-model="dialogFormVisible" title="添加员工">
-                <el-form :model="addUserForm" id="add-user-form">
-                    <el-form-item label="姓名" :label-width="formLabelWidth">
-                        <el-input v-model="addUserForm.userName" placeholder="请输入员工姓名" autocomplete="off"/>
-                    </el-form-item>
-                    <el-form-item label="性别" :label-width="formLabelWidth">
-                        <el-select v-model="addUserForm.userSex" placeholder="请选择员工性别">
-                            <el-option v-for="sex in sexs" :value="sex">{{ sex }}</el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="年龄" :label-width="formLabelWidth">
-                        <el-input v-model="addUserForm.userAge" placeholder="请输入员工年龄" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱" :label-width="formLabelWidth">
-                        <el-input v-model="addUserForm.userEmail" placeholder="请输入员工邮箱" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" :label-width="formLabelWidth">
-                        <el-input v-model="addUserForm.userPassword" placeholder="请输入员工密码" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="部门" :label-width="formLabelWidth">
-                        <el-select v-model="addUserForm.deptName" placeholder="请选择">
-                            <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="角色" :label-width="formLabelWidth">
-                        <el-select v-model="addUserForm.roleName" placeholder="请选择">
-                            <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="状态" :label-width="formLabelWidth">
-                        <el-select v-model="addUserForm.userState" placeholder="请选择">
-                            <el-option v-for="state in states" :value="state">{{ state }}</el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="家庭住址" :label-width="formLabelWidth">
-                        <el-input v-model="addUserForm.userProvince" placeholder="省"></el-input>
-                        <el-input v-model="addUserForm.userCity" placeholder="市"></el-input>
-                        <el-input v-model="addUserForm.userCommunity" placeholder="县 / 区"></el-input>
-                    </el-form-item>
-                    <el-form-item label="入职时间" :label-width="formLabelWidth">
-                        <el-date-picker type="date"
-                                        placeholder="请选择入职时间"
-                                        v-model="addUserForm.userInterTime"
-                        />
-                    </el-form-item>
-                </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="dialogFormVisible = false">取消</el-button>
-                        <el-button type="primary" @click="dialogFormVisible = false; addUserPost()">添加</el-button>
-                    </span>
+    <hr>
+
+    <div class="custom-table">
+        <el-table :data="userinfoTable" border class="user-table" @selection-change="handleSelectChange">
+            <el-table-column type="selection" width="55"/>
+
+            <el-table-column prop="userName" label="姓名"/>
+            <el-table-column prop="userSex" label="性别" width="70"/>
+            <el-table-column prop="userAge" label="年龄" width="60"/>
+            <el-table-column prop="deptName" label="部门"/>
+            <el-table-column prop="roleName" label="角色"/>
+            <el-table-column prop="userEmail" label="联系方式" width="200"/>
+            <el-table-column prop="userAddress" label="家庭住址" width="170"/>
+            <el-table-column prop="userInterTime" label="入职时间" width="160"/>
+            <el-table-column prop="userState" label="状态"/>
+
+            <el-table-column label="相关操作" width="120" fixed="right">
+                <template #default="scope">
+                    <el-button @click="editDialogFormVisible = true; editUser(scope.row)" type="primary" :icon="Edit" circle/>
+                    <el-button @click="deleteUser(scope.row)" type="danger" :icon="Delete" circle/>
                 </template>
-            </el-dialog>
+            </el-table-column>
+        </el-table>
+    </div>
 
-            <el-button type="danger" style="margin-left: 12px;" @click="deleteSelectUser()">删除选中员工</el-button>
-        </el-form-item>
-    </el-form>
-
-    <el-table :data="userinfoTable" border class="user-table" @selection-change="handleSelectChange">
-        <el-table-column type="selection" width="55"/>
-
-        <el-table-column prop="userName" label="姓名"/>
-        <el-table-column prop="userSex" label="性别" width="70"/>
-        <el-table-column prop="userAge" label="年龄" width="60"/>
-        <el-table-column prop="deptName" label="部门"/>
-        <el-table-column prop="roleName" label="角色"/>
-        <el-table-column prop="userEmail" label="联系方式" width="200"/>
-        <el-table-column prop="userAddress" label="家庭住址" width="170"/>
-        <el-table-column prop="userInterTime" label="入职时间" width="160"/>
-        <el-table-column prop="userState" label="状态"/>
-
-        <el-table-column label="相关操作" width="120" fixed="right">
-            <template #default="scope">
-                <el-button @click="editDialogFormVisible = true; editUser(scope.row)" type="primary" :icon="Edit" circle/>
-                <el-button @click="deleteUser(scope.row)" type="danger" :icon="Delete" circle/>
-            </template>
-        </el-table-column>
-    </el-table>
-
-    <div id="my-pagination">
+    <div class="custom-pagination">
         <el-pagination
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
@@ -140,6 +94,59 @@
         />
     </div>
 
+    <el-dialog v-model="dialogFormVisible" title="添加员工">
+        <el-form :model="addUserForm" id="add-user-form">
+            <el-form-item label="姓名" :label-width="formLabelWidth">
+                <el-input v-model="addUserForm.userName" placeholder="请输入员工姓名" autocomplete="off"/>
+            </el-form-item>
+            <el-form-item label="性别" :label-width="formLabelWidth">
+                <el-select v-model="addUserForm.userSex" placeholder="请选择员工性别">
+                    <el-option v-for="sex in sexs" :value="sex">{{ sex }}</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="年龄" :label-width="formLabelWidth">
+                <el-input v-model="addUserForm.userAge" placeholder="请输入员工年龄" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" :label-width="formLabelWidth">
+                <el-input v-model="addUserForm.userEmail" placeholder="请输入员工邮箱" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" :label-width="formLabelWidth">
+                <el-input v-model="addUserForm.userPassword" placeholder="请输入员工密码" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="部门" :label-width="formLabelWidth">
+                <el-select v-model="addUserForm.deptName" placeholder="请选择">
+                    <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="角色" :label-width="formLabelWidth">
+                <el-select v-model="addUserForm.roleName" placeholder="请选择">
+                    <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="状态" :label-width="formLabelWidth">
+                <el-select v-model="addUserForm.userState" placeholder="请选择">
+                    <el-option v-for="state in states" :value="state">{{ state }}</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="家庭住址" :label-width="formLabelWidth">
+                <el-input v-model="addUserForm.userProvince" placeholder="省"></el-input>
+                <el-input v-model="addUserForm.userCity" placeholder="市"></el-input>
+                <el-input v-model="addUserForm.userCommunity" placeholder="县 / 区"></el-input>
+            </el-form-item>
+            <el-form-item label="入职时间" :label-width="formLabelWidth">
+                <el-date-picker type="date"
+                                placeholder="请选择入职时间"
+                                v-model="addUserForm.userInterTime"
+                />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+                    <span class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false">取消</el-button>
+                        <el-button type="primary" @click="dialogFormVisible = false; addUserPost()">添加</el-button>
+                    </span>
+        </template>
+    </el-dialog>
     <el-drawer
         ref="drawerRef"
         v-model="editDialogFormVisible"
@@ -485,10 +492,21 @@ function deleteSelectUser() {
         )
     }
 }
+
+
+//美化页面JS代码
+let isOpen = ref(false)
+import eleResizeDetector from "element-resize-detector"
+onMounted(() => {
+    let erd = eleResizeDetector()
+    erd.listenTo(document.querySelector(".custom-not-button-group"), element => {
+        document.querySelector(".user-table").style.height = "calc(100vh - " + (200 + element.offsetHeight) + "px)"
+    })
+})
+
 </script>
 
 <style scoped>
-/*负责修改添加员工表格的属性*/
 .el-input {
     width: 300px;
 }
@@ -496,9 +514,18 @@ function deleteSelectUser() {
     width: 300px;
 }
 
+.custom-form {
+    padding-right: 330px;
+}
+
+.custom-button-group {
+    position: absolute;
+    right: 10px;
+    top: 115px;
+}
+
 .user-table {
     width: 100%;
-    /*height: calc(100vh - 285px);*/
 }
 
 .name-input {
@@ -517,8 +544,15 @@ function deleteSelectUser() {
     width: 50px;
 }
 
-#my-pagination {
-    margin-top: 30px;
+.custom-span-switch {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #51afff;
 }
 
+.custom-pagination {
+    margin-top: 10px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 </style>

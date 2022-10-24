@@ -40,6 +40,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["echarts", "npm:5.4.0"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
+            ["element-resize-detector", "npm:1.2.4"],\
             ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
             ["vite", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:3.1.0"],\
@@ -535,6 +536,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["batch-processor", [\
+        ["npm:1.0.0", {\
+          "packageLocation": "./.yarn/cache/batch-processor-npm-1.0.0-9ee5925d22-5519b024f6.zip/node_modules/batch-processor/",\
+          "packageDependencies": [\
+            ["batch-processor", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["brace-expansion", [\
         ["npm:1.1.11", {\
           "packageLocation": "./.yarn/cache/brace-expansion-npm-1.1.11-fb95eb05ad-faf34a7bb0.zip/node_modules/brace-expansion/",\
@@ -751,6 +761,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/vue",\
             "vue"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["element-resize-detector", [\
+        ["npm:1.2.4", {\
+          "packageLocation": "./.yarn/cache/element-resize-detector-npm-1.2.4-8705d78c75-81c47b7e22.zip/node_modules/element-resize-detector/",\
+          "packageDependencies": [\
+            ["element-resize-detector", "npm:1.2.4"],\
+            ["batch-processor", "npm:1.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1157,6 +1177,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["echarts", "npm:5.4.0"],\
             ["element-plus", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.2.16"],\
+            ["element-resize-detector", "npm:1.2.4"],\
             ["layui", "npm:2.8.0-beta.2"],\
             ["pinia", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:2.0.22"],\
             ["vite", "virtual:6e4800dfd0db0e701a310b275a6eb364a8720c298599c4fbeaf314eb54337c7a36a4146477600994e187e257a5e9d2860ca8cbfdfe5082361732d8b4246c8a0d#npm:3.1.0"],\

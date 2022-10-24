@@ -15,6 +15,7 @@
     "axios": "^0.27.2",
     "echarts": "^5.4.0",
     "element-plus": "^2.2.16",
+    "element-resize-detector": "^1.2.4",
     "layui": "^2.8.0-beta.2",
     "pinia": "^2.0.22",
     "vue": "^3.2.37",

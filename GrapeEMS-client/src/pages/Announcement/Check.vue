@@ -22,7 +22,7 @@
         </el-form-item>
     </el-form>
 
-    <el-table :data="announceListTable" border class="user-table" @selection-change="handleSelectChange">
+    <el-table :data="announceListTable" border class="announce-table" @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55" />
 
         <el-table-column prop="title" label="公告标题"/>
@@ -37,7 +37,7 @@
         </el-table-column>
     </el-table>
 
-    <div style="margin-top: 20px;">
+    <div class="custom-pagination" style="margin-top: 20px;">
         <el-pagination
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
@@ -261,4 +261,13 @@ function deleteSelectAnnounce() {
     width: 120px;
 }
 
+.announce-table {
+    height: calc(100vh - 250px);
+}
+
+.custom-pagination {
+    margin-top: 10px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 </style>

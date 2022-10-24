@@ -3,30 +3,32 @@
     <div class="custom-total">
         <div class="custom-form">
             <el-form :inline="true">
-                <el-form-item label="对象姓名">
-                    <el-input v-model="queryForm.name" class="name-input" placeholder="支持模糊匹配"></el-input>
-                </el-form-item>
+                <div class="custom-not-button-group">
+                    <el-form-item label="对象姓名">
+                        <el-input v-model="queryForm.name" class="name-input" placeholder="支持模糊匹配"></el-input>
+                    </el-form-item>
 
-                <el-form-item label="对象部门">
-                    <el-select v-model="queryForm.dept" class="select-input" placeholder="请选择">
-                        <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
-                    </el-select>
-                </el-form-item>
+                    <el-form-item label="对象部门">
+                        <el-select v-model="queryForm.dept" class="select-input" placeholder="请选择">
+                            <el-option v-for="dept in depts" :value="dept">{{ dept }}</el-option>
+                        </el-select>
+                    </el-form-item>
 
-                <el-form-item label="审批内容" v-show="isOpen">
-                    <el-select v-model="queryForm.kind" class="select-input" placeholder="请选择">
-                        <el-option value="1">请假申请</el-option>
-                        <el-option value="2">销假申请</el-option>
-                    </el-select>
-                </el-form-item>
+                    <el-form-item label="审批内容" v-show="isOpen">
+                        <el-select v-model="queryForm.kind" class="select-input" placeholder="请选择">
+                            <el-option value="1">请假申请</el-option>
+                            <el-option value="2">销假申请</el-option>
+                        </el-select>
+                    </el-form-item>
 
-                <el-form-item label="审批时间" v-show="isOpen">
-                    <el-date-picker type="daterange" unlink-panels range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期"
-                                    v-model="approveTime"
-                    />
-                </el-form-item>
+                    <el-form-item label="审批时间" v-show="isOpen">
+                        <el-date-picker type="daterange" unlink-panels range-separator="至"
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期"
+                                        v-model="approveTime"
+                        />
+                    </el-form-item>
+                </div>
 
                 <el-form-item class="custom-button-group">
                     <el-button type="primary" @click="doQuery()">查询</el-button>
@@ -40,7 +42,7 @@
         <hr>
 
         <div class="custom-table">
-            <el-table :data="logInfoTable" :class="userTableClass" stripe @selection-change="handleSelectChange">
+            <el-table :data="logInfoTable" class="log-table" stripe @selection-change="handleSelectChange">
                 <el-table-column type="selection" width="55" />
 
                 <el-table-column prop="approvalTime" label="审批时间" width="200"/>
@@ -225,13 +227,12 @@ const deleteSelectLogs = () => {
 
 //以下为美化界面JS代码
 let isOpen = ref(false)
-let userTableClass = ref('user-table-when-close')
-watch(isOpen, async (newValue, oldValue) => {
-    if (newValue) {
-        userTableClass.value = 'user-table-when-open'
-    } else {
-        userTableClass.value = 'user-table-when-close'
-    }
+import eleResizeDetector from "element-resize-detector"
+onMounted(() => {
+    let erd = eleResizeDetector()
+    erd.listenTo(document.querySelector(".custom-not-button-group"), element => {
+        document.querySelector(".log-table").style.height = "calc(100vh - " + (200 + element.offsetHeight) + "px)"
+    })
 })
 </script>
 
@@ -251,12 +252,7 @@ watch(isOpen, async (newValue, oldValue) => {
     top: 115px;
 }
 
-.user-table-when-open {
-    width: 100%;
-    height: calc(100vh - 310px);
-}
-
-.user-table-when-close {
+.log-table {
     width: 100%;
     height: calc(100vh - 260px);
 }

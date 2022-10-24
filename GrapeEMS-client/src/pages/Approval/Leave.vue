@@ -47,8 +47,8 @@ function getAllLeaveApplications() {
                     reason: a.leaveApplicationReason,
                     detail: a.leaveApplicationDetail,
                     email: a.user.userEmail,
-                    leaveStartTime: new Date(a.leaveApplicationLeaveStartTime).toLocaleString(),
-                    leaveEndTime: new Date(a.leaveApplicationLeaveEndTime).toLocaleString(),
+                    leaveStartTime: new Date(a.leaveApplicationLeaveStartTime).toLocaleDateString(),
+                    leaveEndTime: new Date(a.leaveApplicationLeaveEndTime).toLocaleDateString(),
                 }
                 leaveApplications.value.push(leaveInfo)
             }
@@ -61,18 +61,33 @@ function getAllLeaveApplications() {
 table {
     text-align: center;
     font-family: 华文宋体, serif;
-    width: 100%;
+    border-collapse: collapse;
+    width:100%;
+    border:1px solid #c6c6c6 !important;
+    margin-bottom:20px;
 }
 
 tr {
-    height: 50px;
+    height: 45px;
 }
 
-th {
-    width: 130px;
+tr:first-child {
+    height: 60px;
 }
 
 .leave-time, .opt {
     width: 250px;
+}
+
+th{
+    width: 130px;
+    border-collapse: collapse;
+    border-right:1px solid #c6c6c6 !important;
+    border-bottom:1px solid #c6c6c6 !important;
+    background-color:#ddeeff !important;
+    padding:5px 9px;
+    font-size:19px;
+    font-weight:normal;
+    text-align:center;
 }
 </style>

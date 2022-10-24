@@ -1,7 +1,7 @@
 <template>
 
     <tr>
-        <td>{{backInfo.createTime}}</td>
+        <td width="200">{{backInfo.createTime}}</td>
         <td>{{backInfo.name}}</td>
         <td>{{backInfo.dept}}</td>
         <td>{{backInfo.role}}</td>
@@ -38,4 +38,21 @@ const handleApplication = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+td{
+    border-collapse: collapse;
+    border-right:1px solid #c6c6c6 !important;
+    border-bottom:1px solid #c6c6c6 !important;
+    padding:5px 9px;
+    font-size:15px;
+    font-weight:normal;
+    text-align:center;
+    word-break: break-all;
+}
+tr:nth-child(odd){
+    background-color:#fff !important;
+}
+tr:nth-child(even){
+    background-color: #f8f8f8 !important;
+}
+</style>

@@ -9,6 +9,7 @@ import Login from '../pages/Login.vue'
 import NotFound from '../pages/404.vue'
 
 import Front from '../pages/Front/Front.vue'
+import EpidemicMap from '../pages/Epidemic/EpidemicMap.vue'
 import Salary from '../pages/Finance/Salary.vue'
 import Back from '../pages/Approval/Back.vue'
 import Leave from '../pages/Approval/Leave.vue'
@@ -81,6 +82,10 @@ const routes = [
             {
                 path: 'index',
                 component: Front,
+            },
+            {
+                path: 'epidemicMap',
+                component: EpidemicMap,
             },
             {
                 path: 'approve',

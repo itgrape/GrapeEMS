@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="custom-total">
         <table>
             <tbody>
             <tr>
@@ -59,6 +59,10 @@ function getAllBackApplications() {
 </script>
 
 <style scoped>
+.custom-total {
+    margin: -20px;
+}
+
 table {
     text-align: center;
     font-family: 华文宋体, serif;

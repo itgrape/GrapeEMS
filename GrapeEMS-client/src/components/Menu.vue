@@ -50,6 +50,12 @@
                     <el-menu-item index="/admin/announce/publish"><el-icon><Promotion /></el-icon>发布公告</el-menu-item>
                     <el-menu-item index="/admin/announce/check"><el-icon><CircleCheck /></el-icon>管理公告</el-menu-item>
                 </el-sub-menu>
+                <el-sub-menu index="7">
+                    <template #title>
+                        <span><el-icon><Coin /></el-icon>其他页面</span>
+                    </template>
+                    <el-menu-item index="/admin/epidemicMap"><span><el-icon><WarnTriangleFilled /></el-icon>疫情地图</span></el-menu-item>
+                </el-sub-menu>
                 <el-menu-item index="" @click="goGithub">
                     <template #title>
                         <span><span class="iconfont icon-github"></span>Github</span>
@@ -63,7 +69,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Platform, Promotion, BellFilled, CircleCheck, OfficeBuilding, Histogram, Avatar, House, Money, Lock, Coordinate, Cpu, Smoking, NoSmoking, Notebook } from "@element-plus/icons-vue"
+import { Coin, WarnTriangleFilled, Platform, Promotion, BellFilled, CircleCheck, OfficeBuilding, Histogram, Avatar, House, Money, Lock, Coordinate, Cpu, Smoking, NoSmoking, Notebook } from "@element-plus/icons-vue"
 
 const router = useRouter()
 

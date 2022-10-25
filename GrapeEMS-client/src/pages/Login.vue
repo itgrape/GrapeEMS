@@ -38,7 +38,7 @@ import {HelpFilled, Coin, Avatar} from '@element-plus/icons-vue'
 import {ElMessage} from "element-plus";
 
 const router = useRouter()
-let activeCodeText = ref()
+let activeCodeText = ref('cf91deba88780e042a46f69e274de3a8')
 const userinfo = reactive({
     userEmail: '',
     userPassword: '',

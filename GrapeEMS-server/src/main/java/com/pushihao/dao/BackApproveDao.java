@@ -10,6 +10,8 @@ import java.util.List;
 public interface BackApproveDao {
     public List<BackApplication> getAllBackApplication();
 
+    public List<BackApplication> getBackApplicationByUserId(@Param("userId") Long userId);
+
     public BackApplication getBackApplicationById(@Param("id") Long id);
 
     public Integer updateBackApplication(BackApplication backApplication);

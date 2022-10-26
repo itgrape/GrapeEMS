@@ -38,7 +38,7 @@
         from
              grapeems_user u, grapeems_dept d, grapeems_role r
         where
-              u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1
+              u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1 and u.userId != 1000
     </select>
 
 
@@ -60,7 +60,7 @@
         from
             grapeems_user u, grapeems_dept d, grapeems_role r
         where
-            u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1
+            u.deptId = d.deptId and u.roleId = r.roleId and u.isDeleted = 1 and u.userId != 1000
             <if test="userName != null and userName != ''">
                 and u.userName like "%" #{userName} "%"
             </if>
@@ -116,6 +116,6 @@
             count(*)
         from
             grapeems_user
-        where isDeleted = 1
+        where isDeleted = 1 and userId != 1000
     </select>
 </mapper>

@@ -20,6 +20,10 @@
         select * from grapeems_back_application where isDeleted = 1 and BackApplicationId = #{id}
     </select>
 
+    <select id="getBackApplicationByUserId" resultType="com.pushihao.bean.BackApplication">
+        select * from grapeems_back_application where isDeleted = 1 and userId = #{userId}
+    </select>
+
     <update id="updateBackApplication">
         update
             grapeems_back_application

@@ -29,6 +29,8 @@ public class LeaveApplication {
 
     private String leaveApplicationApproveResult;
 
+    private Integer leaveApplicationIsDestroy;
+
     private Integer isDeleted;
 
     private Long userId;

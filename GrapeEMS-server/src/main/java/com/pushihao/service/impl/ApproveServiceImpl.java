@@ -8,7 +8,9 @@ import com.pushihao.dao.BackApproveDao;
 import com.pushihao.dao.LeaveApproveDao;
 import com.pushihao.dao.UserDao;
 import com.pushihao.pojo.QueryApproveLog;
+import com.pushihao.pojo.UserCenterUsers;
 import com.pushihao.service.ApproveService;
+import com.pushihao.service.UserCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,9 @@ public class ApproveServiceImpl implements ApproveService {
     @Autowired
     private ApproveLogDao approveLogDao;
 
+    @Autowired
+    private UserCenterService userCenterService;
+
     @Override
     public List<LeaveApplication> getAllLeaveApplication() {
         List<LeaveApplication> leaveApplications = leaveApproveDao.getAllLeaveApplication();
@@ -46,7 +51,14 @@ public class ApproveServiceImpl implements ApproveService {
         leaveApplication.setLeaveApplicationIsApprove(1);
         leaveApplication.setLeaveApplicationApproveTime(new Timestamp(new Date().getTime()));
         leaveApplication.setLeaveApplicationApproveResult("同意");
-        return handleLeave(id, leaveApplication);
+        boolean result1 = handleLeave(id, leaveApplication);
+
+        Long userId = leaveApplication.getUserId();
+        UserCenterUsers user = userDao.getOneUserById(userId);
+        user.setUserState("请假中");
+        boolean result2 = userCenterService.editOneUser(user);
+
+        return result1 && result2;
     }
 
     @Override
@@ -86,11 +98,24 @@ public class ApproveServiceImpl implements ApproveService {
         backApplication.setBackApplicationApproveResult("同意");
         int result1 = backApproveDao.updateBackApplication(backApplication);
 
+        //将请假信息设为“已销假”
+        LeaveApplication leaveApplication = leaveApproveDao.getLeaveApplicationById(backApplication.getLeaveApplicationId());
+        leaveApplication.setLeaveApplicationIsDestroy(0);
+        leaveApproveDao.updateLeaveApplication(leaveApplication);
+
+        //添加审批日志
         ApproveLog<?> approveLog = new ApproveLog<>();
         approveLog.setApproveLogKind(2);
         approveLog.setApproveLogContentId(id);
         int result2 = approveLogDao.addOneApproveLog(approveLog);
-        return (result1 == 1 && result2 == 1);
+
+        //将员工状态设为“正常”
+        Long userId = backApplication.getUserId();
+        UserCenterUsers user = userDao.getOneUserById(userId);
+        user.setUserState("正常");
+        boolean result3 = userCenterService.editOneUser(user);
+
+        return (result1 == 1 && result2 == 1 && result3);
     }
 
     @Override
@@ -112,6 +137,12 @@ public class ApproveServiceImpl implements ApproveService {
 
     @Override
     public List<ApproveLog<?>> queryApproveLog(QueryApproveLog queryApproveLog) {
+        if (queryApproveLog.getApproveStartTime() != null) {
+            queryApproveLog.setApproveStartTime(new Timestamp(Long.parseLong(queryApproveLog.getApproveStartTime())).toString());
+        }
+        if (queryApproveLog.getApproveEndTime() != null) {
+            queryApproveLog.setApproveEndTime(new Timestamp(Long.parseLong(queryApproveLog.getApproveEndTime())).toString());
+        }
         List<ApproveLog<?>> approveLogs = approveLogDao.queryApproveLog(queryApproveLog);
         for (ApproveLog approveLog : approveLogs) {
             if (approveLog.getApproveLogKind() == 1) {
@@ -137,9 +168,15 @@ public class ApproveServiceImpl implements ApproveService {
 
     @Override
     public Boolean addOneLeaveApprove(LeaveApplication leaveApplication) {
-        leaveApplication.setLeaveApplicationCreateTime(new Timestamp(new Date().getTime()));
-        int result = leaveApproveDao.addOneLeaveApplication(leaveApplication);
-        return result == 1;
+        Long userId = leaveApplication.getUserId();
+        UserCenterUsers user = userDao.getOneUserById(userId);
+        if (user.getUserState().equals("正常")) {
+            leaveApplication.setLeaveApplicationCreateTime(new Timestamp(new Date().getTime()));
+            int result = leaveApproveDao.addOneLeaveApplication(leaveApplication);
+            return result == 1;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -149,6 +186,15 @@ public class ApproveServiceImpl implements ApproveService {
 
     @Override
     public Boolean addOneBackApprove(BackApplication backApplication) {
+        long leaveApplicationId = backApplication.getLeaveApplicationId();
+        List<BackApplication> backApplications = backApproveDao.getBackApplicationByUserId(backApplication.getUserId());
+        for (BackApplication b : backApplications) {
+            long leaveApplicationId1 = b.getLeaveApplicationId();
+            if (leaveApplicationId1 == leaveApplicationId) {
+                return false;
+            }
+        }
+
         backApplication.setBackApplicationCreateTime(new Timestamp(new Date().getTime()));
         int result = backApproveDao.addOneBackApprove(backApplication);
         return result == 1;

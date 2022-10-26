@@ -21,14 +21,14 @@
     </select>
 
     <select id="getLeaveApplicationByUserId" resultType="com.pushihao.bean.LeaveApplication">
-        select * from grapeems_leave_application where isDeleted = 1 and userId = #{userId}
+        select * from grapeems_leave_application where isDeleted = 1 and userId = #{userId} and leaveApplicationApproveResult = "同意" and leaveApplicationIsDestroy = 1
     </select>
 
     <update id="updateLeaveApplication">
         update
             grapeems_leave_application
         set
-            leaveApplicationReason = #{leaveApplicationReason}, leaveApplicationDetail = #{leaveApplicationDetail}, leaveApplicationLeaveStartTime = #{leaveApplicationLeaveStartTime}, leaveApplicationLeaveEndTime = #{leaveApplicationLeaveEndTime}, leaveApplicationIsApprove = #{leaveApplicationIsApprove}, leaveApplicationApproveTime = #{leaveApplicationApproveTime}, leaveApplicationApproveResult = #{leaveApplicationApproveResult}
+            leaveApplicationReason = #{leaveApplicationReason}, leaveApplicationDetail = #{leaveApplicationDetail}, leaveApplicationLeaveStartTime = #{leaveApplicationLeaveStartTime}, leaveApplicationLeaveEndTime = #{leaveApplicationLeaveEndTime}, leaveApplicationIsApprove = #{leaveApplicationIsApprove}, leaveApplicationApproveTime = #{leaveApplicationApproveTime}, leaveApplicationApproveResult = #{leaveApplicationApproveResult}, leaveApplicationIsDestroy = #{leaveApplicationIsDestroy}
         where
             leaveApplicationId = #{leaveApplicationId}
     </update>

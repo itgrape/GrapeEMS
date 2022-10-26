@@ -47,6 +47,11 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public Boolean addNewDept(String deptName) {
+        Long deptId = deptDao.getDeptIdByName(deptName);
+        if (deptId != null) {
+            return false;
+        }
+
         Dept dept = new Dept();
         dept.setDeptName(deptName);
         dept.setDeptBuildTime(new Timestamp(new Date().getTime()));
@@ -57,6 +62,10 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public Boolean editDept(Dept dept) {
+        if (deptDao.getDeptIdByName(dept.getDeptName()) != null) {
+            return false;
+        }
+
         Integer result = deptDao.editDept(dept);
         return result == 1;
     }

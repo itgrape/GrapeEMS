@@ -115,7 +115,7 @@ let backApplication = reactive({
 function applicationPost() {
     if (isLeaveApplication.value) {
         //请假申请
-        if (leaveTime.value !== null) {
+        if (leaveTime.value !== null && leaveApplication.leaveApplicationReason !== null && leaveApplication.leaveApplicationDetail !== null) {
             leaveApplication.leaveApplicationLeaveStartTime = leaveTime.value[0]
             leaveApplication.leaveApplicationLeaveEndTime = leaveTime.value[1]
             instance.post("/plainUser/approve/leaveApprove", leaveApplication).then(
@@ -126,23 +126,29 @@ function applicationPost() {
                         leaveApplication.leaveApplicationDetail = null
                         leaveTime.value = null
                     } else {
+                        ElMessage.warning("申请失败")
+                    }
+                }
+            )
+        } else {
+            ElMessage.warning("请检查填写信息是否完整或信息是否有误")
+        }
+    } else {
+        if (backApplication.leaveApplicationId !== null) {
+            //销假申请
+            instance.post("/plainUser/approve/backApprove", backApplication).then(
+                response => {
+                    if (response.data) {
+                        ElMessage.success("申请成功")
+                        backApplication.leaveApplicationId = null
+                    } else {
                         ElMessage.error("申请失败")
                     }
                 }
             )
+        } else {
+            ElMessage.warning("请检查填写信息是否完整")
         }
-    } else {
-        //销假申请
-        instance.post("/plainUser/approve/backApprove", backApplication).then(
-            response => {
-                if (response.data) {
-                    ElMessage.success("申请成功")
-                    backApplication.leaveApplicationId = null
-                } else {
-                    ElMessage.error("申请失败")
-                }
-            }
-        )
     }
 }
 

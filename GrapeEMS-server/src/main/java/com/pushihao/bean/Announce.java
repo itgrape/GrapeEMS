@@ -21,4 +21,6 @@ public class Announce {
     private Integer isDeleted;
 
     private Long deptId;
+
+    private Dept dept;
 }

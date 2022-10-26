@@ -359,21 +359,21 @@ function getAllRoleName() {
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const addUserForm = reactive({
-    userName: "",
-    userSex: "",
+    userName: null,
+    userSex: null,
     userAge: null,
-    userEmail: "",
-    userPassword: "",
-    deptName: "",
-    roleName: "",
+    userEmail: null,
+    userPassword: null,
+    deptName: null,
+    roleName: null,
     userState: "正常",
-    userProvince: "",
-    userCity: "",
-    userCommunity: "",
-    userInterTime: "",
+    userProvince: null,
+    userCity: null,
+    userCommunity: null,
+    userInterTime: null,
 })
 function addUserPost() {
-    if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge)) {
+    if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge) && addUserForm.userName !== null && addUserForm.userSex !== null && addUserForm.userPassword !== null && addUserForm.deptName !== null && addUserForm.roleName !== null && addUserForm.userCity !== null && addUserForm.userInterTime !== null) {
         instance.post("/userCenter/addNewUser", addUserForm).then(
             response => {
                 if (response.data) {
@@ -427,7 +427,7 @@ function editUser(row) {
     )
 }
 function editUserPost() {
-    if (matchEmail(editUserForm.value.userEmail) && matchNumber(editUserForm.value.userAge)) {
+    if (matchEmail(editUserForm.value.userEmail) && matchNumber(editUserForm.value.userAge) && editUserForm.userName !== null && editUserForm.userCity !== null && editUserForm.userInterTime !== null) {
         instance.post("/userCenter/editOneUser" ,editUserForm.value).then(
             response => {
                 if (response.data) {

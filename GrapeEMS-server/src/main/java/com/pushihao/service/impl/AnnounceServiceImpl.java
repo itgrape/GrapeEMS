@@ -1,6 +1,7 @@
 package com.pushihao.service.impl;
 
 import com.pushihao.bean.Announce;
+import com.pushihao.bean.Dept;
 import com.pushihao.dao.AnnounceDao;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.UserDao;
@@ -32,7 +33,11 @@ public class AnnounceServiceImpl implements AnnounceService {
         a.setAnnounceTitle(announce.getTitle());
         a.setAnnounceContent(announce.getContent());
         a.setAnnounceCreateTime(new Timestamp(new Date().getTime()));
-        a.setDeptId(deptDao.getDeptIdByName(announce.getDeptName()));
+        if (announce.getDeptName().equals("全体部门")) {
+            a.setDeptId(0L);
+        } else {
+            a.setDeptId(deptDao.getDeptIdByName(announce.getDeptName()));
+        }
         a.setIsDeleted(1);
         Integer result = announceDao.addOneAnnounce(a);
         return result == 1;
@@ -40,7 +45,8 @@ public class AnnounceServiceImpl implements AnnounceService {
 
     @Override
     public List<Announce> getAllAnnounce() {
-        return announceDao.getAllAnnounce();
+        List<Announce> announces = announceDao.getAllAnnounce();
+        return setAnnounceDeptName(announces);
     }
 
     @Override
@@ -65,7 +71,39 @@ public class AnnounceServiceImpl implements AnnounceService {
 
     @Override
     public List<Announce> queryAnnounce(QueryAnnounce queryAnnounce) {
-        return announceDao.queryAnnounce(queryAnnounce);
+        String deptName = queryAnnounce.getDeptName();
+        if (deptName != null) {
+            if (deptName.equals("全体部门")) {
+                queryAnnounce.setDeptId(0L);
+            } else {
+                Long deptId = deptDao.getDeptIdByName(deptName);
+                queryAnnounce.setDeptId(deptId);
+            }
+        }
+
+        if (queryAnnounce.getStartTime() != null) {
+            queryAnnounce.setStartTime(new Timestamp(Long.parseLong(queryAnnounce.getStartTime())).toString());
+        }
+        if (queryAnnounce.getEndTime() != null) {
+            queryAnnounce.setEndTime(new Timestamp(Long.parseLong(queryAnnounce.getEndTime())).toString());
+        }
+
+        List<Announce> announces = announceDao.queryAnnounce(queryAnnounce);
+        return setAnnounceDeptName(announces);
+    }
+
+    private List<Announce> setAnnounceDeptName(List<Announce> announces) {
+        for (Announce announce : announces) {
+            long deptId = announce.getDeptId();
+            Dept dept = new Dept();
+            if (deptId == 0L) {
+                dept.setDeptName("全体部门");
+            } else {
+                dept.setDeptName(deptDao.getDeptNameById(announce.getDeptId()));
+            }
+            announce.setDept(dept);
+        }
+        return announces;
     }
 
     @Override

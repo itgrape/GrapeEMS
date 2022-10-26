@@ -46,9 +46,6 @@ public class AnnounceController {
 
     @PostMapping("/queryAnnounce")
     public String queryAnnounce(@RequestBody QueryAnnounce queryAnnounce) {
-        String deptName = queryAnnounce.getDeptName();
-        Long deptId = deptService.getDeptIdByName(deptName);
-        queryAnnounce.setDeptId(deptId);
         return JSON.toJSONString(announceService.queryAnnounce(queryAnnounce));
     }
 }

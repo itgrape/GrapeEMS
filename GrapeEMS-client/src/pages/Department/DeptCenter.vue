@@ -103,9 +103,13 @@ let addDeptForm = reactive({
 function addDeptPost() {
     instance.get("/dept/addNewDept/" + addDeptForm.deptName).then(
         response => {
-            ElMessage.success("添加成功")
-            addDeptForm.deptName = null
-            refresh_dept_list()
+            if (response.data) {
+                ElMessage.success("添加成功")
+                addDeptForm.deptName = null
+                refresh_dept_list()
+            } else {
+                ElMessage.warning("添加失败，请检查是否有命名冲突")
+            }
         }
     )
 }
@@ -126,12 +130,20 @@ function editDept(row) {
     }
 }
 function editDeptPost() {
-    instance.get("/dept/editDept/" + editDeptForm.id + "/" + editDeptForm.deptName).then(
-        response => {
-            ElMessage.success("修改成功")
-            refresh_dept_list()
-        }
-    )
+    if (editDeptForm.deptName !== null && editDeptForm.deptName !== '') {
+        instance.get("/dept/editDept/" + editDeptForm.id + "/" + editDeptForm.deptName).then(
+            response => {
+                if (response.data) {
+                    ElMessage.success("修改成功")
+                    refresh_dept_list()
+                } else {
+                    ElMessage.warning("修改失败，请检查命名冲突等问题")
+                }
+            }
+        )
+    } else {
+        ElMessage.warning("请输入正确的信息")
+    }
 }
 
 function deleteDept(row) {

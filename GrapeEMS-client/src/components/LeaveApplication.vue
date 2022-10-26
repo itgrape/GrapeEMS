@@ -18,6 +18,7 @@
 import {ElMessage, ElMessageBox} from "element-plus";
 import {defineProps} from "vue/dist/vue.esm-browser";
 import instance from "../api/DataAxios";
+import router from "../router";
 const props = defineProps({
     leaveInfo: Object
 })
@@ -47,12 +48,14 @@ const handleApplication = () => {
     )
         .then(() => {
             instance.get("/approve/acceptLeave/" + props.leaveInfo.id)
+            router.go(0)
             ElMessage.success("审批接受")
         })
         .catch((action) => {
             if (action === 'cancel') {
                 instance.get("/approve/rejectLeave/" + props.leaveInfo.id)
-                ElMessage.error("审批拒绝")
+                router.go(0)
+                ElMessage.warning("审批拒绝")
             } else if (action === 'close') {
                 //关闭
             }

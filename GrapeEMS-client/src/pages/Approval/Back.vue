@@ -37,6 +37,7 @@ onMounted(() => {
 function getAllBackApplications() {
     return instance.get("/approve/getAllBackApplication").then(
         response => {
+            backApplications.value.splice(0, backApplications.value.length)
             let data = response.data
             for (let a of data) {
                 let backInfo = {

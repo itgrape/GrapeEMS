@@ -17,6 +17,7 @@
 import {defineProps} from "vue/dist/vue.esm-browser";
 import {ElMessage, ElMessageBox} from "element-plus";
 import instance from "../api/DataAxios";
+import router from "../router";
 
 const props = defineProps({
     backInfo: Object
@@ -31,6 +32,7 @@ const handleApplication = () => {
         }
     ).then(() => {
         instance.get("/approve/acceptBack/" + props.backInfo.id)
+        router.go(0)
         ElMessage.success("销假成功")
     }).catch(() => {
         //未销假

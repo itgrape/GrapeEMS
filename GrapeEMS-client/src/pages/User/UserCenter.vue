@@ -123,11 +123,11 @@
                     <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="状态" :label-width="formLabelWidth">
-                <el-select v-model="addUserForm.userState" placeholder="请选择">
-                    <el-option v-for="state in states" :value="state">{{ state }}</el-option>
-                </el-select>
-            </el-form-item>
+<!--            <el-form-item label="状态" :label-width="formLabelWidth">-->
+<!--                <el-select v-model="addUserForm.userState" placeholder="请选择">-->
+<!--                    <el-option v-for="state in states" :value="state">{{ state }}</el-option>-->
+<!--                </el-select>-->
+<!--            </el-form-item>-->
             <el-form-item label="家庭住址" :label-width="formLabelWidth">
                 <el-input v-model="addUserForm.userProvince" placeholder="省"></el-input>
                 <el-input v-model="addUserForm.userCity" placeholder="市"></el-input>
@@ -294,7 +294,7 @@ function query() {
                     roleName: user.roleName,
                     userEmail: user.userEmail,
                     userAddress: user.userProvince + user.userCity + user.userCommunity,
-                    userInterTime: new Date(user.userInterTime).toLocaleString(),
+                    userInterTime: new Date(user.userInterTime).toLocaleDateString(),
                     userState: user.userState
                 }
                 userinfo.push(singleUser)
@@ -366,7 +366,7 @@ const addUserForm = reactive({
     userPassword: "",
     deptName: "",
     roleName: "",
-    userState: "",
+    userState: "正常",
     userProvince: "",
     userCity: "",
     userCommunity: "",

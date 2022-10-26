@@ -77,7 +77,7 @@ onMounted(() => {
             leaveApplicationNotApprove.value.splice(0, leaveApplicationNotApprove.value.length)
             const data = response.data
             for (let d of data) {
-                if (d.leaveApplicationIsApprove === 0) {
+                if (d.leaveApplicationIsApprove === 1) {
                     leaveApplicationNotApprove.value.push(d)
                 }
             }

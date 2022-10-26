@@ -22,7 +22,8 @@
                     </el-form-item>
 
                     <el-form-item label="审批时间" v-show="isOpen">
-                        <el-date-picker type="daterange" unlink-panels range-separator="至"
+                        <el-date-picker type="datetimerange"
+                                        unlink-panels range-separator="至"
                                         start-placeholder="开始日期"
                                         end-placeholder="结束日期"
                                         v-model="approveTime"
@@ -178,8 +179,8 @@ let queryForm = reactive({
 })
 function doQuery() {
     if (approveTime.value !== null && approveTime.value !== '') {
-        queryForm.approveStartTime = approveTime.value[0]
-        queryForm.approveEndTime = approveTime.value[1]
+        queryForm.approveStartTime = new Date(approveTime.value[0]).getTime()
+        queryForm.approveEndTime = new Date(approveTime.value[1]).getTime()
     }
     instance.post("/approve/queryApproveLog", queryForm).then(
         response => {

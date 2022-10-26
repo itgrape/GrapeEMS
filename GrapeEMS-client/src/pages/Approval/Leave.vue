@@ -25,7 +25,6 @@ import LeaveApplication from '../../components/LeaveApplication.vue'
 import {onMounted, ref} from "vue"
 import instance from "../../api/DataAxios"
 import axios from 'axios'
-import {ElMessage} from "element-plus"
 
 let leaveApplications = ref([])
 
@@ -36,6 +35,7 @@ onMounted(() => {
 function getAllLeaveApplications() {
     return instance.get("/approve/getAllLeaveApplication").then(
         response => {
+            leaveApplications.value.splice(0, leaveApplications.value.length)
             let data = response.data
             for (let a of data) {
                 let leaveInfo = {

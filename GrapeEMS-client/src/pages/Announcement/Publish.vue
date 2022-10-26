@@ -13,8 +13,9 @@
     <div>
         <h3>发布</h3>
         <el-form :inline="true">
-            <el-form-item label="发布对象部门">
+            <el-form-item label="">
                 <el-select v-model="announcement.deptName" placeholder="请选择发布部门">
+                    <el-option value="全体部门">全体部门</el-option>
                     <el-option v-for="dept in depts" :value="dept">{{dept}}</el-option>
                 </el-select>
             </el-form-item>
@@ -55,19 +56,19 @@ function getAllDeptName() {
 }
 
 function pubAnnounce() {
-    instance.post("/announce/addOneAnnounce", announcement).then(
-        response => {
-            ElMessage.success("发布成功")
-            //发布成功后清空数据
-            announcement = {
-                title: null,
-                content: null,
-                deptName: null
+    if (announcement.title !== null && announcement.title !== '' && announcement.content !== null && announcement.content !== '' && announcement.deptName !== null && announcement.deptName !== '') {
+        instance.post("/announce/addOneAnnounce", announcement).then(
+            response => {
+                ElMessage.success("发布成功")
+                //发布成功后清空数据
+                announcement.title = null
+                announcement.content = null
+                announcement.deptName = null
             }
-        }, error => {
-            ElMessage.error("系统繁忙，请稍后再试")
-        }
-    )
+        )
+    } else {
+        ElMessage.warning("请检查表单信息是否有误")
+    }
 }
 
 </script>

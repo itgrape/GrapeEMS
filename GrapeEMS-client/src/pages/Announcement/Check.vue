@@ -1,14 +1,15 @@
 <template>
 
     <el-form :inline="true" class="query-form" id="my-form">
-        <el-form-item label="部门">
-            <el-select class="select-input" placeholder="请选择" v-model="deptName">
+        <el-form-item label="">
+            <el-select class="select-input" placeholder="请选择部门" v-model="deptName">
+                <el-option value="全体部门">全体部门</el-option>
                 <el-option v-for="dept in depts" :value="dept">{{dept}}</el-option>
             </el-select>
         </el-form-item>
 
         <el-form-item label="发布时间">
-            <el-date-picker type="daterange" unlink-panels range-separator="至"
+            <el-date-picker type="datetimerange" unlink-panels range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
                             v-model="pubTime"
@@ -25,9 +26,9 @@
     <el-table :data="announceListTable" border class="announce-table" @selection-change="handleSelectChange">
         <el-table-column type="selection" width="55" />
 
-        <el-table-column prop="title" label="公告标题"/>
-        <el-table-column prop="content" label="公告内容"/>
         <el-table-column prop="createTime" label="发布时间"/>
+        <el-table-column prop="deptName" label="公告对象部门"/>
+        <el-table-column prop="title" label="公告标题"/>
 
         <el-table-column label="相关操作" width="120">
             <template #default="scope">
@@ -127,7 +128,8 @@ function getAllAnnounce() {
                     title: a.announceTitle,
                     content: a.announceContent,
                     createTime: new Date(a.announceCreateTime).toLocaleString(),
-                    deptId: a.deptId
+                    deptId: a.deptId,
+                    deptName: a.dept.deptName,
                 }
                 announceList.value.push(announce)
             }
@@ -143,14 +145,18 @@ function refreshAnnounceList() {
 }
 
 
-let pubTime = ref([])
-let deptName = ref()
+let pubTime = ref(null)
+let deptName = ref(null)
 function queryAnnounce() {
-    const startTime = pubTime.value[0]
-    const endTime = pubTime.value[1]
-    const queryDeptName = deptName.value
+    let startTime = null;
+    let endTime = null;
+    if (pubTime.value !== null && pubTime.value !== '') {
+        startTime = new Date(pubTime.value[0]).getTime()
+        endTime = new Date(pubTime.value[1]).getTime()
+    }
+
     instance.post("/announce/queryAnnounce", {
-        deptName: queryDeptName,
+        deptName: deptName.value,
         startTime: startTime,
         endTime: endTime,
     }).then(
@@ -162,7 +168,8 @@ function queryAnnounce() {
                     title: a.announceTitle,
                     content: a.announceContent,
                     createTime: new Date(a.announceCreateTime).toLocaleString(),
-                    deptId: a.deptId
+                    deptId: a.deptId,
+                    deptName: a.dept.deptName,
                 }
                 announceList.value.push(announce)
             }
@@ -173,9 +180,8 @@ function queryAnnounce() {
 }
 
 function resetForm() {
-    document.querySelector("#my-form").reset()
-    pubTime = []
-    deptName = ""
+    pubTime.value = null
+    deptName.value = null
 }
 
 const formLabelWidth = '50px'

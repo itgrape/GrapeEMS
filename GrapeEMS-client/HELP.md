@@ -12,7 +12,7 @@ yarn remove 包名
 4、更新包（更新到最新版本）
 yarn upgrade 包名
 
-5.默认安装vue项目全部依赖
+5、默认安装vue项目全部依赖
 yarn
 
 6、默认运行vue项目的命令

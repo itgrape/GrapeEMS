@@ -38,7 +38,7 @@
         </el-table-column>
     </el-table>
 
-    <div class="custom-pagination" style="margin-top: 20px;">
+    <div class="custom-pagination">
         <el-pagination
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
@@ -272,8 +272,6 @@ function deleteSelectAnnounce() {
 }
 
 .custom-pagination {
-    margin-top: 10px;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    margin-top: 20px;
 }
 </style>

@@ -79,12 +79,14 @@ public class UserCenterServiceImpl implements UserCenterService {
     @Override
     public Boolean editOneUser(UserCenterUsers userCenterUsers) {
         if (userDao.getOneUserByEmail(userCenterUsers.getUserEmail()) == null || Objects.equals(userDao.getOneUserByEmail(userCenterUsers.getUserEmail()).getUserId(), userCenterUsers.getUserId())) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User user = new User();
             user.setUserId(userCenterUsers.getUserId());
             user.setUserName(userCenterUsers.getUserName());
             user.setUserSex(userCenterUsers.getUserSex());
             user.setUserAge(userCenterUsers.getUserAge());
             user.setUserEmail(userCenterUsers.getUserEmail());
+            user.setUserPassword(passwordEncoder.encode(userCenterUsers.getUserPassword()));
             user.setUserProvince(userCenterUsers.getUserProvince());
             user.setUserCity(userCenterUsers.getUserCity());
             user.setUserCommunity(userCenterUsers.getUserCommunity());

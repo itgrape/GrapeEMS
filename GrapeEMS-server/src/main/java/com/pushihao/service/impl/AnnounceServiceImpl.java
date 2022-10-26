@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AnnounceServiceImpl implements AnnounceService {
@@ -34,7 +35,7 @@ public class AnnounceServiceImpl implements AnnounceService {
         a.setAnnounceContent(announce.getContent());
         a.setAnnounceCreateTime(new Timestamp(new Date().getTime()));
         if (announce.getDeptName().equals("全体部门")) {
-            a.setDeptId(0L);
+            a.setDeptId(1L);
         } else {
             a.setDeptId(deptDao.getDeptIdByName(announce.getDeptName()));
         }
@@ -73,18 +74,19 @@ public class AnnounceServiceImpl implements AnnounceService {
     public List<Announce> queryAnnounce(QueryAnnounce queryAnnounce) {
         String deptName = queryAnnounce.getDeptName();
         if (deptName != null) {
+            Long deptId;
             if (deptName.equals("全体部门")) {
-                queryAnnounce.setDeptId(0L);
+                deptId = 1L;
             } else {
-                Long deptId = deptDao.getDeptIdByName(deptName);
-                queryAnnounce.setDeptId(deptId);
+                deptId = deptDao.getDeptIdByName(deptName);
             }
+            queryAnnounce.setDeptId(deptId);
         }
 
-        if (queryAnnounce.getStartTime() != null) {
+        if (queryAnnounce.getStartTime() != null && !Objects.equals(queryAnnounce.getStartTime(), "")) {
             queryAnnounce.setStartTime(new Timestamp(Long.parseLong(queryAnnounce.getStartTime())).toString());
         }
-        if (queryAnnounce.getEndTime() != null) {
+        if (queryAnnounce.getEndTime() != null && !Objects.equals(queryAnnounce.getEndTime(), "")) {
             queryAnnounce.setEndTime(new Timestamp(Long.parseLong(queryAnnounce.getEndTime())).toString());
         }
 
@@ -96,7 +98,7 @@ public class AnnounceServiceImpl implements AnnounceService {
         for (Announce announce : announces) {
             long deptId = announce.getDeptId();
             Dept dept = new Dept();
-            if (deptId == 0L) {
+            if (deptId == 1L) {
                 dept.setDeptName("全体部门");
             } else {
                 dept.setDeptName(deptDao.getDeptNameById(announce.getDeptId()));

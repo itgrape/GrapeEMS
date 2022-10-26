@@ -24,6 +24,8 @@ public class UserCenterUsers {
 
     private String userEmail;
 
+    private String userPassword;
+
     private String userProvince;
 
     private String userCity;

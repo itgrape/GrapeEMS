@@ -18,6 +18,9 @@
             grapeems_user
         set
             userName = #{userName}, userSex = #{userSex}, userAge = #{userAge}, userEmail = #{userEmail}, userProvince = #{userProvince}, userCity = #{userCity}, userCommunity = #{userCommunity}, userInterTime = #{userInterTime}, userState = #{userState}, userRole = #{userRole}, isDeleted = #{isDeleted}, deptId = #{deptId}, roleId = #{roleId}
+            <if test="userPassword != null and userPassword != ''">
+                , userPassword = #{userPassword}
+            </if>
         where
             userId = #{userId}
     </update>
@@ -95,7 +98,7 @@
 
     <select id="getOneUserById" resultType="com.pushihao.pojo.UserCenterUsers">
         select
-            u.userId, u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
+            u.userId, u.userName, u.userSex, u.userAge, d.deptName, r.roleName, u.userEmail, u.userPassword, u.userProvince, u.userCity, u.userCommunity, u.userInterTime, u.userState
         from
             grapeems_user u, grapeems_dept d, grapeems_role r
         where

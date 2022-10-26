@@ -123,11 +123,6 @@
                     <el-option v-for="role in roles" :value="role">{{ role }}</el-option>
                 </el-select>
             </el-form-item>
-<!--            <el-form-item label="状态" :label-width="formLabelWidth">-->
-<!--                <el-select v-model="addUserForm.userState" placeholder="请选择">-->
-<!--                    <el-option v-for="state in states" :value="state">{{ state }}</el-option>-->
-<!--                </el-select>-->
-<!--            </el-form-item>-->
             <el-form-item label="家庭住址" :label-width="formLabelWidth">
                 <el-input v-model="addUserForm.userProvince" placeholder="省"></el-input>
                 <el-input v-model="addUserForm.userCity" placeholder="市"></el-input>
@@ -169,6 +164,9 @@
                 </el-form-item>
                 <el-form-item label="邮箱" :label-width="formLabelWidth">
                     <el-input v-model="editUserForm.userEmail" placeholder="请输入员工邮箱"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" :label-width="formLabelWidth">
+                    <el-input v-model="editUserForm.userPassword" placeholder="请输入员工新密码"></el-input>
                 </el-form-item>
                 <el-form-item label="部门" :label-width="formLabelWidth">
                     <el-select v-model="editUserForm.deptName" placeholder="请选择">
@@ -391,7 +389,7 @@ function addUserPost() {
 }
 
 const editDialogFormVisible = ref(false)
-let editUserForm = ref({
+let editUserForm = reactive({
     userId: null,
     userName: null,
     userSex: null,
@@ -399,6 +397,7 @@ let editUserForm = ref({
     deptName: null,
     roleName: null,
     userEmail: null,
+    userPassword: null,
     userProvince: null,
     userCity: null,
     userCommunity: null,
@@ -409,26 +408,24 @@ function editUser(row) {
     instance.get("/userCenter/getOneUserById/" + row.userId).then(
         response => {
             const data = response.data
-            editUserForm.value = {
-                userId: data.userId,
-                userName: data.userName,
-                userSex: data.userSex,
-                userAge: data.userAge,
-                deptName: data.deptName,
-                roleName: data.roleName,
-                userEmail: data.userEmail,
-                userProvince: data.userProvince,
-                userCity: data.userCity,
-                userCommunity: data.userCommunity,
-                userInterTime: new Date(data.userInterTime),
-                userState: data.userState
-            }
+            editUserForm.userId = data.userId
+            editUserForm.userName = data.userName
+            editUserForm.userSex = data.userSex
+            editUserForm.userAge = data.userAge
+            editUserForm.deptName = data.deptName
+            editUserForm.roleName = data.roleName
+            editUserForm.userEmail = data.userEmail
+            editUserForm.userProvince = data.userProvince
+            editUserForm.userCity = data.userCity
+            editUserForm.userCommunity = data.userCommunity
+            editUserForm.userInterTime = new Date(data.userInterTime)
+            editUserForm.userState = data.userState
         }
     )
 }
 function editUserPost() {
-    if (matchEmail(editUserForm.value.userEmail) && matchNumber(editUserForm.value.userAge) && editUserForm.userName !== null && editUserForm.userCity !== null && editUserForm.userInterTime !== null) {
-        instance.post("/userCenter/editOneUser" ,editUserForm.value).then(
+    if (matchEmail(editUserForm.userEmail) && matchNumber(editUserForm.userAge) && editUserForm.userName !== null && editUserForm.userCity !== null && editUserForm.userInterTime !== null) {
+        instance.post("/userCenter/editOneUser" ,editUserForm).then(
             response => {
                 if (response.data) {
                     ElMessage.success("修改成功")

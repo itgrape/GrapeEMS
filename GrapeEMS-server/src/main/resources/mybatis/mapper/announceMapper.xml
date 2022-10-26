@@ -64,7 +64,7 @@
         from
             grapeems_announce
         where
-            isDeleted = 1 and deptId = #{deptId}
+            isDeleted = 1 and deptId = #{deptId} or deptId = 1
     </select>
 
     <select id="getAnnounceById" resultType="com.pushihao.bean.Announce">

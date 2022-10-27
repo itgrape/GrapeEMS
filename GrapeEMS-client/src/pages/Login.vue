@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import '../api/md5'
+import md5 from 'js-md5'
 import {onMounted, reactive, ref} from 'vue'
 import instance from "../api/LoginAxios";
 import {useRouter} from "vue-router";
@@ -91,8 +91,6 @@ function flushActiveCode() {
             activeCodeText.value = response.data.data.imgText
             let outputImg = document.getElementById("kaptcha")
             outputImg.src = 'data:image/png;base64,' + imgByte
-        }, error => {
-            console.log("验证码请求错误")
         }
     )
 }

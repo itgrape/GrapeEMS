@@ -1,9 +1,8 @@
 package com.pushihao.service;
 
-import com.pushihao.bean.ApproveLog;
-import com.pushihao.bean.BackApplication;
-import com.pushihao.bean.LeaveApplication;
-import com.pushihao.dao.BackApproveDao;
+import com.pushihao.entity.ApproveLog;
+import com.pushihao.entity.BackApplication;
+import com.pushihao.entity.LeaveApplication;
 import com.pushihao.pojo.QueryApproveLog;
 
 import java.util.List;

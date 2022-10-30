@@ -1,6 +1,6 @@
 package com.pushihao.dao;
 
-import com.pushihao.bean.BackApplication;
+import com.pushihao.entity.BackApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

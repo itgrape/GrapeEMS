@@ -42,7 +42,7 @@
         select deptId from grapeems_dept where isDeleted = 1 and deptName = #{deptName}
     </select>
 
-    <select id="getAllDept" resultType="com.pushihao.bean.Dept">
+    <select id="getAllDept" resultType="com.pushihao.entity.Dept">
         select * from grapeems_dept where isDeleted = 1
     </select>
 

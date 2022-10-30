@@ -2,7 +2,7 @@ package com.pushihao.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.pushihao.bean.Announce;
+import com.pushihao.entity.Announce;
 import com.pushihao.pojo.AddAnnounce;
 import com.pushihao.pojo.EditAnnounce;
 import com.pushihao.pojo.QueryAnnounce;

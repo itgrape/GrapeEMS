@@ -10,7 +10,7 @@
     <!--</settings>-->
 
     <typeAliases>
-        <package name="com.pushihao.bean"/>
+        <package name="com.pushihao.entity"/>
         <package name="com.pushihao.pojo"/>
     </typeAliases>
 

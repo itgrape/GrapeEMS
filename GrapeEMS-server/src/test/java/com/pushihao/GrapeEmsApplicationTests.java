@@ -1,8 +1,8 @@
 package com.pushihao;
 
-import com.pushihao.bean.Announce;
-import com.pushihao.bean.Dept;
-import com.pushihao.bean.User;
+import com.pushihao.entity.Announce;
+import com.pushihao.entity.Dept;
+import com.pushihao.entity.User;
 import com.pushihao.dao.AnnounceDao;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.LeaveApproveDao;

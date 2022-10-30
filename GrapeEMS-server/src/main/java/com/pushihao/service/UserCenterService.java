@@ -2,6 +2,8 @@ package com.pushihao.service;
 
 import com.pushihao.pojo.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 public interface UserCenterService {
@@ -24,4 +26,8 @@ public interface UserCenterService {
     public UserSexInfo getUserSexInfo();
 
     public UserAgeInfo getUserAgeInfo();
+
+    public void downloadUser(HttpServletResponse response) throws IOException;
+
+    public Boolean saveBatchUser(List<UserUploadInfo> userList);
 }

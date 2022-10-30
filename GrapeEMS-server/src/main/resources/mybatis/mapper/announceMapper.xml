@@ -34,7 +34,7 @@
             announceId = #{announceId}
     </update>
 
-    <select id="getAllAnnounce" resultType="com.pushihao.bean.Announce">
+    <select id="getAllAnnounce" resultType="com.pushihao.entity.Announce">
         select
             announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
         from
@@ -43,7 +43,7 @@
             isDeleted = 1
     </select>
 
-    <select id="queryAnnounce" resultType="com.pushihao.bean.Announce">
+    <select id="queryAnnounce" resultType="com.pushihao.entity.Announce">
         select
             announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
         from
@@ -58,7 +58,7 @@
             </if>
     </select>
 
-    <select id="getAnnounceByDeptId" resultType="com.pushihao.bean.Announce">
+    <select id="getAnnounceByDeptId" resultType="com.pushihao.entity.Announce">
         select
             announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
         from
@@ -67,7 +67,7 @@
             isDeleted = 1 and deptId = #{deptId} or deptId = 1
     </select>
 
-    <select id="getAnnounceById" resultType="com.pushihao.bean.Announce">
+    <select id="getAnnounceById" resultType="com.pushihao.entity.Announce">
         select
             announceId, announceCreateTime, announceTitle, announceContent, isDeleted, deptId
         from

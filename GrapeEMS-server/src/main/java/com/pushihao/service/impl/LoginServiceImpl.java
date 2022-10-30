@@ -2,7 +2,7 @@ package com.pushihao.service.impl;
 
 import com.pushihao.pojo.LoginUser;
 import com.pushihao.pojo.ResponseResult;
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import com.pushihao.service.LoginService;
 import com.pushihao.utils.JwtUtil;
 import com.pushihao.utils.RedisCache;

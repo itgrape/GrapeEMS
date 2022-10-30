@@ -1,16 +1,28 @@
 package com.pushihao.service.impl;
 
-import com.pushihao.bean.Dept;
-import com.pushihao.bean.User;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.util.ListUtils;
+import com.pushihao.entity.Dept;
+import com.pushihao.entity.User;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.RoleDao;
 import com.pushihao.dao.UserDao;
 import com.pushihao.pojo.*;
 import com.pushihao.service.UserCenterService;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,20 +59,7 @@ public class UserCenterServiceImpl implements UserCenterService {
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User user = new User();
-            user.setUserName(addUser.getUserName());
-            user.setUserSex(addUser.getUserSex());
-            user.setUserAge(addUser.getUserAge());
-            user.setUserEmail(addUser.getUserEmail());
-            user.setUserPassword(passwordEncoder.encode(addUser.getUserPassword()));
-            user.setUserProvince(addUser.getUserProvince());
-            user.setUserCity(addUser.getUserCity());
-            user.setUserCommunity(addUser.getUserCommunity());
-            user.setUserInterTime(addUser.getUserInterTime());
-            user.setUserState(addUser.getUserState());
-            user.setUserRole(1);
-            user.setIsDeleted(1);
-            user.setDeptId(deptDao.getDeptIdByName(addUser.getDeptName()));
-            user.setRoleId(roleDao.getRoleIdByName(addUser.getRoleName()));
+            matchUser(passwordEncoder, user, addUser.getUserName(), addUser.getUserSex(), addUser.getUserAge(), addUser.getUserEmail(), addUser.getUserPassword(), addUser.getUserProvince(), addUser.getUserCity(), addUser.getUserCommunity(), addUser.getUserInterTime(), addUser.getUserState(), addUser.getDeptName(), addUser.getRoleName(), addUser);
             Integer result = userDao.addNewUser(user);
 
             Dept dept = new Dept();
@@ -69,6 +68,23 @@ public class UserCenterServiceImpl implements UserCenterService {
             int result2 = deptDao.updateDept(dept);
             return result == 1 && result2 == 1;
         }
+    }
+
+    private void matchUser(BCryptPasswordEncoder passwordEncoder, User user, String userName, String userSex, Integer userAge, String userEmail, String userPassword, String userProvince, String userCity, String userCommunity, Timestamp userInterTime, String userState, String deptName, String roleName, AddUser addUser) {
+        user.setUserName(userName);
+        user.setUserSex(userSex);
+        user.setUserAge(userAge);
+        user.setUserEmail(userEmail);
+        user.setUserPassword(passwordEncoder.encode(userPassword));
+        user.setUserProvince(userProvince);
+        user.setUserCity(userCity);
+        user.setUserCommunity(userCommunity);
+        user.setUserInterTime(userInterTime);
+        user.setUserState(userState);
+        user.setUserRole(1);
+        user.setIsDeleted(1);
+        user.setDeptId(deptDao.getDeptIdByName(deptName));
+        user.setRoleId(roleDao.getRoleIdByName(roleName));
     }
 
     @Override
@@ -82,20 +98,7 @@ public class UserCenterServiceImpl implements UserCenterService {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User user = new User();
             user.setUserId(userCenterUsers.getUserId());
-            user.setUserName(userCenterUsers.getUserName());
-            user.setUserSex(userCenterUsers.getUserSex());
-            user.setUserAge(userCenterUsers.getUserAge());
-            user.setUserEmail(userCenterUsers.getUserEmail());
-            user.setUserPassword(passwordEncoder.encode(userCenterUsers.getUserPassword()));
-            user.setUserProvince(userCenterUsers.getUserProvince());
-            user.setUserCity(userCenterUsers.getUserCity());
-            user.setUserCommunity(userCenterUsers.getUserCommunity());
-            user.setUserInterTime(userCenterUsers.getUserInterTime());
-            user.setUserState(userCenterUsers.getUserState());
-            user.setUserRole(1);
-            user.setIsDeleted(1);
-            user.setDeptId(deptDao.getDeptIdByName(userCenterUsers.getDeptName()));
-            user.setRoleId(roleDao.getRoleIdByName(userCenterUsers.getRoleName()));
+            matchUser(passwordEncoder, user, userCenterUsers.getUserName(), userCenterUsers.getUserSex(), userCenterUsers.getUserAge(), userCenterUsers.getUserEmail(), userCenterUsers.getUserPassword(), userCenterUsers.getUserProvince(), userCenterUsers.getUserCity(), userCenterUsers.getUserCommunity(), userCenterUsers.getUserInterTime(), userCenterUsers.getUserState(), userCenterUsers.getDeptName(), userCenterUsers.getRoleName(), null);
             Integer result = userDao.editOneUser(user);
 
             Dept dept = new Dept();
@@ -177,5 +180,93 @@ public class UserCenterServiceImpl implements UserCenterService {
         } else {
             return new UserAgeInfo(0, 0, 0, 0, 0);
         }
+    }
+
+    @Override
+    public void downloadUser(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+
+        String fileName = URLEncoder.encode("用户信息", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+
+        EasyExcel.write(response.getOutputStream(), UserDownloadInfo.class)
+                .head(head())
+                .sheet("用户信息")
+                .doWrite(data());
+    }
+
+    private List<List<String>> head() {
+        List<String> head1 = ListUtils.newArrayList("姓名");
+        List<String> head2 = ListUtils.newArrayList("性别");
+        List<String> head3 = ListUtils.newArrayList("年龄");
+        List<String> head4 = ListUtils.newArrayList("部门");
+        List<String> head5 = ListUtils.newArrayList("身份");
+        List<String> head6 = ListUtils.newArrayList("邮箱");
+        List<String> head7 = ListUtils.newArrayList("省");
+        List<String> head8 = ListUtils.newArrayList("市");
+        List<String> head9 = ListUtils.newArrayList("区");
+        List<String> head10 = ListUtils.newArrayList("入职时间");
+        List<List<String>> list = ListUtils.newArrayList();
+        list.add(head1);
+        list.add(head2);
+        list.add(head3);
+        list.add(head4);
+        list.add(head5);
+        list.add(head6);
+        list.add(head7);
+        list.add(head8);
+        list.add(head9);
+        list.add(head10);
+        return list;
+    }
+
+    private List<UserDownloadInfo> data() {
+        List<UserDownloadInfo> list = ListUtils.newArrayList();
+        List<UserCenterUsers> users = userDao.getAllUserCenterUsers();
+        for (UserCenterUsers user : users) {
+            UserDownloadInfo u = new UserDownloadInfo(
+                    user.getUserName(), user.getUserSex(),
+                    user.getUserAge(), user.getDeptName(),
+                    user.getRoleName(), user.getUserEmail(),
+                    user.getUserProvince(), user.getUserCity(),
+                    user.getUserCommunity(), user.getUserInterTime().toString().substring(0, user.getUserInterTime().toString().indexOf(' '))
+            );
+            list.add(u);
+        }
+        return list;
+    }
+
+    @Override
+    public Boolean saveBatchUser(List<UserUploadInfo> userList) {
+        try {
+            List<User> users = new ArrayList<>();
+            for (UserUploadInfo userUploadInfo : userList) {
+                User user = new User();
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                matchUser(passwordEncoder, user, userUploadInfo.getUserName(), userUploadInfo.getUserSex(), userUploadInfo.getUserAge(), userUploadInfo.getUserEmail(), userUploadInfo.getUserPassword(), userUploadInfo.getUserProvince(), userUploadInfo.getUserCity(), user.getUserCommunity(), handleDate(userUploadInfo.getUserInterTime()), null, userUploadInfo.getDeptName(), userUploadInfo.getRoleName(), null);
+                users.add(user);
+            }
+            userDao.addMoreUser(users);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    Timestamp handleDate(String str) {
+        int year = 0, month = 0, day = 0;
+
+        if (!Objects.isNull(str)) {
+            year = Integer.parseInt(str.split("-")[0]) - 1900;
+            month = Integer.parseInt(str.split("-")[1]) - 1;
+
+            String s = str.split("-")[2];
+            int index = s.indexOf(' ');
+            day = Integer.parseInt(s.substring(0, index));
+        }
+
+        return new Timestamp(year, month, day, 0, 0, 0, 0);
     }
 }

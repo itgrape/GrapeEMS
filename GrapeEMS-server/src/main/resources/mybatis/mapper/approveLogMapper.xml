@@ -10,7 +10,7 @@
         values (#{approveLogKind}, #{approveLogContentId})
     </insert>
 
-    <select id="getAllApproveLog" resultType="com.pushihao.bean.ApproveLog">
+    <select id="getAllApproveLog" resultType="com.pushihao.entity.ApproveLog">
         select
             *
         from
@@ -18,7 +18,7 @@
         where isDeleted = 1
     </select>
 
-    <select id="queryApproveLog" resultType="com.pushihao.bean.ApproveLog">
+    <select id="queryApproveLog" resultType="com.pushihao.entity.ApproveLog">
         select
             distinct l.*
         from

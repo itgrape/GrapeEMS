@@ -1,6 +1,6 @@
 package com.pushihao.service;
 
-import com.pushihao.bean.Announce;
+import com.pushihao.entity.Announce;
 import com.pushihao.pojo.AddAnnounce;
 import com.pushihao.pojo.QueryAnnounce;
 

@@ -1,8 +1,8 @@
 package com.pushihao.controller.user;
 
 import com.alibaba.fastjson.JSON;
-import com.pushihao.bean.BackApplication;
-import com.pushihao.bean.LeaveApplication;
+import com.pushihao.entity.BackApplication;
+import com.pushihao.entity.LeaveApplication;
 import com.pushihao.service.ApproveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

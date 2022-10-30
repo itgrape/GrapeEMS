@@ -1,6 +1,6 @@
 package com.pushihao.dao;
 
-import com.pushihao.bean.Announce;
+import com.pushihao.entity.Announce;
 import com.pushihao.pojo.QueryAnnounce;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

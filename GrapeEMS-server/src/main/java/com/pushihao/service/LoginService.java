@@ -1,6 +1,6 @@
 package com.pushihao.service;
 
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import com.pushihao.pojo.ResponseResult;
 
 public interface LoginService {

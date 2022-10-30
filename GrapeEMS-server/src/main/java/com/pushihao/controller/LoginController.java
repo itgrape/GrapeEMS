@@ -1,10 +1,9 @@
 package com.pushihao.controller;
 
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import com.pushihao.pojo.ResponseResult;
 import com.pushihao.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings({"all"})

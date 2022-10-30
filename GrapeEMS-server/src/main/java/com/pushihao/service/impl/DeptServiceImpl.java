@@ -1,6 +1,6 @@
 package com.pushihao.service.impl;
 
-import com.pushihao.bean.Dept;
+import com.pushihao.entity.Dept;
 import com.pushihao.dao.DeptDao;
 import com.pushihao.dao.UserDao;
 import com.pushihao.service.DeptService;

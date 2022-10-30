@@ -94,6 +94,15 @@
         />
     </div>
 
+    <el-form :inline="true" style="float: right; margin-top: 9px;">
+        <el-form-item>
+            <el-button type="success" @click="downloadUserInfo">下载员工信息Excel</el-button>
+        </el-form-item>
+        <el-form-item label="从excel批量导入员工">
+            <input @change="uploadUserInfo" type="file" style="width: 120px; border-radius: 5px;" />
+        </el-form-item>
+    </el-form>
+
     <el-dialog v-model="dialogFormVisible" title="添加员工">
         <el-form :model="addUserForm" id="add-user-form">
             <el-form-item label="姓名" :label-width="formLabelWidth">
@@ -331,10 +340,13 @@ function getAllUserCenterUsers() {
                     deptName: user.deptName,
                     roleName: user.roleName,
                     userEmail: user.userEmail,
-                    userAddress: user.userProvince + user.userCity + user.userCommunity,
+                    userAddress: '',
                     userInterTime: new Date(user.userInterTime).toLocaleDateString(),
                     userState: user.userState
                 }
+                if (user.userProvince !== null && user.userProvince !== '' && user.userProvince !== undefined) singleUser.userAddress = user.userProvince;
+                if (user.userCity !== null && user.userCity !== '' && user.userCity !== undefined) singleUser.userAddress += user.userCity;
+                if (user.userCommunity !== null && user.userCommunity !== '' && user.userCommunity !== undefined) singleUser.userAddress += user.userCommunity;
                 userinfo.push(singleUser)
             }
             getUserTotalNum()
@@ -491,13 +503,33 @@ function deleteSelectUser() {
 }
 
 
+function downloadUserInfo() {
+    window.open("http://localhost:12280/excel/download")
+}
+const uploadUserInfo = (event) => {
+    let formData = new FormData()
+    formData.append("file", event.target.files[0])
+    instance.post("/excel/upload", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    }).then(
+        response => {
+            getAllUserCenterUsers()
+        }
+    )
+}
+
+
+
 //美化页面JS代码
 let isOpen = ref(false)
 import eleResizeDetector from "element-resize-detector"
+import router from "../../router";
 onMounted(() => {
     let erd = eleResizeDetector()
     erd.listenTo(document.querySelector(".custom-not-button-group"), element => {
-        document.querySelector(".user-table").style.height = "calc(100vh - " + (200 + element.offsetHeight) + "px)"
+        document.querySelector(".user-table").style.height = "calc(100vh - " + (213 + element.offsetHeight) + "px)"
     })
 })
 
@@ -549,7 +581,6 @@ onMounted(() => {
 
 .custom-pagination {
     margin-top: 10px;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    float: left;
 }
 </style>

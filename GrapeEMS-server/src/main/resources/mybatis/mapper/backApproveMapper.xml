@@ -12,15 +12,15 @@
             (#{backApplicationCreateTime}, #{userId}, #{leaveApplicationId})
     </insert>
 
-    <select id="getAllBackApplication" resultType="com.pushihao.bean.BackApplication">
+    <select id="getAllBackApplication" resultType="com.pushihao.entity.BackApplication">
         select * from grapeems_back_application where isDeleted = 1 and backApplicationIsApprove = 0
     </select>
 
-    <select id="getBackApplicationById" resultType="com.pushihao.bean.BackApplication">
+    <select id="getBackApplicationById" resultType="com.pushihao.entity.BackApplication">
         select * from grapeems_back_application where isDeleted = 1 and BackApplicationId = #{id}
     </select>
 
-    <select id="getBackApplicationByUserId" resultType="com.pushihao.bean.BackApplication">
+    <select id="getBackApplicationByUserId" resultType="com.pushihao.entity.BackApplication">
         select * from grapeems_back_application where isDeleted = 1 and userId = #{userId}
     </select>
 

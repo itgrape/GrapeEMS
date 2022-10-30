@@ -1,4 +1,4 @@
-package com.pushihao.bean;
+package com.pushihao.entity;
 
 import com.pushihao.pojo.UserCenterUsers;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.pushihao.dao;
 
-import com.pushihao.bean.ApproveLog;
+import com.pushihao.entity.ApproveLog;
 import com.pushihao.pojo.QueryApproveLog;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -12,6 +12,15 @@
             (#{userName}, #{userSex}, #{userAge}, #{userEmail}, #{userPassword}, #{userProvince}, #{userCity}, #{userCommunity}, #{userInterTime}, #{userState}, #{userRole}, #{deptId}, #{roleId})
     </insert>
 
+    <insert id="addMoreUser">
+        INSERT INTO grapeems_user
+            (userName, userSex, userAge, userEmail, userPassword, userProvince, userCity, userCommunity, userInterTime, userRole, deptId, roleId)
+        VALUES
+            <foreach collection="users" item="user" separator=",">
+                (#{user.userName}, #{user.userSex}, #{user.userAge}, #{user.userEmail}, #{user.userPassword}, #{user.userProvince}, #{user.userCity}, #{user.userCommunity}, #{user.userInterTime}, #{user.userRole}, #{user.deptId}, #{user.roleId})
+            </foreach>
+    </insert>
+
     <!--编辑一个员工(通过 userId 进行定位)-->
     <update id="editOneUser">
         update
@@ -46,7 +55,7 @@
 
 
     <!--查询用户登录信息-->
-    <select id="getOneUserByEmail" resultType="com.pushihao.bean.User">
+    <select id="getOneUserByEmail" resultType="com.pushihao.entity.User">
         select
             *
         from

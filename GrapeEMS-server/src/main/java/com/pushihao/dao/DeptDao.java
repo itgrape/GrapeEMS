@@ -1,6 +1,6 @@
 package com.pushihao.dao;
 
-import com.pushihao.bean.Dept;
+import com.pushihao.entity.Dept;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

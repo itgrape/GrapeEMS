@@ -1,6 +1,6 @@
 package com.pushihao.service;
 
-import com.pushihao.bean.Dept;
+import com.pushihao.entity.Dept;
 
 import java.util.List;
 

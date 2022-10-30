@@ -1,6 +1,6 @@
 package com.pushihao.dao;
 
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import com.pushihao.pojo.QueryUser;
 import com.pushihao.pojo.UserCenterUsers;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +28,6 @@ public interface UserDao {
     public Integer deleteOneUserById(@Param("userId") Long id);
 
     public Integer getDeptPersonNumber(@Param("deptId") Long deptId);
+
+    public Integer addMoreUser(List<User> users);
 }

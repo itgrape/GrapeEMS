@@ -1,7 +1,7 @@
 package com.pushihao.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.pushihao.bean.Dept;
+import com.pushihao.entity.Dept;
 import com.pushihao.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

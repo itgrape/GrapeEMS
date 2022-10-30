@@ -1,6 +1,6 @@
 package com.pushihao.service.impl;
 
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import com.pushihao.dao.UserDao;
 import com.pushihao.pojo.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;

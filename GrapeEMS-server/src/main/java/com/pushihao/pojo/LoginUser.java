@@ -1,7 +1,7 @@
 package com.pushihao.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.pushihao.bean.User;
+import com.pushihao.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

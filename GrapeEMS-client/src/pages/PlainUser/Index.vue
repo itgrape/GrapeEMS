@@ -32,6 +32,7 @@ function getAllAnnounce() {
                 }
                 announceList.value.push(announce)
             }
+            announceList.value.reverse()
         }
     )
 }

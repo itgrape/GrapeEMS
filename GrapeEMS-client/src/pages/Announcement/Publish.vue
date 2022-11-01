@@ -7,7 +7,22 @@
     <br>
     <div>
         <h3>公告内容</h3>
-        <el-input v-model="announcement.content" type="textarea"/>
+        <div style="border: 1px solid #ccc">
+            <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editorRef"
+                :defaultConfig="toolbarConfig"
+                :mode="mode"
+            />
+            <Editor
+                style="height: 300px; overflow-y: hidden;"
+                v-model="mdValue"
+                :defaultConfig="editorConfig"
+                :mode="mode"
+                @onCreated="handleCreated"
+            />
+        </div>
+
     </div>
     <br><br>
     <div>
@@ -28,10 +43,11 @@
 </template>
 
 <script setup>
-
-import {reactive, onMounted, ref} from "vue"
+import '@wangeditor/editor/dist/css/style.css'
+import {computed, onBeforeUnmount, reactive, shallowRef, onMounted, ref} from "vue"
 import instance from "../../api/DataAxios"
 import {ElMessage} from "element-plus"
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
 let depts = ref([])
 let announcement = reactive({
@@ -55,15 +71,39 @@ function getAllDeptName() {
     )
 }
 
+// 编辑器实例，必须用 shallowRef
+const editorRef = shallowRef()
+let mdValue = ref()
+const mode = 'default'
+const toolbarConfig = {}
+const editorConfig = { placeholder: '请输入公告内容...' }
+
+announcement.content = computed(() => editorRef.value.getHtml())
+
+// 组件销毁时，也及时销毁编辑器
+onBeforeUnmount(() => {
+    const editor = editorRef.value
+    if (editor == null) return
+    editor.destroy()
+})
+
+const handleCreated = (editor) => {
+    editorRef.value = editor // 记录 editor 实例，重要！
+}
+
 function pubAnnounce() {
     if (announcement.title !== null && announcement.title !== '' && announcement.content !== null && announcement.content !== '' && announcement.deptName !== null && announcement.deptName !== '') {
         instance.post("/announce/addOneAnnounce", announcement).then(
             response => {
-                ElMessage.success("发布成功")
-                //发布成功后清空数据
-                announcement.title = null
-                announcement.content = null
-                announcement.deptName = null
+                if (response.data) {
+                    ElMessage.success("发布成功")
+                    mdValue.value = ''
+                    announcement.title = null
+                    announcement.content = ''
+                    announcement.deptName = null
+                } else {
+                    ElMessage.warning("发布失败")
+                }
             }
         )
     } else {

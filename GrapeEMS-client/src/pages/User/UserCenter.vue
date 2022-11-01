@@ -300,10 +300,13 @@ function query() {
                     deptName: user.deptName,
                     roleName: user.roleName,
                     userEmail: user.userEmail,
-                    userAddress: user.userProvince + user.userCity + user.userCommunity,
+                    userAddress: '',
                     userInterTime: new Date(user.userInterTime).toLocaleDateString(),
                     userState: user.userState
                 }
+                if (user.userProvince !== null && user.userProvince !== '' && user.userProvince !== undefined) singleUser.userAddress = user.userProvince;
+                if (user.userCity !== null && user.userCity !== '' && user.userCity !== undefined) singleUser.userAddress += user.userCity;
+                if (user.userCommunity !== null && user.userCommunity !== '' && user.userCommunity !== undefined) singleUser.userAddress += user.userCommunity;
                 userinfo.push(singleUser)
             }
             totalNum.value = userinfo.length
@@ -383,7 +386,7 @@ const addUserForm = reactive({
     userInterTime: null,
 })
 function addUserPost() {
-    if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge) && addUserForm.userName !== null && addUserForm.userSex !== null && addUserForm.userPassword !== null && addUserForm.deptName !== null && addUserForm.roleName !== null && addUserForm.userCity !== null && addUserForm.userInterTime !== null) {
+    if (matchEmail(addUserForm.userEmail) && matchNumber(addUserForm.userAge) && addUserForm.userAge > 0 && addUserForm.userName !== null && addUserForm.userSex !== null && addUserForm.userPassword !== null && addUserForm.deptName !== null && addUserForm.roleName !== null && addUserForm.userCity !== null && addUserForm.userInterTime !== null) {
         instance.post("/userCenter/addNewUser", addUserForm).then(
             response => {
                 if (response.data) {

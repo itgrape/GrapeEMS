@@ -49,6 +49,11 @@ public class UserCenterServiceImpl implements UserCenterService {
 
     @Override
     public List<UserCenterUsers> queryUserCenterUsers(QueryUser queryUser) {
+        if (!Objects.isNull(queryUser.getUserAgeStart())) {
+            if (queryUser.getUserAgeStart() == 0) {
+                queryUser.setUserAgeStart(-1);
+            }
+        }
         return userDao.queryUserCenterUsers(queryUser);
     }
 

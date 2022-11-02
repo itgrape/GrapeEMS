@@ -14,8 +14,8 @@ onMounted(() => {
     let option = {
         title: {
             text: '中国疫情地图',
-            subtext: '数据来源于 https://lab.isaaclin.cn/nCoV/',
-            sublink: 'https://lab.isaaclin.cn/nCoV/',
+            subtext: '声明：数据来源于丁香园 (https://portal.dxy.cn/)，与本站无关',
+            sublink: 'https://portal.dxy.cn/',
             left: 'center'
         },
         tooltip: {
@@ -71,7 +71,7 @@ onMounted(() => {
     function getData() {
         instance.get("/epidemicData/epidemicData").then(
             response => {
-                let data = response.data.results
+                let data = response.data
                 let newArr = [];
                 if (data) {
                     for (let d of data) {
@@ -87,7 +87,7 @@ onMounted(() => {
                             }
                             let v = {
                                 name: provinceName,
-                                value: d.currentConfirmedCount
+                                value: d.confirmedCount
                             }
                             newArr.push(v)
                         }

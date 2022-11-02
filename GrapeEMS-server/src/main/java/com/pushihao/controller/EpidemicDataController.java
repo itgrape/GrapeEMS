@@ -24,7 +24,7 @@ public class EpidemicDataController {
     @GetMapping("/epidemicData")
     public String epidemicData() {
         RestTemplate restTemplate = new RestTemplate();
-        String reqUrl = "https://lab.isaaclin.cn/nCoV/api/area";
+        String reqUrl = "http://47.95.146.130:18088";
         return restTemplate.getForObject(reqUrl, String.class);
     }
 

@@ -14,8 +14,8 @@ onMounted(() => {
     let option = {
         title: {
             text: '中国疫情地图',
-            subtext: '声明：数据来源于丁香园 (https://portal.dxy.cn/)，与本站无关',
-            sublink: 'https://portal.dxy.cn/',
+            subtext: '声明：数据来源于腾讯网 (https://news.qq.com/zt2020/page/feiyan.htm#/)，与本站无关',
+            sublink: 'https://news.qq.com/zt2020/page/feiyan.htm#/',
             left: 'center'
         },
         tooltip: {
